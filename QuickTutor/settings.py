@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
+    'tutor',
 ]
 
 MIDDLEWARE = [
@@ -136,7 +137,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'v4EcmMJV-F2fg0O8dAWfzpwo'
 
 LOGIN_URL = '/auth/login/google-oauth2/'
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/tutor/'
+LOGOUT_REDIRECT_URL = '/tutor/'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
