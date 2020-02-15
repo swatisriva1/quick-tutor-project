@@ -124,6 +124,8 @@ except ImportError:
 
 STATIC_URL = '/static/'
 
+# configuration info sourced from here: https://medium.com/trabe/oauth-authentication-in-django-with-social-auth-c67a002479c1
+
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
