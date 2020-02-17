@@ -30,14 +30,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'bootstrap4',
-    'tutor.apps.TutorConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
+    'tutor.apps.TutorConfig',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -124,3 +124,20 @@ except ImportError:
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# configuration info sourced from here: https://medium.com/trabe/oauth-authentication-in-django-with-social-auth-c67a002479c1
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '21594397326-20c4dmthpoka091b6afut89vmd2dhg5t.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'v4EcmMJV-F2fg0O8dAWfzpwo'
+
+LOGIN_URL = '/auth/login/google-oauth2/'
+
+LOGIN_REDIRECT_URL = '/tutor/'
+LOGOUT_REDIRECT_URL = '/tutor/'
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
