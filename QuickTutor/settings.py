@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'social_django',
     'tutor.apps.TutorConfig',
     'bootstrap4',
+    'tutor',
 ]
 
 MIDDLEWARE = [

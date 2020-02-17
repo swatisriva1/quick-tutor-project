@@ -15,3 +15,6 @@ class ProfileView(generic.ListView):
     #renders the home landing page
     def welcome(request):
         return render(request, template_name)
+
+def index(request):
+    return render(request, 'tutor/home.html')
