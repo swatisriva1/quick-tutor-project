@@ -1,0 +1,26 @@
+{% load static %}
+{% load bootstrap4 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{% bootstrap_messages %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+<div class="container p-3 my-3 bg-dark text-white">
+    <h1>
+        Welcome to Quick Tutor
+    </h1>
+</div>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="" method="post">
+{% csrf_token %}
+<div class="border border-light p-3 mb-4">
+        
+    <div class="text-center">
+        <button type="button" class="btn btn-info btn-lg">Find a Tutor</button>
+    </div>
+</form>
