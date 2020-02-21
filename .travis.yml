@@ -5,10 +5,4 @@ install:
 - pip install -r requirements-travis.txt
 script:
 - python manage.py test
-deploy:
-  provider: heroku
-  api_key:
-    secure: hyXWtgieXKqT491TU9HSqydnWxuXU1+9J7YaAoANyhXwUYzFDlCCOZBUCiPNppJn7gcj0HIeHD4Ze6LafF/MFGO1BKiab0FPkGbibKhGlfRFUij5gwScQYeTnfR0L5iuZzsDBiTdV2rwu6FJhQsTHv9cR62MLbIaGDCAFueMrIA1o9NEq8Em4JiEwgkm29KzL2HuabMy95u6Ly38/b+0D2B2dxaOPuNb5BY01bj2YjK/z135/pQKTEfdQSyNs0XTpZJyV668cL9d8HQIfHOgdOFXcy9qlsMXneW8oJVpSlwN2b1r5jnM3OvjXEpuhMuybOrFJXtx03VSblM1fTllrlf8QMFoeaqnth3eQKLteXwVudqt9EX9i62OYwAxjhygmIADC6KXefeR2D3Fx+dZ3MHWrZE3HedY+MenHD0KSKKqRDA8yfa/D6VXAp2bma2vCh1Bn3HLUDccB272gJxHpw7Q6CHA2Il/Q8T187c5DbZpXI3WKDChz69BzkgRgrrnHXO0RN3dkRhVKHZFF2bfszAobAmmlXt3OThHFMbID0zsxx6gzWIe2ajnQczP1NR3HgDjL7l5B4HAHN6ZByDd3MxdwcR3qblIsBn1DwOyxzSJuinDuby3GYYHmEjsOZyHQdHuq+Lh26Tj+MbDaVsavQ6xEFgEJyPSThCy1UaziWE=
-  app: project-102-code_crkrs
-  on:
-    repo: uva-cs3240-s20/project-102-code_crkrs
+
