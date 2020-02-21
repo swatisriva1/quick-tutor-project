@@ -6,4 +6,3 @@ install:
 script:
 - python manage.py test
 
-	
