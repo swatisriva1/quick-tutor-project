@@ -12,4 +12,4 @@ deploy:
   app: project-102-code_crkrs
   on:
     repo: uva-cs3240-s20/project-102-code_crkrs
-    branch: herokuconnect
+    
