@@ -5,5 +5,6 @@ install:
 - pip install -r requirements-travis.txt
 script:
 - python manage.py test
-
-	
+deploy:
+  api_key:
+    secure: NvmPuUgDMOuzQeo++KbZ99gExKoE5CiyjMSsHcl1KAWw+Wudwn0w9fAzpeWmoud+P/0rc2mPL6H1HbYsZoroeRQmv4187peP82OaD/n8AoaoaxbhFCHZrWHF4uUR8VlYnO+wKyMcWjjqklPahJDxf+0H2nl638mZuj/RXKCuQHbEX0ipfCtrrUVeqEolpVtWUdE6c3XVUsR5viXlnD55biKXfhK+6B5CkqGp0Oqg+0O1ncrAHFusolppt1cHqmvaBJfZIrBH8LnCtzzRN7bT7/SHmGYhEzCAw/Mwmn8THuwnI/4sYH6shXO4r+2uI8qk9jp+UMUz2+UeoJ5jt33ED53QJyeF1GS7wOF1YNLXs3zlG9RgWTL12kGwsb4eVjGr+rjriJUlZWc8ClmG857SQgxMe+Q7CCBCOUlbbVVCJrzbct2/sNlFNwnw2B5fxz6QkUqcRsaMCMJ5j5IkWTISTYH3RFW/vor25PGRT/pggcCcf7XgCpfbiyoaJ83DVQho7MU8lKdLM3hs8BqeT34fCsWtCc6P+9rNqhB66MzoXYKnPGx8plSNpXEWe+RQFASyAIqM6C86QrkmNZM8fuF/MD8qLg2LxAEbDKdgrz0WUK3lMpvN9IqyW2+IxFNVw/x5/HIFv/7EuM3fH8fqERxUOf92EiZNdCVXa5QHwe79ihU=
