@@ -77,8 +77,13 @@ WSGI_APPLICATION = 'QuickTutor.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd5i65gdot11aqv',
+        'USER': 'vmmslhwdewqqgu',
+        'PASSWORD': '601b55f7641037fc2fe607551bb122bed597dcaa6a1efea2d0672a23fcab02f6',
+        'HOST': 'ec2-3-234-169-147.compute-1.amazonaws.com',
+        'PORT': '5432'
+
     }
 }
 
