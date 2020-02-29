@@ -3,3 +3,4 @@ gunicorn
 django-heroku
 social-auth-app-django
 django-bootstrap4
+psycopg2
