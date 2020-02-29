@@ -1,0 +1,11 @@
+<body>
+  <div class="jumbotron">
+    <h1>Quick Tutor</h1>
+    {% if user.is_authenticated %}
+      <p>Logged as {{ user.username }}</p>
+      <a class="btn btn-primary" href="tutor/logout/">Logout</a>
+    {% else %}
+      <p>Successfully logged out!</p>
+    {% endif %}
+  </div>
+</body>
