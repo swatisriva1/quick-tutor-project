@@ -16,5 +16,8 @@ class ProfileView(generic.ListView):
     def welcome(request):
         return render(request, template_name)
 
+#class TutorProfileView(generic.ListView):
+    
+
 def index(request):
     return render(request, 'tutor/home.html')
