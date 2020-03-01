@@ -1,30 +1,28 @@
 <!-- modified from this tutorial https://medium.com/trabe/oauth-authentication-in-django-with-social-auth-c67a002479c1 -->
-
-<!doctype html>
+{% extends 'tutor/base.html' %}
+<!--<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
 
   <title>Quick Tutor</title>
 
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-    integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
-    crossorigin="anonymous">
 </head>
-<body>
+<body>-->
+{% block content %}
   <div class="jumbotron">
-    <h1>Quick Tutor</h1>
+    <h1>Welcome!</h1>
+    <img src="static/tutor/QuickTutor.png">
     {% if user.is_authenticated %}
       <p>Logged as {{ user.username }}</p>
-      <a class="btn btn-primary" href="tutor/logout/">Logout</a>
+<!--      <a class="btn btn-primary" href="tutor/logout/">Logout</a>-->
     {% else %}
-      <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">
-        Login
+ <!--     <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">
+        Login-->
       </a>
     {% endif %}
   </div>
-
+{% endblock %}
+<!--
 </body>
-</html>
+</html>-->

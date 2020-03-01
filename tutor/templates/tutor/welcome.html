@@ -1,3 +1,4 @@
+{% extends 'tutor/base.html' %}
 {% load static %}
 {% load bootstrap4 %}
 {% bootstrap_css %}
@@ -5,7 +6,7 @@
 
 {% bootstrap_messages %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'tutor/style.css' %}">
+{% block content %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <a href="#" class="navbar-brand">Welcome to Quick Tutor</a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -51,3 +52,5 @@
     </p>
 
 </form>
+
+{% endblock %}
