@@ -1,0 +1,10 @@
+{% load static %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+
+{% block content %}
+<div class="container">
+    <h1> {{ user.first_name }}'s Profile </h1>
+    <p> Email: {{ user.email }} </p>
+{% endblock %}
+</div>
