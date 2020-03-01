@@ -1,14 +1,5 @@
 <!-- modified from this tutorial https://medium.com/trabe/oauth-authentication-in-django-with-social-auth-c67a002479c1 -->
 {% extends 'tutor/base.html' %}
-<!--<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-
-  <title>Quick Tutor</title>
-
-</head>
-<body>-->
 {% block content %}
   <div class="jumbotron">
     <h1>Welcome!</h1>
@@ -19,7 +10,7 @@
     {% else %}
  <!--     <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">
         Login-->
-      </a>
+
     {% endif %}
   </div>
 {% endblock %}
