@@ -18,7 +18,17 @@ class ProfileView(generic.ListView):
     def welcome(request):
         return render(request, template_name)
 
-#class TutorProfileView(generic.ListView):
+class TutorProfileView(generic.ListView):
+    model = Profile
+    template_name = 'tutor/tutorprofile.html'
+
+    #for future, when we grab data from database, currently not functional
+    def get_queryset(self):
+        return Profile.objects.all()
+
+    #renders the tutor profile page
+    def tutorprofile(request):
+        return render(request, template_name)
     
 
 def index(request):

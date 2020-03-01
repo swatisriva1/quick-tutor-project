@@ -9,4 +9,6 @@ class Profile(models.Model):
     #= for now, use simple text field for phone number, but later make sure we validate it somehow
     # use this? https://pypi.org/project/django-phone-field/
     phone_num = models.CharField(default="", max_length=10)
+    pic = models.ImageField(upload_to='profile_picture', default='/tutor/static/tutor/default_profile_pic.png', 
+    blank=False)
     rating = models.DecimalField(max_digits=5, decimal_places=2) # two places past decimal
