@@ -1,30 +1,30 @@
 <!-- modified from this tutorial https://medium.com/trabe/oauth-authentication-in-django-with-social-auth-c67a002479c1 -->
-
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-
-  <title>Quick Tutor</title>
-
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-    integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
-    crossorigin="anonymous">
-</head>
-<body>
+{% extends 'tutor/base.html' %}
+{% block content %}
   <div class="jumbotron">
-    <h1>Quick Tutor</h1>
+
+
     {% if user.is_authenticated %}
-      <p>Logged as {{ user.username }}</p>
-      <a class="btn btn-primary" href="tutor/logout/">Logout</a>
+      <h1>Hey {{ user.username }} !</h1>
+      <img src="static/tutor/QuickTutor.png">
+<!--      <a class="btn btn-primary" href="tutor/logout/">Logout</a>-->
     {% else %}
-      <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">
-        Login
-      </a>
+          <img src="static/tutor/QuickTutor.png">
+    <h1>Welcome!</h1>
+    <div class="col s12 m6 offset-m3 center-align">
+    <a class="oauth-container btn darken-4 white black-text" href="{% url 'social:begin' 'google-oauth2' %}" style="text-transform:none">
+        <div class="left">
+            <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+        </div>
+        Login with Google
+    </a>
+    </div>
+
+
     {% endif %}
   </div>
-
+{% endblock %}
+<!--
 </body>
-</html>
+</html>-->

@@ -18,7 +18,9 @@ from django.urls import include, path
 from django.conf import settings
 
 urlpatterns = [
-    path('tutor/', include('tutor.urls')),
+    #REVIEW:
+    #Not sure why we had two url patterns for (tutor.urls)
+    #path('tutor/', include('tutor.urls')),
     path('admin/', admin.site.urls),
     path('',include('tutor.urls')),
     # URL configuration info sourced from here: https://medium.com/trabe/oauth-authentication-in-django-with-social-auth-c67a002479c1
