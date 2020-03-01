@@ -5,7 +5,7 @@ services:
 - postgresql
 env:
 - DJ_DEBUG=False
-- export DATATASE_URL=postgres://postgres@localhost/travisdb
+- export DATABASE_URL=postgres://postgres@localhost/travisdb
 install:
 - pip install -r requirements-travis.txt
 before_script:
