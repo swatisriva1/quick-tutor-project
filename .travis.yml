@@ -1,10 +1,18 @@
 language: python
 python:
 - '3.7'
+services:
+- postgresql
+env:
+  global:
+    - DJ_DEBUG=False
+    - DATABASE_URL=postgres://postgres@localhost/travisdb
 install:
 - pip install -r requirements-travis.txt
+before_script:
+- psql -c 'create database travisdb;' -U postgres
 script:
-- python manage.py test
+- python manage.py test --keepdb
 deploy:
   provider: heroku
   api_key:
