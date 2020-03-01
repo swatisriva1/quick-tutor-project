@@ -1,4 +1,6 @@
+{% extends 'tutor/base.html' %}
 <body>
+{% block content %}
   <div class="jumbotron">
     <h1>Quick Tutor</h1>
     {% if user.is_authenticated %}
@@ -8,4 +10,5 @@
       <p>Successfully logged out!</p>
     {% endif %}
   </div>
+{% endblock %}
 </body>
