@@ -1,0 +1,27 @@
+{% load static %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="border border-light p-3 mb-4">
+        <div class="text-left">
+            <h1> {{ user.first_name }}'s Profile </h1>
+    
+            <input type="text" name="first_name" placeholder="Your first name"><br><br>
+            <input type="text" name="last_name" placeholder="Your last name"><br><br>
+            <input type="text" name="email_addr" placeholder="Your preferred email"><br><br>
+            <input type="text" name="phone_number" placeholder="Your preferred phone number"><br><br>
+    
+           <!-- <button type="submit" class="btn btn-primary">Submit Suggestion</button> -->
+        </div>
+    
+        <p>
+            <div class="text-center">
+                <button type="submit" class="btn btn-info btn-lg">Save Changes</button>
+            </div>
+        </p>
+    
+    </form>
+    {% endblock content%}

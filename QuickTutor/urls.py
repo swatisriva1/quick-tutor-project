@@ -25,4 +25,5 @@ urlpatterns = [
     path('',include('tutor.urls')),
     # URL configuration info sourced from here: https://medium.com/trabe/oauth-authentication-in-django-with-social-auth-c67a002479c1
     path('', include('social_django.urls', namespace='social')),
+    path('tutorprofile/', include('tutor.urls')),
 ]
