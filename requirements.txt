@@ -6,3 +6,4 @@ django-bootstrap4
 psycopg2
 dj_database_url
 python-dotenv
+Pillow
