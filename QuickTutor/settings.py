@@ -11,10 +11,17 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import dj_database_url
+import dotenv
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
+""" used https://stackoverflow.com/questions/40156835/how-to-setup-travis-ci-for-a-django-project-hosted-on-heroku"
+    and https://medium.com/@BennettGarner/deploying-django-to-heroku-connecting-heroku-postgres-fcc960d290d1 in order to 
+    connect with heroku postgres
+"""
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -76,17 +83,9 @@ WSGI_APPLICATION = 'QuickTutor.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd5i65gdot11aqv',
-        'USER': 'vmmslhwdewqqgu',
-        'PASSWORD': '601b55f7641037fc2fe607551bb122bed597dcaa6a1efea2d0672a23fcab02f6',
-        'HOST': 'ec2-3-234-169-147.compute-1.amazonaws.com',
-        'PORT': '5432'
 
-    }
-}
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -124,8 +123,10 @@ try:
     # Configure Django App for Heroku.
     import django_heroku
     django_heroku.settings(locals())
+    del DATABASES['default']['OPTIONS']['sslmode']
 except ImportError:
     found = False
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
