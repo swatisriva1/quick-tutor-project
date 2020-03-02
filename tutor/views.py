@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 from . import templates
 from .models import Profile
 
@@ -20,3 +22,4 @@ def welcome(request):
         return render(request, 'tutor/welcome.html')
 def index(request):
     return render(request, 'tutor/home.html')
+

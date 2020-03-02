@@ -7,3 +7,14 @@ h1 a{
     font-size: 40px;
 }
 
+.navbar
+{
+    font-family: 'Arvo';
+    background-color: #122C34;
+}
+
+.nav-link
+{
+    color: #CDEDF6;
+}
+
