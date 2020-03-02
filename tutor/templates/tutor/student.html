@@ -11,10 +11,11 @@
         <fieldset class="form-group">
             <div class="border border-light p-3 mb-4">
                 <div class="text-left">
-                    <h1> {{ user.profile.first_name }}'s Profile </h1>
+                    <h1> Your Profile </h1>
+
                     {% if user.profile.first_name and user.profile.last_name is None %}
-                    <p class="text-secondary"> First Name: {{ user.first_name }}</p>
-                    <p class="text-secondary"> Last Name: {{ user.last_name }}</p>
+                        <p class="text-secondary"> First Name: {{ user.first_name }}</p>
+                        <p class="text-secondary"> Last Name: {{ user.last_name }}</p>
                     {% else %}
                         <p class="text-secondary"> First Name: {{ user.profile.first_name }}</p>
                         <p class="text-secondary"> Last Name: {{ user.profile.last_name }}</p>
