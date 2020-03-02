@@ -3,8 +3,17 @@
 {% bootstrap_css %}
 
 {% block content %}
-<div class="container">
+<div class="content-section">
     <h1> {{ user.first_name }}'s Profile </h1>
-    <p> Email: {{ user.email }} </p>
-{% endblock %}
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4"></legend>
+            {{ form }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Save</button>
+        </div>
+    </form>
+{% endblock content%}
 </div>
