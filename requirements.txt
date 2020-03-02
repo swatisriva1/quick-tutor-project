@@ -4,3 +4,4 @@ django-heroku
 social-auth-app-django
 django-bootstrap4
 Pillow
+crispy-forms
