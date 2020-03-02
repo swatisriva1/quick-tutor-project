@@ -18,7 +18,7 @@
     <h1>Quick Tutor</h1>
     {% if user.is_authenticated %}
       <p>Logged as {{ user.username }}</p>
-      <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+      <a class="btn btn-primary" href="tutor/logout/">Logout</a>
     {% else %}
       <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">
         Login
