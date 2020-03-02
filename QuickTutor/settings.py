@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'social_django',
     'bootstrap4',
     'tutor',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,4 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
