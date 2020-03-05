@@ -3,6 +3,9 @@ gunicorn
 django-heroku
 social-auth-app-django
 django-bootstrap4
+Pillow
+django-crispy-forms
 psycopg2
 dj_database_url
 python-dotenv
+Pillow

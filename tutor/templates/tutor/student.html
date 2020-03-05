@@ -1,0 +1,47 @@
+{% extends 'tutor/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+{% bootstrap_css %}
+
+{% block content %}
+<div class="content-section">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <div class="border border-light p-3 mb-4">
+                <div class="text-left">
+                    <h1> Your Profile </h1>
+
+                    {% if user.profile.first_name and user.profile.last_name is None %}
+                        <p class="text-secondary"> First Name: {{ user.first_name }}</p>
+                        <p class="text-secondary"> Last Name: {{ user.last_name }}</p>
+                    {% else %}
+                        <p class="text-secondary"> First Name: {{ user.profile.first_name }}</p>
+                        <p class="text-secondary"> Last Name: {{ user.profile.last_name }}</p>
+                    {% endif %}
+
+                    {% if user.profile.email_addr is None %}
+                        <p class="text-secondary"> Email: {{ user.email }}</p>
+                    {% else %}
+                        <p class="text-secondary"> Email: {{ user.profile.email_addr }}</p>
+                    {% endif %}
+
+                    {% if user.profile.phone_number is None %}
+                        <p class="text-secondary"> Phone Number: None</p>
+                    {% else %}
+                        <p class="text-secondary"> Phone Number: {{ user.profile.phone_number }}</p>
+                    {% endif %}
+
+                </div>
+        </fieldset>
+        
+            <p>
+                <div class="text-center">
+                    <a class="btn btn-info btn-lg" href="{% url 'tutor:updateinfo' %}">Update Info</a>
+                </div>
+            </p>
+        
+        </form>
+</div>
+    {% endblock content%}
