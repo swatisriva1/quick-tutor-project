@@ -6,6 +6,16 @@ from django import forms
 from django.core.validators import RegexValidator
 # Create your models here.
 
+# Model used to detail what subjects a model is comfortable tutoring in
+class Subject(models.Model):
+    subject_name = models.CharField(max_length=30)
+
+    class Meta:
+        ordering = ['subject_name']
+
+    def __str__(self):
+        return self.subject_name
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,default="")
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
@@ -24,6 +34,9 @@ class Profile(models.Model):
     pic = models.ImageField(upload_to='profile_picture', default='/tutor/static/tutor/default_profile_pic.png', 
     blank=False)
     rating = models.DecimalField(max_digits=5, decimal_places=2, null=True) # two places past decimal
+
+    # List of subjects a User is able to offer tutoring services in
+    subjects_can_help = models.ManyToManyField(Subject)
 
     def __str__(self):
         return self.user.username

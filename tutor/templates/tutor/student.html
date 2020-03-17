@@ -33,6 +33,17 @@
                         <p class="text-secondary"> Phone Number: {{ user.profile.phone_number }}</p>
                     {% endif %}
 
+                    <!-- CAN PORT OVER TO A DIFFERENT TEMPLATE IF NECESSARY -CALEB -->
+                    {% if user.profile.subjects_can_help %}
+                        <p class="text-secondary"> Subjects you tutor in: </p>
+                        <ul>
+                            {% for subject in user.profile.subjects_can_help.all %}
+                            <li>{{ subject }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-secondary"> Subjects you tutor in: None</p>
+                    {% endif %}
                 </div>
         </fieldset>
         
