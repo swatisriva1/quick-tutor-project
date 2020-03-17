@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django import forms
 from django.core.validators import RegexValidator
 # Create your models here.
 
@@ -28,6 +29,26 @@ class Profile(models.Model):
         return self.user.username
     def save(self):
         super().save()
+
+SUBJECTS = [
+    ('none', 'None'),
+    ('african-american studies', 'African-American & African Studies'),
+    ('anthropology', 'Anthropology'),
+    ('astronomy', 'Astronomy'),
+    ('biology', 'Biology'),
+    ('chemistry', 'Chemistry'),
+    ('economics', 'Economics'),
+    ('french', 'French'),
+    ('german', 'German'),
+    ('physics', 'Physics'),
+    ('mathematics', 'Mathematics'),
+]
+
+class Jobs(models.Model):
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
+    subject = models.CharField(max_length=200, choices=SUBJECTS, default='None')
+    notes = models.CharField(max_length=200, default="")
         
 #User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
