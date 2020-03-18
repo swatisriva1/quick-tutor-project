@@ -23,12 +23,12 @@
     </div>
   </div>
 
-        {% if user.is_authenticated %}
-        <div class="collapse navbar-collapse" id="navbarCollapse">
+    {% if user.is_authenticated %}
+      <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ml-auto">
             <a href="{% url 'tutor:logout' %}" class="nav-item nav-link">Logout</a>
         </div>
-    </div>
+      </div>
     {% else %}
         <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ml-auto">

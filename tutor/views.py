@@ -13,13 +13,11 @@ from .forms import List, EditProfile, RequestTutor
 
 class RequestTutorView(BSModalCreateView):
     model = Jobs
-    template_name = 'tutor/requestTutor.html'
-    form = RequestTutor
     success_message = 'Success: Your request has been submitted.'
-    success_url = reverse_lazy('welcome')
-    #def get(self, request):
-     #   form = RequestTutor
-      #  return render(request, 'tutor/requestTutor.html', {'form':form})
+    success_url = reverse_lazy('index')
+    def get(self, request):
+       form = RequestTutor
+       return render(request, 'tutor/requestTutor.html', {'form':form})
 
 class StudentProfileView(generic.ListView):
     model = Profile
