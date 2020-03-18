@@ -5,16 +5,26 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib import messages
+from django.urls import reverse_lazy
+from bootstrap_modal_forms.generic import BSModalCreateView
 from . import templates
-from .models import Profile
-from .forms import List, EditProfile
+from .models import Profile, Jobs
+from .forms import List, EditProfile, RequestTutor
+
+class RequestTutorView(BSModalCreateView):
+    model = Jobs
+    template_name = 'tutor/requestTutor.html'
+    form = RequestTutor
+    success_message = 'Success: Your request has been submitted.'
+    success_url = reverse_lazy('welcome')
+    #def get(self, request):
+     #   form = RequestTutor
+      #  return render(request, 'tutor/requestTutor.html', {'form':form})
 
 class StudentProfileView(generic.ListView):
     model = Profile
-
-    #for future, when we grab data from database, currently not functional
     def get(self, request):
-      return render(request, 'tutor/student.html')
+        return render(request, 'tutor/student.html')
 
 class ProfileUpdate(generic.ListView):
     model = Profile

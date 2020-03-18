@@ -58,12 +58,13 @@ SUBJECTS = [
 ]
 
 class Jobs(models.Model):
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
+    full_name = models.CharField(max_length=200)
     subject = models.CharField(max_length=200, choices=SUBJECTS, default='None')
     notes = models.CharField(max_length=200, default="")
-        
-#User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+    def __str__(self):
+        return self.user.full_name
+    def save(self):
+        super().save()
 
 def create_profile(sender, instance, created, **kwargs):
    if created:

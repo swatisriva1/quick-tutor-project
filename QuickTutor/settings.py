@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'tutor',
     'crispy_forms',
+    'bootstrap_modal_forms',
 ]
 
 MIDDLEWARE = [

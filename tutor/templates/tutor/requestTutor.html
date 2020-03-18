@@ -1,0 +1,47 @@
+{% load static %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+{% bootstrap_css %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
+</head>
+
+<body>
+    <script src="{% static 'assets/js/bootstrap.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.js' %}"></script>
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+    <!-- You can alternatively load the minified version -->
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+</body>
+
+<div class="content-section">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-header">
+            <h5 class="modal-title"> Which subjects do you need help in?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+
+        <div class="text-left">
+            {{ form|crispy }}
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-info btn-lg">Submit</button>
+        </div> 
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+    
+        $(".requestTutor").modalForm({
+            formURL: "{% url 'requesttutor' %}"
+        });
+    
+    });
+</script>

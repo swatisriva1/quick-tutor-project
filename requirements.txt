@@ -9,3 +9,4 @@ psycopg2
 dj_database_url
 python-dotenv
 Pillow
+bootstrap_modal_forms
