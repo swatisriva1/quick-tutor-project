@@ -20,10 +20,6 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,default="")
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
-
-    #first_name = models.CharField(max_length=200)
-    #last_name = models.CharField(max_length=200)
-    #email_addr = models.EmailField(max_length=200)
     # don't want to use simple text field for phone number
     # (want to validate) but not sure what to use
     first_name = models.CharField(max_length=200)
@@ -57,14 +53,15 @@ SUBJECTS = [
     ('mathematics', 'Mathematics'),
 ]
 
-class Jobs(models.Model):
-    full_name = models.CharField(max_length=200)
+class Job(models.Model):
+    #user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    client = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True, blank=True)
+    course = models.CharField(max_length=200, default="")
     subject = models.CharField(max_length=200, choices=SUBJECTS, default='None')
-    notes = models.CharField(max_length=200, default="")
+    notes = models.TextField(max_length=1000, default="")
+
     def __str__(self):
-        return self.user.full_name
-    def save(self):
-        super().save()
+        return self.subject
 
 def create_profile(sender, instance, created, **kwargs):
    if created:
