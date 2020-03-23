@@ -44,6 +44,17 @@
                     {% else %}
                         <p class="text-secondary"> Subjects you tutor in: None</p>
                     {% endif %}
+
+                    {% if user.profile.subjects_need_help %}
+                        <p class="text-secondary"> Subjects you need help in: </p>
+                        <ul>
+                            {% for subject in user.profile.subjects_need_help.all %}
+                            <li>{{ subject }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-secondary"> Subjects you need help in: None</p>
+                    {% endif %}
                 </div>
         </fieldset>
         
