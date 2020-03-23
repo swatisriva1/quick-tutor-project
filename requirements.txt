@@ -11,3 +11,4 @@ python-dotenv
 django-bootstrap-modal-forms
 django-jquery
 django-paypal
+django_google_maps
