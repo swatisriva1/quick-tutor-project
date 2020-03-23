@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'bootstrap_modal_forms',
     'jquery',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -155,6 +156,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/auth/login/google-oauth2/'
+
+PAYPAL_RECEIVER_EMAIL = 'rickym@virginia.edu'
+
+PAYPAL_TEST = True
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'

@@ -10,3 +10,4 @@ dj_database_url
 python-dotenv
 django-bootstrap-modal-forms
 django-jquery
+django-paypal
