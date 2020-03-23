@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+from django.contrib.messages import constants as messages
 import os
 import dj_database_url
 import dotenv
@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'bootstrap4',
     'tutor',
     'crispy_forms',
+    'bootstrap_modal_forms',
+    'jquery',
 ]
 
 MIDDLEWARE = [
@@ -105,6 +107,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

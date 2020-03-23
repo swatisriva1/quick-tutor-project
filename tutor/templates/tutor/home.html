@@ -1,29 +1,84 @@
 <!-- modified from this tutorial https://medium.com/trabe/oauth-authentication-in-django-with-social-auth-c67a002479c1 -->
 {% extends 'tutor/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
 {% block content %}
-  <div class="jumbotron">
 
+<head>
+  <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
+</head>
 
-    {% if user.is_authenticated %}
-      <h1>Hey {{ user.username }} !</h1>
-      <img src="static/tutor/QuickTutor.png">
-<!--      <a class="btn btn-primary" href="tutor/logout/">Logout</a>-->
-    {% else %}
-          <img src="static/tutor/QuickTutor.png">
-    <h1>Welcome!</h1>
-    <div class="col s12 m6 offset-m3 center-align">
-    <a class="oauth-container btn darken-4 white black-text" href="{% url 'social:begin' 'google-oauth2' %}" style="text-transform:none">
-        <div class="left">
-            <img width="20px" style="margin-top:-4px; margin-right:10px" alt="Google sign-in"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
-        </div>
-        Login with Google
-    </a>
-    </div>
+<body>
+  <script src="{% static '/bootstrap.js' %}"></script>
+  <script src="{% static '/jquery.js' %}"></script>
+  <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+</body>
 
-
-    {% endif %}
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
   </div>
+</div>
+
+<div class="jumbotron">
+
+
+  {% if user.is_authenticated %}
+  <h1>Hey {{ user.username }} !</h1>
+  <img src="static/tutor/QuickTutor.png">
+  <!--      <a class="btn btn-primary" href="tutor/logout/">Logout</a>-->
+  <button class="requestTutor btn-info btn-lg" type="button" data-toggle="modal" data-target="#requestTutor">
+    Request A Tutor</button>
+  {% else %}
+  <img src="static/tutor/QuickTutor.png">
+  <h1>Welcome!</h1>
+  <div class="col s12 m6 offset-m3 center-align">
+    <a class="oauth-container btn darken-4 white black-text" href="{% url 'social:begin' 'google-oauth2' %}"
+      style="text-transform:none">
+      <div class="left">
+        <img width="20px" style="margin-top:-4px; margin-right:10px" alt="Google sign-in"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+      </div>
+      Login with Google
+    </a>
+  </div>
+  {% endif %}
+
+
+<div class="modal fade" id="requestTutor" tabindex="-1" role="dialog" aria-labelledby="requestTutor"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title"> Which subjects do you need help in?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+          {{ form|crispy }}
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info btn-lg">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<<!-- script type="text/javascript">
+  $(document).ready(function () {
+
+    $(".requestTutor").modalForm({
+      formURL: "{% url 'tutor:requestTutor' %}"
+    });
+  });
+</script> -->
 {% endblock %}
 <!--
 </body>

@@ -1,20 +1,45 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.template.loader import render_to_string
 from django.views import generic
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib import messages
+from django.urls import reverse_lazy
+from bootstrap_modal_forms.generic import BSModalCreateView
 from . import templates
-from .models import Profile
-from .forms import List, EditProfile
+from .models import Profile, Job
+from .forms import List, EditProfile, RequestTutor
+
+class AvailableJobs(generic.ListView):
+    model = Job
+    template_name = 'tutor/jobs_list.html'
+    def get_queryset(self):
+        return Job.objects.all()
+
+class RequestTutorView(generic.ListView):
+    model = Job
+    #Job.objects.all().delete()
+    def get(self, request):
+        form = RequestTutor()
+        return render(request, 'tutor/requestTutor.html', {'form': form})
+    
+    def post(self, request):
+        form = RequestTutor(request.POST)
+        if request.method == 'POST':
+            if form.is_valid():
+                req = form.save(commit=False)
+                req.save()
+                messages.success(request, 'Your request has been submitted')
+                return redirect(reverse_lazy('tutor:index'))
+            return render(request, 'tutor/requestTutor.html', {'form': form})
+
 
 class StudentProfileView(generic.ListView):
     model = Profile
-
-    #for future, when we grab data from database, currently not functional
     def get(self, request):
-      return render(request, 'tutor/student.html')
+        return render(request, 'tutor/student.html')
 
 class ProfileUpdate(generic.ListView):
     model = Profile

@@ -1,5 +1,6 @@
 from django import forms
-from .models import Profile, Subject
+from .models import Profile, Subject, Job
+from bootstrap_modal_forms.forms import BSModalForm
 from django.contrib.auth.forms import UserChangeForm
 
 class List(forms.ModelForm):
@@ -10,5 +11,10 @@ class List(forms.ModelForm):
 class EditProfile(UserChangeForm):
     class Meta:
         model = Profile
+        profile_form
         fields = ["first_name", "last_name", "email_addr", "phone_number", "subjects_can_help", "subjects_need_help"]
-   
+
+class RequestTutor(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = ["subject", "course", "notes"]

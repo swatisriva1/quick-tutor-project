@@ -8,4 +8,5 @@ django-crispy-forms
 psycopg2
 dj_database_url
 python-dotenv
-Pillow
+django-bootstrap-modal-forms
+django-jquery
