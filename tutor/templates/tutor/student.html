@@ -13,24 +13,24 @@
                 <div class="text-left">
                     <h1> Your Profile </h1>
 
-                    {% if user.profile.first_name and user.profile.last_name is None %}
-                        <p class="text-secondary"> First Name: {{ user.first_name }}</p>
-                        <p class="text-secondary"> Last Name: {{ user.last_name }}</p>
-                    {% else %}
+                    {% if user.profile.first_name and user.profile.last_name %}
                         <p class="text-secondary"> First Name: {{ user.profile.first_name }}</p>
                         <p class="text-secondary"> Last Name: {{ user.profile.last_name }}</p>
+                    {% else %}
+                        <p class="text-secondary"> First Name: None</p>
+                        <p class="text-secondary"> Last Name: None</p>
                     {% endif %}
 
-                    {% if user.profile.email_addr is None %}
-                        <p class="text-secondary"> Email: {{ user.email }}</p>
+                    {% if user.profile.email_addr %}
+                        <p class="text-secondary"> Email: {{ user.profile.email }}</p>
                     {% else %}
-                        <p class="text-secondary"> Email: {{ user.profile.email_addr }}</p>
+                        <p class="text-secondary"> Email: None</p>
                     {% endif %}
 
-                    {% if user.profile.phone_number is None %}
-                        <p class="text-secondary"> Phone Number: None</p>
-                    {% else %}
+                    {% if user.profile.phone_number %}
                         <p class="text-secondary"> Phone Number: {{ user.profile.phone_number }}</p>
+                    {% else %}
+                        <p class="text-secondary"> Phone Number: None</p>
                     {% endif %}
 
                     <!-- CAN PORT OVER TO A DIFFERENT TEMPLATE IF NECESSARY -CALEB -->
