@@ -35,7 +35,7 @@ class Profile(models.Model):
     subjects_can_help = models.ManyToManyField(Subject)
 
     # List of subjects User needs help with
-    subjects_need_help = models.ManyToManyField(Subject, related_name="student_subjects")
+
 
     def __str__(self):
         return self.user.username

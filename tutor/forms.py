@@ -6,13 +6,11 @@ from django.contrib.auth.forms import UserChangeForm
 class List(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ["first_name", "last_name", "email_addr", "phone_number", "subjects_can_help", "subjects_need_help"]       
+        fields = ["first_name", "last_name", "email_addr", "phone_number", "subjects_can_help"]       
 
 class EditProfile(UserChangeForm):
     class Meta:
-        model = Profile
-        profile_form
-        fields = ["first_name", "last_name", "email_addr", "phone_number", "subjects_can_help", "subjects_need_help"]
+        fields = ["first_name", "last_name", "email_addr", "phone_number", "subjects_can_help"]
 
 class RequestTutor(forms.ModelForm):
     class Meta:
