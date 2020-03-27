@@ -27,8 +27,7 @@ class Profile(models.Model):
     email_addr = models.EmailField(max_length=200)
     #= for now, use simple text field for phone number, but later make sure we validate it somehow
     # use this? https://pypi.org/project/django-phone-field/
-    pic = models.ImageField(upload_to='profile_picture', default='/tutor/static/tutor/default_profile_pic.png', 
-    blank=False)
+    pic = models.ImageField(upload_to='profile_picture', blank=False)
     rating = models.DecimalField(max_digits=5, decimal_places=2, null=True) # two places past decimal
 
     # List of subjects a User is able to offer tutoring services in
