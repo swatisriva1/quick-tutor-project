@@ -60,7 +60,7 @@ class Job(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     client = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True, blank=True)
     course = models.CharField(max_length=200, default="")
-    subject = models.CharField(max_length=200, choices=SUBJECTS, default= "None")
+    subject = models.CharField(max_length=200, choices=SUBJECTS, default=SUBJECTS[0][0])
     notes = models.TextField(max_length=1000, default="")
 
     def __str__(self):
