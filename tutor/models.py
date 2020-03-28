@@ -140,23 +140,18 @@ LOCATIONS = [
 
 
 class Job(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    client = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True, blank=True)
+    customer_user = models.ForeignKey(User, related_name='Customer', on_delete=models.CASCADE, null=True, blank=True) #customer user
+    tutor_user = models.ForeignKey(User, related_name='Tutor', on_delete=models.CASCADE, null=True, blank=True) #tutor user
+    customer_profile = models.ForeignKey('Profile', related_name='CustomerProfile', on_delete=models.CASCADE, null=True, blank=True)
+    tutor_profile = models.ForeignKey('Profile', related_name='TutorProfile', on_delete=models.CASCADE, null=True, blank=True)
     course = models.CharField(max_length=200, default="")
     subject = models.CharField(max_length=200, choices=SUBJECTS, default=SUBJECTS[0][0])
     notes = models.TextField(max_length=1000, default="")
     location = models.CharField(max_length=200, choices=LOCATIONS, default='None')
+    isConfirmed = models.BooleanField(default=True)
 
     def __str__(self):
         return self.subject
-
-
-#def create_job(sender, instance, created, **kwargs):
-#    if created:
-#        job = Job()
-#        job.user = sender
-#        job.client = job.user
-
 
 
 def create_profile(sender, instance, created, **kwargs):

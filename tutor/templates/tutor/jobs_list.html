@@ -22,7 +22,7 @@
     <tbody>
         {% for job in job_list %}
          <tr>
-            <td>{{ job.client.first_name }} {{ job.client.last_name }}</td>
+            <td>{{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}</td>
             <td>{{ job.subject }}</td>
             <td>{{ job.course }}</td>
             <td>{{ job.client.email_addr }}</td>
