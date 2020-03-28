@@ -17,7 +17,7 @@ class Subject(models.Model):
         return self.subject_name
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,default="")
+    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE,default="")
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
     # don't want to use simple text field for phone number
@@ -43,21 +43,21 @@ class Profile(models.Model):
         super().save()
 
 SUBJECTS = [
-    ('none', 'None'),
-    ('african-american studies', 'African-American & African Studies'),
-    ('anthropology', 'Anthropology'),
-    ('astronomy', 'Astronomy'),
-    ('biology', 'Biology'),
-    ('chemistry', 'Chemistry'),
-    ('economics', 'Economics'),
-    ('french', 'French'),
-    ('german', 'German'),
-    ('physics', 'Physics'),
-    ('mathematics', 'Mathematics'),
+    ('None', 'None'),
+    ('African-american studies', 'African-American & African Studies'),
+    ('Anthropology', 'Anthropology'),
+    ('Astronomy', 'Astronomy'),
+    ('Biology', 'Biology'),
+    ('Chemistry', 'Chemistry'),
+    ('Economics', 'Economics'),
+    ('French', 'French'),
+    ('German', 'German'),
+    ('Physics', 'Physics'),
+    ('Mathematics', 'Mathematics'),
 ]
 
 class Job(models.Model):
-    #user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     client = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True, blank=True)
     course = models.CharField(max_length=200, default="")
     subject = models.CharField(max_length=200, choices=SUBJECTS, default='None')
@@ -65,6 +65,13 @@ class Job(models.Model):
 
     def __str__(self):
         return self.subject
+
+#def create_job(sender, instance, created, **kwargs):
+#    if created:
+#        job = Job()
+#        job.user = sender
+#        job.client = job.user
+
 
 def create_profile(sender, instance, created, **kwargs):
    if created:
@@ -76,3 +83,4 @@ def create_profile(sender, instance, created, **kwargs):
         user_profile.save()
 
 post_save.connect(create_profile, sender=User)
+#post_save.connect(create_job, sender=User)

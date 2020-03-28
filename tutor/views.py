@@ -7,16 +7,22 @@ from django.shortcuts import redirect
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.db.models import Q
 from bootstrap_modal_forms.generic import BSModalCreateView
 from . import templates
-from .models import Profile, Job
+from .models import Profile, Job, Subject
 from .forms import List, EditProfile, RequestTutor
 
 class AvailableJobs(generic.ListView):
     model = Job
     template_name = 'tutor/jobs_list.html'
     def get_queryset(self):
-        return Job.objects.all()
+        tutor_profile = self.request.user.profile
+        subjects_set = tutor_profile.subjects_can_help.all()
+        matches = Q()
+        for s in subjects_set:
+            matches = matches | Q(subject=s.subject_name)
+        return Job.objects.filter(matches)
 
 class RequestTutorView(generic.ListView):
     model = Job
@@ -30,6 +36,8 @@ class RequestTutorView(generic.ListView):
         if request.method == 'POST':
             if form.is_valid():
                 req = form.save(commit=False)
+                req.user = self.request.user
+                req.client = self.request.user.profile
                 req.save()
                 messages.success(request, 'Your request has been submitted')
                 return redirect(reverse_lazy('tutor:index'))
