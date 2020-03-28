@@ -12,6 +12,7 @@ urlpatterns = [
     path('updateinfo/', views.ProfileUpdate.as_view(), name = 'updateinfo'),
     path('tutor/', views.TutorProfileView.as_view(), name = 'tutor'),
     path('logout/', LogoutView.as_view(template_name='tutor/logout.html'), name='logout'),
-    path('requesttutor/', views.RequestTutorView.as_view(), name = 'requestTutor'),
-    path('jobs/', views.AvailableJobs.as_view(), name = "job_list"),
+
 ]
+# """     path('requesttutor/', views.RequestTutorView.as_view(), name = 'requestTutor'),
+#     path('jobs/', views.AvailableJobs.as_view(), name = "job_list"), """

@@ -19,12 +19,12 @@ class Subject(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE, default="")
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, default='+999999999')
     # don't want to use simple text field for phone number
     # (want to validate) but not sure what to use
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
-    email_addr = models.EmailField(max_length=200)
+    first_name = models.CharField(max_length=200, default='First')
+    last_name = models.CharField(max_length=20, default='Last')
+    email_addr = models.EmailField(max_length=200, default='example@email.com')
     #= for now, use simple text field for phone number, but later make sure we validate it somehow
     # use this? https://pypi.org/project/django-phone-field/
     pic = models.ImageField(upload_to='profile_picture', default='/tutor/static/tutor/default_profile_pic.png', 
@@ -39,8 +39,8 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
-    def save(self):
-        super().save()
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
 SUBJECTS = [
     ('None', 'None'),
