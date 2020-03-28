@@ -64,6 +64,7 @@ SUBJECTS = [
     ('Mathematics', 'Mathematics'),
 ]
 LOCATIONS = [
+    ('None', 'None'),
     ("Alderman Library", "Alderman Library"),
     ("Aquatic and Fitness Center", "Aquatic and Fitness Center"),
     ("Astronomy Building", "Astronomy Building"),
@@ -144,10 +145,10 @@ class Job(models.Model):
     tutor_user = models.ForeignKey(User, related_name='Tutor', on_delete=models.CASCADE, null=True, blank=True) #tutor user
     customer_profile = models.ForeignKey('Profile', related_name='CustomerProfile', on_delete=models.CASCADE, null=True, blank=True)
     tutor_profile = models.ForeignKey('Profile', related_name='TutorProfile', on_delete=models.CASCADE, null=True, blank=True)
-    course = models.CharField(max_length=200, default="")
-    subject = models.CharField(max_length=200, choices=SUBJECTS, default=SUBJECTS[0][0])
-    notes = models.TextField(max_length=1000, default="")
-    location = models.CharField(max_length=200, choices=LOCATIONS, default='None')
+    course = models.CharField(max_length=200, default="", help_text="Ex: ECON 2010, MATH 1010")
+    subject = models.CharField(max_length=200, choices=SUBJECTS, help_text="Select a subject that you need help in.", default=SUBJECTS[0][0])
+    notes = models.TextField(max_length=1000, default="", help_text="Any additional notes you might have about your request?")
+    location = models.CharField(max_length=200, choices=LOCATIONS, help_text="Select a meeting spot for your session.", default='None')
     isConfirmed = models.BooleanField(default=True)
 
     def __str__(self):

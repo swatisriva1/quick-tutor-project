@@ -15,8 +15,8 @@
             <th>Course</th>
             <th>Email</th>
             <th>Phone Number</th>
+            <th>Meeting Location</th>
             <th>Notes</th>
-            <th>Location</th>
         </tr>
     </thead>
     <tbody>
@@ -25,10 +25,10 @@
             <td>{{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}</td>
             <td>{{ job.subject }}</td>
             <td>{{ job.course }}</td>
-            <td>{{ job.client.email_addr }}</td>
-            <td>{{ job.client.phone_number }}</td>
-            <td>{{ job.notes }}</td>
+            <td>{{ job.customer_profile.email_addr }}</td>
+            <td>{{ job.customer_profile.phone_number }}</td>
             <td>{{ job.location }}</td>
+            <td>{{ job.notes }}</td>
             </tr>
         {% empty %}
             <tr>
