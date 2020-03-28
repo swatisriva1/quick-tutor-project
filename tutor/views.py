@@ -36,8 +36,8 @@ class RequestTutorView(generic.ListView):
         if request.method == 'POST':
             if form.is_valid():
                 req = form.save(commit=False)
-                req.user = self.request.user
-                req.client = self.request.user.profile
+                req.customer_user = self.request.user
+                req.customer_profile = self.request.user.profile
                 req.save()
                 messages.success(request, 'Your request has been submitted')
                 return redirect(reverse_lazy('tutor:index'))
