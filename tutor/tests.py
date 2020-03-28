@@ -12,10 +12,9 @@ class DummyTestCase(TestCase):
         self.assertEqual(2, 2)
 
 class ProfileModelTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
+    def setUp(self):
         # creates dummy user object, can be reused in other tests
-        test_user = User.objects.create_user(id=1, username='testuser', password='12345')
+        test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
         Profile.objects.create(user=test_user, phone_number='4797998232', first_name='test', last_name='user', email_addr='test@gmail.com', rating=4.59)
 
     def test_first_name_max_length(self):
