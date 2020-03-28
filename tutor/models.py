@@ -17,7 +17,7 @@ class Subject(models.Model):
         return self.subject_name
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE,default="")
+    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE, default="")
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
     # don't want to use simple text field for phone number
@@ -60,7 +60,7 @@ class Job(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     client = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True, blank=True)
     course = models.CharField(max_length=200, default="")
-    subject = models.CharField(max_length=200, choices=SUBJECTS, default='None')
+    subject = models.CharField(max_length=200, choices=SUBJECTS, default= "None")
     notes = models.TextField(max_length=1000, default="")
 
     def __str__(self):
