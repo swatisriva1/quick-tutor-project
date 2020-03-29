@@ -33,10 +33,12 @@ class AvailableJobs(generic.ListView):
         subjects_set = tutor_profile.subjects_can_help.all()
         matches = Q()
         available = Q()
+        selves = Q()
         for s in subjects_set:
             matches = matches | Q(subject=s.subject_name)
             available = available | Q(isConfirmed=False)
-        return Job.objects.filter(matches).filter(available)
+            selves = selves | Q(customer_user=current_user)
+        return Job.objects.filter(matches).filter(available).exclude(selves)
 
     def post(self, request):
         if request.method == 'POST':
