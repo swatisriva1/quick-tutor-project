@@ -41,14 +41,18 @@ class AvailableJobs(generic.ListView):
     def post(self, request):
         if request.method == 'POST':
             accepted_jobs = request.POST.getlist('selected_job')
-            for j in accepted_jobs:
-                match = Job.objects.get(id=j)
-                match.tutor_user = self.request.user
-                match.tutor_profile = self.request.user.profile
-                match.isConfirmed = True
-                match.save()
-                messages.success(request, 'Your job(s) have been confirmed!')
-            return redirect(reverse_lazy('tutor:accepted'))
+            if not accepted_jobs:
+                messages.warning(request, 'No job was selected.')
+                return redirect(reverse_lazy('tutor:job_list'))
+            else:
+                for j in accepted_jobs:
+                    match = Job.objects.get(id=j)
+                    match.tutor_user = self.request.user
+                    match.tutor_profile = self.request.user.profile
+                    match.isConfirmed = True
+                    match.save()
+                    messages.success(request, 'Your job(s) have been confirmed!')
+                return redirect(reverse_lazy('tutor:accepted'))
         return redirect(reverse_lazy('tutor:job_list'))
 
 
