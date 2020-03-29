@@ -11,7 +11,7 @@ from django.db.models import Q
 from bootstrap_modal_forms.generic import BSModalCreateView
 from . import templates
 from .models import Profile, Job, Subject
-from .forms import List, EditProfile, RequestTutor
+from .forms import List, PicForm, EditProfile, RequestTutor
 from django.core.exceptions import ObjectDoesNotExist
 
 class AvailableJobs(generic.ListView):
@@ -58,16 +58,29 @@ class ProfileUpdate(generic.ListView):
         try:
             prof = Profile.objects.get(user=current_user)
             form = List(instance=prof)
+            pic_form = PicForm(instance=prof)
+            context = {
+                'form': form, 
+                'pic_form': pic_form
+            }
 
         except ObjectDoesNotExist:
-            form = List 
-        return render(request, 'tutor/studentUpdate.html', {'form': form})
+            form = List
+            pic_form = PicForm 
+        return render(request, 'tutor/studentUpdate.html', context)
 
     def post(self, request):
         if request.method == 'POST':
             form = List(request.POST, instance=request.user.profile)
-            if form.is_valid():
+            pic_form = PicForm(request.POST, request.FILES, instance=request.user.profile)
+            context = {
+                'form': form, 
+                'pic_form': pic_form
+            }
+            if form.is_valid() and pic_form.is_valid():
+                # handle file
                 form.save()
+                pic_form.save()
                 messages.success(request, f'Your account has been updated')
 
             else:
@@ -76,7 +89,7 @@ class ProfileUpdate(generic.ListView):
         else:
             form = List(instance=request.user.profile)
             messages.error(request, 'Something went wrong. Please try again.')
-        return render(request, 'tutor/studentUpdate.html', {'form': form})
+        return render(request, 'tutor/studentUpdate.html', context)
 
 #renders the home landing page
 def welcome(request):

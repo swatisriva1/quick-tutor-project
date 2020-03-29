@@ -12,8 +12,9 @@
             <div class="border border-light p-3 mb-4">
                 <div class="text-left">
                     <h1> Your Profile </h1>
-
-                    <img src="{{  user.profile.get_pic_url  }}" width=240x alt="img">   
+                    <!-- {% if user.profile.pic%} -->
+                    <img src="{{  user.profile.get_pic_url  }}" width=240x alt="img">
+                    <!-- {% endif %} -->
                     <br><br>
                     {% if user.profile.first_name and user.profile.last_name %}
                         <p class="text-secondary"> First Name: {{ user.profile.first_name }}</p>

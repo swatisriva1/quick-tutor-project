@@ -6,7 +6,12 @@ from django.contrib.auth.forms import UserChangeForm
 class List(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ["pic", "first_name", "last_name", "email_addr", "phone_number", "subjects_can_help"]       
+        fields = ["first_name", "last_name", "email_addr", "phone_number", "subjects_can_help"] 
+
+class PicForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["pic"]      
 
 class EditProfile(UserChangeForm):
     class Meta:
