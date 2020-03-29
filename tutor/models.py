@@ -24,7 +24,8 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE, default="")
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, default='+999999999')
+    # REVIEW: I don't think we need a default phone number, so removing it here
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True) #, default='+999999999')
     # don't want to use simple text field for phone number
     # (want to validate) but not sure what to use
     first_name = models.CharField(max_length=200, default='First')
@@ -32,8 +33,16 @@ class Profile(models.Model):
     email_addr = models.EmailField(max_length=200, default='example@email.com')
     #= for now, use simple text field for phone number, but later make sure we validate it somehow
     # use this? https://pypi.org/project/django-phone-field/
-    pic = models.ImageField(upload_to='media/profile_picture', default = "default_profile_pic.png", blank=False)
+    pic = models.ImageField(upload_to='media/profile_picture', default = "default_profile_pic.png", blank=True)
     rating = models.DecimalField(max_digits=5, decimal_places=2, null=True) # two places past decimal
+
+    # Method that returns profile pic to be displayed (default or user-uploaded)
+    @property
+    def get_pic_url(self):
+        if self.pic and hasattr(self.pic, 'url'):
+            return self.pic.url
+        else:
+            return "/media/default_profile_pic.png"
 
     # List of subjects a User is able to offer tutoring services in
     subjects_can_help = models.ManyToManyField(Subject)
