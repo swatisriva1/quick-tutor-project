@@ -10,6 +10,7 @@ from django_google_maps import fields as map_fields
 # Create your models here.
 
 # Model used to detail what subjects a model is comfortable tutoring in
+
 class Subject(models.Model):
     subject_name = models.CharField(max_length=30)
 
@@ -43,7 +44,7 @@ class Profile(models.Model):
 
 
     def __str__(self):
-        return self.user.username
+        return '%s %s' % (self.first_name, self.last_name)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -149,7 +150,7 @@ class Job(models.Model):
     subject = models.CharField(max_length=200, choices=SUBJECTS, help_text="Select a subject that you need help in.", default=SUBJECTS[0][0])
     notes = models.TextField(max_length=1000, default="", help_text="Any additional notes you might have about your request?")
     location = models.CharField(max_length=200, choices=LOCATIONS, help_text="Select a meeting spot for your session.", default='None')
-    isConfirmed = models.BooleanField(default=True)
+    isConfirmed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.subject

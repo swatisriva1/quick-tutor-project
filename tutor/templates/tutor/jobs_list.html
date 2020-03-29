@@ -4,37 +4,50 @@
 {% bootstrap_css %}
 
 {% block content %}
-<h1 class="page-header"> 
-    Available Jobs
-</h1>
-<table class="table" id="jobs-table">
-    <thead>
-        <tr>
-            <th>Client</th>
-            <th>Subject</th>
-            <th>Course</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Meeting Location</th>
-            <th>Notes</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for job in job_list %}
-         <tr>
-            <td>{{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}</td>
-            <td>{{ job.subject }}</td>
-            <td>{{ job.course }}</td>
-            <td>{{ job.customer_profile.email_addr }}</td>
-            <td>{{ job.customer_profile.phone_number }}</td>
-            <td>{{ job.location }}</td>
-            <td>{{ job.notes }}</td>
+<div class="container-fluid"> 
+<form method="POST">
+    {% csrf_token %}
+    <h1 class="page-header">
+        Available Jobs
+    </h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Client</th>
+                <th>Subject</th>
+                <th>Course</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Meeting Location</th>
+                <th>Notes</th>
             </tr>
-        {% empty %}
+        </thead>
+        <tbody>
+            {% for job in job_list %}
+            <tr>
+                <td>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" name="selected_job" id="{{ job.id }}" value="{{ job.id }}" unchecked>
+                        <label class="custom-control-label" for="{{ job.id }}"></label>
+                      </div>
+                </td>
+                <td>{{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}</td>
+                <td>{{ job.subject }}</td>
+                <td>{{ job.course }}</td>
+                <td>{{ job.customer_profile.email_addr }}</td>
+                <td>{{ job.customer_profile.phone_number }}</td>
+                <td>{{ job.location }}</td>
+                <td>{{ job.notes }}</td>
+            </tr>
+            {% empty %}
             <tr>
                 <td colspan="7" class="text-center bg-warning">No available jobs</td>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-info btn-sm">Confirm Jobs</button>
+</form>
+</div>
 {% endblock %}

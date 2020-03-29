@@ -10,5 +10,6 @@ dj_database_url
 python-dotenv
 django-bootstrap-modal-forms
 django-jquery
+django-tables2
 django-paypal
 django_google_maps

@@ -16,3 +16,8 @@ class RequestTutor(forms.ModelForm):
     class Meta:
         model = Job
         fields = ["subject", "course", "location", "notes"]
+
+class AvailableJobs(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = ["subject", "course", "location", "notes"]

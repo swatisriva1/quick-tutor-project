@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'bootstrap_modal_forms',
     'jquery',
+    'django_tables2',
     'paypal.standard.ipn',
 ]
 
