@@ -4,7 +4,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django import forms
 from django.core.validators import RegexValidator
-from django_google_maps import fields as map_fields
+from django_google_maps import fields as map_fields    
+from PIL import Image, ExifTags
 
 
 # Create your models here.
@@ -35,6 +36,8 @@ class Profile(models.Model):
     # use this? https://pypi.org/project/django-phone-field/
     pic = models.ImageField(upload_to='profile_picture', default = "default_profile_pic.png", blank=True)
     rating = models.DecimalField(max_digits=5, decimal_places=2, null=True) # two places past decimal
+    # List of subjects a User is able to offer tutoring services in
+    subjects_can_help = models.ManyToManyField(Subject)
 
     # Method that returns profile pic to be displayed (default or user-uploaded)
     @property
@@ -44,11 +47,27 @@ class Profile(models.Model):
         else:
             return "/media/default_profile_pic.png"
 
-    # List of subjects a User is able to offer tutoring services in
-    subjects_can_help = models.ManyToManyField(Subject)
+    # Method to rotate profile picture into correct orientation
+    # Taken from https://medium.com/@giovanni_cortes/rotate-image-in-django-when-saved-in-a-model-8fd98aac8f2a
+    """ def rotate_image(filepath):
+        try:
+            image = Image.open(filepath)
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation] == 'Orientation':
+                    break
+            exif = dict(image._getexif().items())
 
-    # List of subjects User needs help with
-
+            if exif[orientation] == 3:
+                image = image.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                image = image.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                image = image.rotate(90, expand=True)
+            image.save(filepath)
+            image.close()
+        except (AttributeError, KeyError, IndexError):
+            # cases: image don't have getexif
+            pass """
 
     def __str__(self):
         return self.user.username
