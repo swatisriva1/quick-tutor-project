@@ -158,7 +158,7 @@ MEDIA_URL = '/media/'
 
 LOGIN_URL = '/auth/login/google-oauth2/'
 
-PAYPAL_RECEIVER_EMAIL = 'rickym@virginia.edu'
+PAYPAL_RECEIVER_EMAIL = 'ram8ny@virginia.edu'
 
 PAYPAL_TEST = True
 
