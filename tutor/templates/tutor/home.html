@@ -25,7 +25,13 @@
 
 
   {% if user.is_authenticated %}
-  <h1>Hey {{ user.username }} !</h1>
+  
+  {% if user.profile.first_name %}
+    <h1>Hey {{ user.profile.first_name }}!</h1>
+  {% else %}
+    <h1>Welcome! Please set up your account!</h1>
+  {% endif %}
+
   <img src="static/tutor/QuickTutor.png">
   <!--      <a class="btn btn-primary" href="tutor/logout/">Logout</a>-->
   <button class="requestTutor btn-info btn-lg" type="button" data-toggle="modal" data-target="#requestTutor">
@@ -71,7 +77,7 @@
   </div>
 </div>
 
-<<!-- script type="text/javascript">
+<!-- script type="text/javascript">
   $(document).ready(function () {
 
     $(".requestTutor").modalForm({

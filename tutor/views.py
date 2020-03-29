@@ -7,16 +7,24 @@ from django.shortcuts import redirect
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.db.models import Q
 from bootstrap_modal_forms.generic import BSModalCreateView
 from . import templates
-from .models import Profile, Job
+from .models import Profile, Job, Subject
 from .forms import List, EditProfile, RequestTutor
+from django.core.exceptions import ObjectDoesNotExist
 
 class AvailableJobs(generic.ListView):
     model = Job
     template_name = 'tutor/jobs_list.html'
     def get_queryset(self):
-        return Job.objects.all()
+        current_user = self.request.user
+        tutor_profile = Profile.objects.get(user=current_user)
+        subjects_set = tutor_profile.subjects_can_help.all()
+        matches = Q()
+        for s in subjects_set:
+            matches = matches | Q(subject=s.subject_name)
+        return Job.objects.filter(matches)
 
 class RequestTutorView(generic.ListView):
     model = Job
@@ -30,6 +38,8 @@ class RequestTutorView(generic.ListView):
         if request.method == 'POST':
             if form.is_valid():
                 req = form.save(commit=False)
+                req.customer_user = self.request.user
+                req.customer_profile = self.request.user.profile
                 req.save()
                 messages.success(request, 'Your request has been submitted')
                 return redirect(reverse_lazy('tutor:index'))
@@ -44,18 +54,28 @@ class StudentProfileView(generic.ListView):
 class ProfileUpdate(generic.ListView):
     model = Profile
     def get(self, request):
-        form = List
+        current_user = request.user
+        try:
+            prof = Profile.objects.get(user=current_user)
+            form = List(instance=prof)
+
+        except ObjectDoesNotExist:
+            form = List 
         return render(request, 'tutor/studentUpdate.html', {'form': form})
 
     def post(self, request):
         if request.method == 'POST':
-            form = EditProfile(request.POST, instance=request.user.profile)
+            form = List(request.POST, instance=request.user.profile)
             if form.is_valid():
                 form.save()
                 messages.success(request, f'Your account has been updated')
+
+            else:
+                messages.warning(request, 'Input not valid')
             return redirect('/student/')
         else:
-            form = EditProfile(instance=request.user.profile)
+            form = List(instance=request.user.profile)
+            messages.error(request, 'Something went wrong. Please try again.')
         return render(request, 'tutor/studentUpdate.html', {'form': form})
 
 #renders the home landing page
