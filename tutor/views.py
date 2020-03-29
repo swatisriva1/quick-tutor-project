@@ -104,11 +104,11 @@ class ProfileUpdate(generic.ListView):
             form = List(request.POST, instance=request.user.profile)
             if form.is_valid():
                 form.save()
-                messages.success(request, f'Your account has been updated')
-
+                messages.success(request, 'Your account has been updated')
+                return redirect('/student/')
             else:
                 messages.warning(request, 'Input not valid')
-            return redirect('/student/')
+                return redirect('/updateinfo/')
         else:
             form = List(instance=request.user.profile)
             messages.error(request, 'Something went wrong. Please try again.')
