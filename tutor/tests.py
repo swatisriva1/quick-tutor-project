@@ -21,3 +21,12 @@ class DummyTestCase(TestCase):
 #         profile = Profile.objects.get(id=1)
 #         max_length = profile._meta.get_field('first_name').max_length
 #         self.assertEquals(max_length, 200)
+
+class SubjectModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.test_subject = Subject.objects.create(subject_name='test')
+
+    def test_subject_name_max_length(self):
+        self.max_length = self.test_subject._meta.get_field('subject_name').max_length
+        self.assertEquals(self.max_length, 30)
