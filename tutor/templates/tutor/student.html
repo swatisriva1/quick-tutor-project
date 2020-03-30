@@ -12,27 +12,53 @@
             <div class="border border-light p-3 mb-4">
                 <div class="text-left">
                     <h1> Your Profile </h1>
-
-                    {% if user.profile.first_name and user.profile.last_name is None %}
-                        <p class="text-secondary"> First Name: {{ user.first_name }}</p>
-                        <p class="text-secondary"> Last Name: {{ user.last_name }}</p>
-                    {% else %}
+                    <!-- {% if user.profile.pic%} -->
+                    <img src="{{  user.profile.get_pic_url  }}" width=240x alt="img">
+                    <!-- {% endif %} -->
+                    <br><br>
+                    {% if user.profile.first_name and user.profile.last_name %}
                         <p class="text-secondary"> First Name: {{ user.profile.first_name }}</p>
                         <p class="text-secondary"> Last Name: {{ user.profile.last_name }}</p>
+                    {% else %}
+                        <p class="text-secondary"> First Name: None</p>
+                        <p class="text-secondary"> Last Name: None</p>
                     {% endif %}
 
-                    {% if user.profile.email_addr is None %}
-                        <p class="text-secondary"> Email: {{ user.email }}</p>
-                    {% else %}
+                    {% if user.profile.email_addr %}
                         <p class="text-secondary"> Email: {{ user.profile.email_addr }}</p>
-                    {% endif %}
-
-                    {% if user.profile.phone_number is None %}
-                        <p class="text-secondary"> Phone Number: None</p>
                     {% else %}
-                        <p class="text-secondary"> Phone Number: {{ user.profile.phone_number }}</p>
+                        <p class="text-secondary"> Email: None</p>
                     {% endif %}
 
+                    {% if user.profile.phone_number %}
+                        <p class="text-secondary"> Phone Number: {{ user.profile.phone_number }}</p>
+                    {% else %}
+                        <p class="text-secondary"> Phone Number: None</p>
+                    {% endif %}
+
+                    <!-- CAN PORT OVER TO A DIFFERENT TEMPLATE IF NECESSARY -CALEB -->
+                    {% if user.profile.subjects_can_help %}
+                        <p class="text-secondary"> Subjects you tutor in: </p>
+                        <ul>
+                            {% for subject in user.profile.subjects_can_help.all %}
+                            <li>{{ subject }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-secondary"> Subjects you tutor in: None</p>
+                    {% endif %}
+
+                    <!-- not using this field anymore, dealt with on request tutor form
+                    {% if user.profile.subjects_need_help %}
+                        <p class="text-secondary"> Subjects you need help in: </p>
+                        <ul>
+                            {% for subject in user.profile.subjects_need_help.all %}
+                            <li>{{ subject }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-secondary"> Subjects you need help in: None</p>
+                    {% endif %} -->
                 </div>
         </fieldset>
         

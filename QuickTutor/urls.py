@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     #REVIEW:
@@ -25,4 +26,6 @@ urlpatterns = [
     path('',include('tutor.urls')),
     # URL configuration info sourced from here: https://medium.com/trabe/oauth-authentication-in-django-with-social-auth-c67a002479c1
     path('', include('social_django.urls', namespace='social')),
-]
+    path('paypal/', include('paypal.standard.ipn.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

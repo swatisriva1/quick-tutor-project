@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+from django.contrib.messages import constants as messages
 import os
 import dj_database_url
 import dotenv
@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'bootstrap4',
     'tutor',
     'crispy_forms',
+    'bootstrap_modal_forms',
+    'jquery',
+    'django_tables2',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -105,6 +109,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -141,11 +152,15 @@ AUTHENTICATION_BACKENDS = (
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '21594397326-20c4dmthpoka091b6afut89vmd2dhg5t.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'v4EcmMJV-F2fg0O8dAWfzpwo'
-
+GOOGLE_MAPS_API_KEY = 'AIzaSyAKPLB2fWdM2Ed-ijZ5vy3mefKpkWI1AEE'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/auth/login/google-oauth2/'
+
+PAYPAL_RECEIVER_EMAIL = 'ram8ny@virginia.edu'
+
+PAYPAL_TEST = True
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
