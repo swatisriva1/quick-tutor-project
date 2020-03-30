@@ -17,6 +17,10 @@ class ProfileModelTest(TestCase):
         self.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
         #Profile.objects.create(user=test_user, phone_number='4797998232', first_name='test', last_name='user', email_addr='test@gmail.com', rating=4.59)
 
+    # User should automatically have a profile when created due to signal
+    def test_user_has_profile(self):
+        self.assertTrue(hasattr(self.test_user, 'profile'))
+
     def test_first_name_max_length(self):
         profile = Profile.objects.get(user=self.test_user)
         max_length = profile._meta.get_field('first_name').max_length
