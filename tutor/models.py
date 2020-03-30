@@ -34,7 +34,7 @@ class Profile(models.Model):
     email_addr = models.EmailField(max_length=200, default='example@email.com', help_text="Ex: example@email.com")
     #= for now, use simple text field for phone number, but later make sure we validate it somehow
     # use this? https://pypi.org/project/django-phone-field/
-    pic = models.ImageField(upload_to='profile_picture', default = "default_profile_pic.png", blank=True)
+    pic = models.ImageField(upload_to='profile_picture', default = "default_profile_pic.png", blank=True, help_text = "Uploading a profile picture makes it easier for your tutor/student to recognize you.")
     rating = models.DecimalField(max_digits=5, decimal_places=2, null=True) # two places past decimal
     # List of subjects a User is able to offer tutoring services in
     subjects_can_help = models.ManyToManyField(Subject)
