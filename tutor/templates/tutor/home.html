@@ -74,7 +74,7 @@
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="modal-header">
-            <h5 class="modal-title"> Which subjects do you need help in?</h5>
+            <h5 class="modal-title"> Pay now to get matched with a tutor. Only $4.99!!!</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -107,7 +107,7 @@
       onApprove: function(data, actions) {
           return actions.order.capture().then(function(details) {
               alert('Transaction successful! Your tutor will be meeting you shortly');
-              window.location.replace("");
+              window.location.replace("requesttutor");
           });
       }
   }).render('#paypal-button-container');
