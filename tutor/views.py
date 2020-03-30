@@ -162,3 +162,6 @@ class TutorProfileView(generic.ListView):
 
 def index(request):
     return render(request, 'tutor/home.html')
+
+def payment(request):
+    return render(request, 'tutor/payment.html')
