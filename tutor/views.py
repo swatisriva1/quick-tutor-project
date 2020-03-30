@@ -101,8 +101,12 @@ class ProfileUpdate(generic.ListView):
             }
 
         except ObjectDoesNotExist:
-            form = List
-            pic_form = PicForm 
+            form = List()
+            pic_form = PicForm() 
+            context = {
+                'form': form, 
+                'pic_form': pic_form
+            }
         return render(request, 'tutor/studentUpdate.html', context)
 
     def post(self, request):
