@@ -57,6 +57,14 @@ class AvailableJobs(generic.ListView):
                 return redirect(reverse_lazy('tutor:accepted'))
         return redirect(reverse_lazy('tutor:job_list'))
 
+class RequestedJobs(generic.ListView):
+    template_name = 'tutor/requested_jobs_list.html'
+    context_object_name = 'job_list'
+    def get_queryset(self):
+        current_user = self.request.user
+        return Job.objects.filter(customer_user=current_user)
+
+
 
 class RequestTutorView(generic.ListView):
     model = Job

@@ -1,0 +1,69 @@
+{% extends 'tutor/base.html' %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+
+{% block content %}
+<div class="container-fluid">
+
+    {% csrf_token %}
+    <h1 class="page-header">
+        Requested Jobs
+    </h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Tutor</th>
+                <th>Subject</th>
+                <th>Course</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Meeting Location</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in job_list %}
+            <tr>
+                <td>
+                    {% if job.tutor_profile != None %}
+                    <span>&#9989;</span>
+                    {% else %}
+                    <span>&#8987;</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if job.tutor_profile != None %}
+                    {{ job.tutor_profile.first_name }} {{ job.tutor_profile.last_name }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td>{{ job.subject }}</td>
+                <td>{{ job.course }}</td>
+                <td>
+                    {% if job.tutor_profile != None %}
+                    {{ job.tutor_profile.email_addr }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if job.tutor_profile != None %}
+                    {{ job.tutor_profile.phone_number }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td>{{ job.location }}</td>
+                <td>{{ job.notes }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10" class="text-center bg-warning">No jobs requested</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

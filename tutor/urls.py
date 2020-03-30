@@ -15,4 +15,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(template_name='tutor/logout.html'), name='logout'),
     path('requesttutor/', views.RequestTutorView.as_view(), name = 'requestTutor'),
     path('jobs/', views.AvailableJobs.as_view(), name = "job_list"),
+    path('requests/',views.RequestedJobs.as_view(), name="requests"),
 ]
