@@ -55,8 +55,9 @@ class SubjectModelTest(TestCase):
 
 # Examples of form testing
 class ListFormTest(TestCase):
-    def setUp(self):
-        self.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
+    @classmethod
+    def setUpTestData(cls):
+        cls.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
         
     # Profile lacking the proper fields (subjects_can_help, first_name, last_name in this case) should return false
     def test_empty_profile(self):
