@@ -53,6 +53,7 @@ class SubjectModelTest(TestCase):
         first_sub_name = all_subjects[0].subject_name
         self.assertEqual(first_sub_name, "math")
 
+# Examples of form testing
 class ListFormTest(TestCase):
     def setUp(self):
         self.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
