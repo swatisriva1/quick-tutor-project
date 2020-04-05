@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from tutor.models import Subject, Profile, Job
 from django.contrib.auth.models import User
-
+from tutor.forms import List
 # Create your tests here.
 
 class DummyTestCase(TestCase):
@@ -15,7 +15,6 @@ class ProfileModelTest(TestCase):
     def setUp(self):
         # creates dummy user object, can be reused in other tests
         self.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
-        #Profile.objects.create(user=test_user, phone_number='4797998232', first_name='test', last_name='user', email_addr='test@gmail.com', rating=4.59)
 
     # User should automatically have a profile when created due to signal
     def test_user_has_profile(self):
@@ -53,3 +52,78 @@ class SubjectModelTest(TestCase):
         all_subjects = Subject.objects.all()
         first_sub_name = all_subjects[0].subject_name
         self.assertEqual(first_sub_name, "math")
+
+# Examples of form testing
+class ListFormTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
+        
+    # Profile lacking the proper fields (subjects_can_help, first_name, last_name in this case) should return false
+    def test_empty_profile(self):
+        profile = Profile.objects.get(user=self.test_user)
+        form = List(data={'first_name': profile.first_name, 'last_name': profile.last_name, 'email_addr': profile.email_addr, 
+            'phone_number': profile.phone_number, 'subjects_can_help': profile.subjects_can_help.all()}, instance=profile)
+        self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_valid())
+
+    # Profile including all fields and proper format should return true
+    def test_proper_profile(self):
+        profile = Profile.objects.get(user=self.test_user)
+        profile.first_name = 'Test'
+        profile.last_name = 'User'
+        profile.email_addr = 'test@gmail.com'
+        profile.phone_number = '+5555555555'
+        sub = Subject(subject_name='math')
+        sub.save()
+        profile.subjects_can_help.add(sub)
+        profile.save()
+        form = List(data={'first_name': profile.first_name, 'last_name': profile.last_name, 'email_addr': profile.email_addr, 
+            'phone_number': profile.phone_number, 'subjects_can_help': profile.subjects_can_help.all()}, instance=profile)
+        self.assertTrue(form.is_bound)
+        self.assertTrue(form.is_valid())
+        
+    # Profile w/o a proper phone number should return false
+    def test_improper_phone_number_profile(self):
+        profile = Profile.objects.get(user=self.test_user)
+        profile.first_name = 'Test'
+        profile.last_name = 'User'
+        profile.email_addr = 'test@gmail.com'
+        profile.phone_number = 'improper input'
+        sub = Subject(subject_name='math')
+        sub.save()
+        profile.subjects_can_help.add(sub)
+        profile.save()
+        form = List(data={'first_name': profile.first_name, 'last_name': profile.last_name, 'email_addr': profile.email_addr, 
+            'phone_number': profile.phone_number, 'subjects_can_help': profile.subjects_can_help.all()}, instance=profile)
+        self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_valid())
+
+    # Profile w/o any subjects selected should return false
+    def test_no_subjects_selected_profile(self):
+        profile = Profile.objects.get(user=self.test_user)
+        profile.first_name = 'Test'
+        profile.last_name = 'User'
+        profile.email_addr = 'test@gmail.com'
+        profile.phone_number = '+5555555555'
+        profile.save()
+        form = List(data={'first_name': profile.first_name, 'last_name': profile.last_name, 'email_addr': profile.email_addr, 
+            'phone_number': profile.phone_number, 'subjects_can_help': profile.subjects_can_help.all()}, instance=profile)
+        self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_valid()) 
+
+     # Profile w/o a proper email should return false
+    def test_improper_email_addr_profile(self):
+        profile = Profile.objects.get(user=self.test_user)
+        profile.first_name = 'Test'
+        profile.last_name = 'User'
+        profile.email_addr = 'improper input'
+        profile.phone_number = '+5555555555'
+        sub = Subject(subject_name='math')
+        sub.save()
+        profile.subjects_can_help.add(sub)
+        profile.save()
+        form = List(data={'first_name': profile.first_name, 'last_name': profile.last_name, 'email_addr': profile.email_addr, 
+            'phone_number': profile.phone_number, 'subjects_can_help': profile.subjects_can_help.all()}, instance=profile)
+        self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_valid())   
