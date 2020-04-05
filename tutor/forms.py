@@ -50,7 +50,7 @@ class RequestTutor(forms.ModelForm):
         model = Job
         fields = ["subject", "course", "location", "notes"]
 
-class AvailableJobs(forms.ModelForm):
+class AvailableJobsForm(forms.ModelForm):
     class Meta:
         model = Job
         fields = ["subject", "course", "location", "notes"]

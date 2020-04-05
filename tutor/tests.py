@@ -110,4 +110,20 @@ class ListFormTest(TestCase):
         form = List(data={'first_name': profile.first_name, 'last_name': profile.last_name, 'email_addr': profile.email_addr, 
             'phone_number': profile.phone_number, 'subjects_can_help': profile.subjects_can_help.all()}, instance=profile)
         self.assertTrue(form.is_bound)
-        self.assertFalse(form.is_valid())    
+        self.assertFalse(form.is_valid()) 
+
+     # Profile w/o a proper email should return false
+    def test_improper_phone_number_profile(self):
+        profile = Profile.objects.get(user=self.test_user)
+        profile.first_name = 'Test'
+        profile.last_name = 'User'
+        profile.email_addr = 'improper input'
+        profile.phone_number = '+5555555555'
+        sub = Subject(subject_name='math')
+        sub.save()
+        profile.subjects_can_help.add(sub)
+        profile.save()
+        form = List(data={'first_name': profile.first_name, 'last_name': profile.last_name, 'email_addr': profile.email_addr, 
+            'phone_number': profile.phone_number, 'subjects_can_help': profile.subjects_can_help.all()}, instance=profile)
+        self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_valid())   
