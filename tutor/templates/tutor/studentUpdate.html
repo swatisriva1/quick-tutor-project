@@ -13,16 +13,11 @@
                 <div class="text-left">
                     <h1> Your Current Info </h1>
                         {{ pic_form|crispy }}
-                        {{ form|crispy }}
+                        {% crispy form %}
                 </div>
         </fieldset>
         
-            <p>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-info btn-lg">Save Changes</button>
-                </div>
-            </p>
         
-        </form>
+    </form>
 </div>
     {% endblock content%}
