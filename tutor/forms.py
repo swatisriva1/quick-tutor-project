@@ -2,6 +2,7 @@ from django import forms
 from .models import Profile, Subject, Job
 from bootstrap_modal_forms.forms import BSModalForm
 from django.contrib.auth.forms import UserChangeForm
+from crispy_forms.helper import FormHelper
 
 class List(forms.ModelForm):
     class Meta:
@@ -10,7 +11,7 @@ class List(forms.ModelForm):
         labels = {
             "email_addr": "Email address",
             "subjects_can_help": "Subjects you can tutor in" 
-        } 
+        }
 
 class PicForm(forms.ModelForm):
     class Meta:
