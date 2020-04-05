@@ -113,7 +113,7 @@ class ListFormTest(TestCase):
         self.assertFalse(form.is_valid()) 
 
      # Profile w/o a proper email should return false
-    def test_improper_phone_number_profile(self):
+    def test_improper_email_addr_profile(self):
         profile = Profile.objects.get(user=self.test_user)
         profile.first_name = 'Test'
         profile.last_name = 'User'
