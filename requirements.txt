@@ -13,3 +13,5 @@ django-jquery
 django-tables2
 django-paypal
 django_google_maps
+django-storages
+boto3
