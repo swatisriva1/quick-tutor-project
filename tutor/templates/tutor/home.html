@@ -28,13 +28,14 @@
   {% if user.is_authenticated %}
   <!--      <a class="btn btn-primary" href="tutor/logout/">Logout</a>-->
   {% if user.profile.first_name %}
-  <h4>Welcome back {{ user.profile.first_name }}!</h4>
+  <h4 class="display-4">Welcome back {{ user.profile.first_name }}!</h4>
   {% else %}
-  <h4>Welcome! Please set up your account!</h4>
+  <h4 class="display-4">Welcome! Please set up your account!</h4>
   {% endif %}
-  <p>
+  <p class="lead">
     QuickTutor is the tutoring service for customers and tutors on-the go, connecting students all over grounds.
-    <p>
+    <hr class="my-4">
+    <p class="lead">
       Got a problem? We'll get you someone who can help you solve it.
     </p>
   </p>
@@ -47,10 +48,11 @@
     </button>
   </div>
   {% else %}
-  <h2>Welcome</h2>
-  <p>
+  <h4 class="display-4">Welcome</h4>
+  <p class="lead">
     QuickTutor is the tutoring service for customers and tutors on-the go, connecting students all over grounds.
-    <p>
+    <hr class="my-4">
+    <p class="lead">
       Got a problem? We'll get you someone who can help you solve it.
     </p>
   </p>
