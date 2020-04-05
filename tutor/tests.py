@@ -2,6 +2,8 @@ from django.test import TestCase, Client
 from tutor.models import Subject, Profile, Job
 from django.contrib.auth.models import User
 from tutor.forms import List, RequestTutor
+from tutor import views
+from django.urls import reverse
 # Create your tests here.
 
 class DummyTestCase(TestCase):
@@ -150,7 +152,64 @@ class StudentProfileViewTest(TestCase):
     def setUpTestData(cls):
         cls.client = Client()
 
-    # If user is not authenicated, should be redirect to welcome page where they can login
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
     def test_anonymous_user_redirect(self):
-        response = self.client.get('/student/', follow=True)
-        self.assertRedirects(response, '/', status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+        response = self.client.get('/student/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+class AvailableJobsViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
+    def test_anonymous_user_redirect(self):
+        response = self.client.get('/jobs/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+class ProfileUpdateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
+    def test_anonymous_user_redirect(self):
+        response = self.client.get('/updateinfo/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+class RequestedJobsViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
+    def test_anonymous_user_redirect(self):
+        response = self.client.get('/requests/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+class AcceptedJobsViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
+    def test_anonymous_user_redirect(self):
+        response = self.client.get('/acceptedjobs/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+class RequestTutorViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
+    def test_anonymous_user_redirect(self):
+        response = self.client.get('/requesttutor/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
