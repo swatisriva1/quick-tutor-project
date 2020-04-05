@@ -157,7 +157,7 @@ GOOGLE_MAPS_API_KEY = 'AIzaSyAKPLB2fWdM2Ed-ijZ5vy3mefKpkWI1AEE'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-LOGIN_URL = '/auth/login/google-oauth2/'
+LOGIN_URL = '/'
 
 PAYPAL_RECEIVER_EMAIL = 'ram8ny@virginia.edu'
 

@@ -37,7 +37,7 @@ class Profile(models.Model):
     pic = models.ImageField(upload_to='profile_picture', default = "default_profile_pic.png", blank=True, help_text = "Uploading a profile picture makes it easier for your tutor/student to recognize you.")
     rating = models.DecimalField(max_digits=5, decimal_places=2, null=True) # two places past decimal
     # List of subjects a User is able to offer tutoring services in
-    subjects_can_help = models.ManyToManyField(Subject)
+    subjects_can_help = models.ManyToManyField(Subject, help_text="Select 'None' if you do not wish to tutor")
 
     # Method that returns profile pic to be displayed (default or user-uploaded)
     @property

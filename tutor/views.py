@@ -13,9 +13,12 @@ from .tables import tutorJobs
 from bootstrap_modal_forms.generic import BSModalCreateView
 from . import templates
 from .models import Profile, Job, Subject
-from .forms import List, PicForm, EditProfile, RequestTutor, AvailableJobs
+from .forms import List, PicForm, EditProfile, RequestTutor, AvailableJobsForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class AcceptedJobs(SingleTableView):
     model = Job
 
@@ -23,6 +26,7 @@ class AcceptedJobs(SingleTableView):
         table = tutorJobs(Job.objects.filter(tutor_user=self.request.user))
         return render(request, 'tutor/acceptedjobs.html', {"table":table})
 
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class AvailableJobs(generic.ListView):
     model = Job
     template_name = 'tutor/jobs_list.html'
@@ -57,6 +61,7 @@ class AvailableJobs(generic.ListView):
                 return redirect(reverse_lazy('tutor:accepted'))
         return redirect(reverse_lazy('tutor:job_list'))
 
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class RequestedJobs(generic.ListView):
     template_name = 'tutor/requested_jobs_list.html'
     context_object_name = 'job_list'
@@ -64,8 +69,7 @@ class RequestedJobs(generic.ListView):
         current_user = self.request.user
         return Job.objects.filter(customer_user=current_user)
 
-
-
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class RequestTutorView(generic.ListView):
     model = Job
     # Job.objects.all().delete()
@@ -86,14 +90,14 @@ class RequestTutorView(generic.ListView):
                 return redirect(reverse_lazy('tutor:index'))
             return render(request, 'tutor/requestTutor.html', {'form': form})
 
-
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class StudentProfileView(generic.ListView):
     model = Profile
 
     def get(self, request):
         return render(request, 'tutor/student.html')
 
-
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class ProfileUpdate(generic.ListView):
     model = Profile
 
@@ -142,11 +146,11 @@ class ProfileUpdate(generic.ListView):
 
 # renders the home landing page
 
-
+@login_required(redirect_field_name='')
 def welcome(request):
     return render(request, 'tutor/welcome.html')
 
-
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class TutorProfileView(generic.ListView):
     model = Profile
     template_name = 'tutor/tutorprofile.html'
@@ -163,5 +167,6 @@ class TutorProfileView(generic.ListView):
 def index(request):
     return render(request, 'tutor/home.html')
 
+@login_required(redirect_field_name='')
 def payment(request):
     return render(request, 'tutor/payment.html')
