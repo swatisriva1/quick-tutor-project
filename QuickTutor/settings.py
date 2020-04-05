@@ -82,7 +82,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'QuickTutor.wsgi.application'
-SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -124,6 +124,8 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+
 USE_I18N = True
 
 USE_L10N = True
@@ -162,6 +164,7 @@ PAYPAL_RECEIVER_EMAIL = 'ram8ny@virginia.edu'
 
 PAYPAL_TEST = True
 
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
