@@ -29,6 +29,7 @@ class AvailableJobs(generic.ListView):
 
     def get_queryset(self):
         current_user = self.request.user
+
         tutor_profile = Profile.objects.get(user=current_user)
         subjects_set = tutor_profile.subjects_can_help.all()
         matches = Q()
@@ -72,6 +73,10 @@ class RequestTutorView(generic.ListView):
 
     def get(self, request):
         form = RequestTutor()
+        if 'paid'  not in request.session:
+            request.session['paid']='true'
+        if (request.session.get('paid') != 'true'):
+            return redirect('/payment')
         return render(request, 'tutor/requestTutor.html', {'form': form})
 
     def post(self, request):
@@ -82,6 +87,7 @@ class RequestTutorView(generic.ListView):
                 req.customer_user = self.request.user
                 req.customer_profile = self.request.user.profile
                 req.save()
+                request.session['paid']='false'
                 messages.success(request, 'Your request has been submitted')
                 return redirect(reverse_lazy('tutor:index'))
             return render(request, 'tutor/requestTutor.html', {'form': form})
@@ -99,6 +105,10 @@ class ProfileUpdate(generic.ListView):
 
     def get(self, request):
         current_user = request.user
+        if 'paid'  not in request.session:
+            request.session['paid']='true'
+        if (request.session.get('paid') != 'true'):
+            return redirect('/payment')
         try:
             prof = Profile.objects.get(user=current_user)
             form = List(instance=prof)
@@ -144,6 +154,10 @@ class ProfileUpdate(generic.ListView):
 
 
 def welcome(request):
+    if 'paid' not in request.session:
+        request.session['paid'] = 'true'
+    if (request.session.get('paid') != 'true'):
+        return redirect('/payment')
     return render(request, 'tutor/welcome.html')
 
 
@@ -161,7 +175,14 @@ class TutorProfileView(generic.ListView):
 
 
 def index(request):
+    if 'paid' not in request.session:
+        request.session['paid'] = 'true'
+    if (request.session.get('paid') != 'true'):
+        return redirect('/payment')
     return render(request, 'tutor/home.html')
 
 def payment(request):
     return render(request, 'tutor/payment.html')
+def paymentConfirmation(request):
+    request.session['paid'] = 'true'
+    return render(request, 'tutor/paymentConfirmation.html')

@@ -1,0 +1,5 @@
+<!DOCTYPE html>
+ {% extends "tutor/base.html" %}{% block content %} <p>Thank you for your payment!</p>
+     <p>After 5 seconds you will be redirected to the main page</p>
+     <meta http-equiv="refresh" content="5;url={% url 'tutor:index' %}">
+ {% endblock %}

@@ -65,7 +65,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'QuickTutor.urls'
-
+SESSION_ENGINE= 'django.contrib.sessions.backends.cache'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
