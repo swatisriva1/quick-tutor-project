@@ -1,1 +1,5 @@
-<button type="button" class="btn btn-info">Begin</button>
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{ record.id }}">
+    <a class="btn btn-info btn-sm" href="{% url 'tutor:session' record.id %}" name="begin-btn">Begin</a>
+</form>
