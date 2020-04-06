@@ -213,4 +213,3 @@ class RequestTutorViewTest(TestCase):
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
-        self.assertFalse(form.is_valid())   
