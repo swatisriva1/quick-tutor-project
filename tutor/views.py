@@ -19,6 +19,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
+
 class SessionInfo(generic.DetailView):
     model=Job
     template_name = 'tutor/session.html'
@@ -26,6 +27,7 @@ class SessionInfo(generic.DetailView):
 
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
+
 class AcceptedJobs(SingleTableView):
     model = Job
 
@@ -54,6 +56,7 @@ class AvailableJobs(generic.ListView):
 
     def get_queryset(self):
         current_user = self.request.user
+
         tutor_profile = Profile.objects.get(user=current_user)
         subjects_set = tutor_profile.subjects_can_help.all()
         matches = Q()
@@ -92,9 +95,11 @@ class RequestedJobs(generic.ListView):
         current_user = self.request.user
         return Job.objects.filter(customer_user=current_user)
 
+
     def post(self, request):
         if request.method == 'POST':
             return redirect(reverse('tutor:session', args=(Job.id,)))
+
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class RequestTutorView(generic.ListView):
@@ -103,6 +108,10 @@ class RequestTutorView(generic.ListView):
 
     def get(self, request):
         form = RequestTutor()
+        if 'paid'  not in request.session:
+            request.session['paid']='true'
+        if (request.session.get('paid') != 'true'):
+            return redirect('/payment')
         return render(request, 'tutor/requestTutor.html', {'form': form})
 
     def post(self, request):
@@ -113,6 +122,7 @@ class RequestTutorView(generic.ListView):
                 req.customer_user = self.request.user
                 req.customer_profile = self.request.user.profile
                 req.save()
+                request.session['paid']='false'
                 messages.success(request, 'Your request has been submitted')
                 return redirect(reverse_lazy('tutor:index'))
             return render(request, 'tutor/requestTutor.html', {'form': form})
@@ -130,6 +140,10 @@ class ProfileUpdate(generic.ListView):
 
     def get(self, request):
         current_user = request.user
+        if 'paid'  not in request.session:
+            request.session['paid']='true'
+        if (request.session.get('paid') != 'true'):
+            return redirect('/payment')
         try:
             prof = Profile.objects.get(user=current_user)
             form = List(instance=prof)
@@ -175,6 +189,10 @@ class ProfileUpdate(generic.ListView):
 
 @login_required(redirect_field_name='')
 def welcome(request):
+    if 'paid' not in request.session:
+        request.session['paid'] = 'true'
+    if (request.session.get('paid') != 'true'):
+        return redirect('/payment')
     return render(request, 'tutor/welcome.html')
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
@@ -192,8 +210,15 @@ class TutorProfileView(generic.ListView):
 
 
 def index(request):
+    if 'paid' not in request.session:
+        request.session['paid'] = 'true'
+    if (request.session.get('paid') != 'true'):
+        return redirect('/payment')
     return render(request, 'tutor/home.html')
 
 @login_required(redirect_field_name='')
 def payment(request):
     return render(request, 'tutor/payment.html')
+def paymentConfirmation(request):
+    request.session['paid'] = 'true'
+    return render(request, 'tutor/paymentConfirmation.html')

@@ -6,7 +6,7 @@
 <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="modal-header">
-            <h5 class="modal-title"> Pay now to get matched with a tutor. Only $4.99!!! </h5>
+            <h5 class="modal-title"> Thank you for using QuickTutor today! Please finish your session by paying $4.99 </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -38,8 +38,8 @@
       },
       onApprove: function(data, actions) {
           return actions.order.capture().then(function(details) {
-              alert('Transaction successful! Your tutor will be meeting you shortly');
-              window.location.replace("../requesttutor");
+alert('Transaction successful! We hope you will use QuickTutor again!');
+            window.location.replace("../paymentConfirmation");
           });
       }
   }).render('#paypal-button-container');
