@@ -19,12 +19,35 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
+
+class SessionInfo(generic.DetailView):
+    model=Job
+    template_name = 'tutor/session.html'
+
+
+
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
+
 class AcceptedJobs(SingleTableView):
     model = Job
 
     def get(self, request):
-        table = tutorJobs(Job.objects.filter(tutor_user=self.request.user))
-        return render(request, 'tutor/acceptedjobs.html', {"table":table})
+        jobs = Job.objects.filter(tutor_user=self.request.user)
+        table = tutorJobs(jobs)
+        return render(request, 'tutor/acceptedjobs.html', {
+            "table":table, 
+            "job": jobs,
+        })
+
+    def post(self, request):
+        if 'begin-btn' in request.POST:
+            begin_job = request.POST.get("id", False)
+            b = Job.objects.get(id=begin_job)
+            b.started = True
+            b.save()
+            messages.success(request, 'Your session has begun!')
+            return redirect(reverse('tutor:session', args=(Job.id,)))
+
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class AvailableJobs(generic.ListView):
@@ -64,11 +87,19 @@ class AvailableJobs(generic.ListView):
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class RequestedJobs(generic.ListView):
+    model = Job
+
     template_name = 'tutor/requested_jobs_list.html'
     context_object_name = 'job_list'
     def get_queryset(self):
         current_user = self.request.user
         return Job.objects.filter(customer_user=current_user)
+
+
+    def post(self, request):
+        if request.method == 'POST':
+            return redirect(reverse('tutor:session', args=(Job.id,)))
+
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class RequestTutorView(generic.ListView):

@@ -1,7 +1,9 @@
 from django.test import TestCase, Client
 from tutor.models import Subject, Profile, Job
 from django.contrib.auth.models import User
-from tutor.forms import List
+from tutor.forms import List, RequestTutor
+from tutor import views
+from django.urls import reverse
 # Create your tests here.
 
 class DummyTestCase(TestCase):
@@ -27,9 +29,6 @@ class ProfileModelTest(TestCase):
 
     # ** figure out how to edit profile-specific fields
 
-"""     def test_to_str(self):
-        to_str = str(self.test_user)
-        self.assertEquals(to_str, "First Last") """
 
 class SubjectModelTest(TestCase):
     @classmethod
@@ -126,4 +125,92 @@ class ListFormTest(TestCase):
         form = List(data={'first_name': profile.first_name, 'last_name': profile.last_name, 'email_addr': profile.email_addr, 
             'phone_number': profile.phone_number, 'subjects_can_help': profile.subjects_can_help.all()}, instance=profile)
         self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_valid())
+
+class RequestTutorFormTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
+        cls.profile = Profile.objects.get(user=cls.test_user)
+
+    # Form should not be valid for job w/ all default fields (some default to empty)
+    def test_default_job(self):
+        test_job = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile)
+        form = RequestTutor(data={'subject': test_job.subject, 'course': test_job.course, 'location': test_job.location, 'notes': test_job.notes}, instance=test_job)
+        self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_valid())
+
+    # Form with required fields properly filled should be valid
+    def test_proper_job(self):
+        test_job = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library')
+        form = RequestTutor(data={'subject': test_job.subject, 'course': test_job.course, 'location': test_job.location, 'notes': test_job.notes}, instance=test_job)
+        self.assertTrue(form.is_bound)
+        self.assertTrue(form.is_valid())
+
+class StudentProfileViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
+    def test_anonymous_user_redirect(self):
+        response = self.client.get('/student/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+class AvailableJobsViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
+    def test_anonymous_user_redirect(self):
+        response = self.client.get('/jobs/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+class ProfileUpdateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
+    def test_anonymous_user_redirect(self):
+        response = self.client.get('/updateinfo/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+class RequestedJobsViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
+    def test_anonymous_user_redirect(self):
+        response = self.client.get('/requests/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+class AcceptedJobsViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
+    def test_anonymous_user_redirect(self):
+        response = self.client.get('/acceptedjobs/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+class RequestTutorViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+
+    # If user is not authenicated, should be redirect to welcome page (index) where they can login
+    def test_anonymous_user_redirect(self):
+        response = self.client.get('/requesttutor/')
+        self.assertEqual(302, response.status_code)
+        self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
         self.assertFalse(form.is_valid())   

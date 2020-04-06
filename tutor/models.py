@@ -177,6 +177,7 @@ class Job(models.Model):
     notes = models.TextField(max_length=1000, default="", help_text="Any additional notes you might have about your request?")
     location = models.CharField(max_length=200, choices=LOCATIONS, help_text="Select a meeting spot for your session.", default='None')
     isConfirmed = models.BooleanField(default=False)
+    started = models.BooleanField(default=False)
 
     def __str__(self):
         return self.subject
