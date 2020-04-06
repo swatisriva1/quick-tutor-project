@@ -22,4 +22,61 @@
 <h5>Notes:</h5>
 <p>{{ job.notes }}</p>
 <h5>Location: {{ job.location }} </h5>
+
+{% if user == job.customer_user %}
+<button class="requestTutor btn-info btn-lg" type="button" data-toggle="modal" data-target="#requestTutor">
+    End Session
+</button>
+{% endif %}
+
+<div class="modal fade" id="requestTutor" tabindex="-1" role="dialog" aria-labelledby="requestTutor"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="modal-header">
+            <h5 class="modal-title"> Pay now to get matched with a tutor. Only $4.99!!!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            {{ form|crispy }}
+          </div>
+
+        <div id="paypal-button-container"></div>
+<script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD" data-sdk-integration-source="button-factory"></script>
+<script>
+  paypal.Buttons({
+      style: {
+          shape: 'rect',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'pay',
+
+      },
+      createOrder: function(data, actions) {
+          return actions.order.create({
+              purchase_units: [{
+                  amount: {
+                      value: '4.99'
+                  }
+              }]
+          });
+      },
+      onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+              alert('Transaction successful! Your tutor will be meeting you shortly');
+              window.location.replace("requesttutor");
+          });
+      }
+  }).render('#paypal-button-container');
+</script>
+      </form>
+
+    </div>
+  </div>
+
 {% endblock content %}
