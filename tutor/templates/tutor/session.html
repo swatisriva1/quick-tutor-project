@@ -5,7 +5,21 @@
 
 {% block content %}
 <h2>Current Tutoring Session</h2>
-<h4>Student: {{ job.customer_profile.first_name }}</h4>
+<img src="{{  job.customer_profile.get_pic_url  }}" width="120" alt="img">
+<h5>Student: {{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}</h5>
+<h5>Phone Number: {{ job.customer_profile.phone_number }}</h5>
+<h5>Email Address: {{ job.customer_profile.email_addr }}</h5>
 
-<h4>Tutor: {{ job.tutor_profile.first_name }}</h4>
+<br>
+<img src="{{  job.tutor_profile.get_pic_url  }}" width="120" alt="img">
+<h5>Tutor: {{ job.tutor_profile.first_name }} {{ job.tutor_profile.last_name }}</h5>
+<h5>Phone Number: {{ job.tutor_profile.phone_number }}</h5>
+<h5>Email Address: {{ job.tutor_profile.email_addr }}</h5>
+
+<br>
+<h5>Subject: {{ job.subject }}  </h5>
+<h5>Course: {{ job.course }}  </h5>
+<h5>Notes:</h5>
+<p>{{ job.notes }}</p>
+<h5>Location: {{ job.location }} </h5>
 {% endblock content %}
