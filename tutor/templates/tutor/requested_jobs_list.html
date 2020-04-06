@@ -60,7 +60,9 @@
                 <td>{{ job.notes }}</td>
                 <td>
                     {% if job.tutor_profile != None %}
-                    <button type="button" class="btn btn-info">Begin</button>
+                    <a class="btn btn-info" href="{% url 'tutor:session' job.id %}">
+                        Join
+                    </a>
                     {% else %}
                     <button type="button" class="btn btn-info" disabled>Wait</button>
                     {% endif %}

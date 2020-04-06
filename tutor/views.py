@@ -19,12 +19,40 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
+
+class SessionInfo(generic.DetailView):
+    model=Job
+    template_name = 'tutor/session.html'
+
+
+
+
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
+
 class AcceptedJobs(SingleTableView):
     model = Job
 
     def get(self, request):
-        table = tutorJobs(Job.objects.filter(tutor_user=self.request.user))
-        return render(request, 'tutor/acceptedjobs.html', {"table":table})
+        jobs = Job.objects.filter(tutor_user=self.request.user)
+        table = tutorJobs(jobs)
+        if 'paid'  not in request.session:
+            request.session['paid']='true'
+        if (request.session.get('paid') != 'true'):
+            return redirect('/payment')
+        return render(request, 'tutor/acceptedjobs.html', {
+            "table":table, 
+            "job": jobs,
+        })
+
+    def post(self, request):
+        if 'begin-btn' in request.POST:
+            begin_job = request.POST.get("id", False)
+            b = Job.objects.get(id=begin_job)
+            b.started = True
+            b.save()
+            messages.success(request, 'Your session has begun!')
+            return redirect(reverse('tutor:session', args=(Job.id,)))
+
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class AvailableJobs(generic.ListView):
@@ -33,6 +61,8 @@ class AvailableJobs(generic.ListView):
 
     def get_queryset(self):
         current_user = self.request.user
+
+
         tutor_profile = Profile.objects.get(user=current_user)
         subjects_set = tutor_profile.subjects_can_help.all()
         matches = Q()
@@ -63,11 +93,21 @@ class AvailableJobs(generic.ListView):
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class RequestedJobs(generic.ListView):
+    model = Job
+
     template_name = 'tutor/requested_jobs_list.html'
     context_object_name = 'job_list'
+
     def get_queryset(self):
         current_user = self.request.user
+
         return Job.objects.filter(customer_user=current_user)
+
+
+    def post(self, request):
+        if request.method == 'POST':
+            return redirect(reverse('tutor:session', args=(Job.id,)))
+
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class RequestTutorView(generic.ListView):
@@ -76,6 +116,10 @@ class RequestTutorView(generic.ListView):
 
     def get(self, request):
         form = RequestTutor()
+        if 'paid'  not in request.session:
+            request.session['paid']='true'
+        if (request.session.get('paid') != 'true'):
+            return redirect('/payment')
         return render(request, 'tutor/requestTutor.html', {'form': form})
 
     def post(self, request):
@@ -86,8 +130,9 @@ class RequestTutorView(generic.ListView):
                 req.customer_user = self.request.user
                 req.customer_profile = self.request.user.profile
                 req.save()
+                request.session['paid']='false'
                 messages.success(request, 'Your request has been submitted')
-                return redirect(reverse_lazy('tutor:index'))
+                return redirect(reverse_lazy('tutor:requests'))
             return render(request, 'tutor/requestTutor.html', {'form': form})
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
@@ -103,6 +148,10 @@ class ProfileUpdate(generic.ListView):
 
     def get(self, request):
         current_user = request.user
+        if 'paid'  not in request.session:
+            request.session['paid']='true'
+        if (request.session.get('paid') != 'true'):
+            return redirect('/payment')
         try:
             prof = Profile.objects.get(user=current_user)
             form = List(instance=prof)
@@ -170,3 +219,6 @@ def index(request):
 @login_required(redirect_field_name='')
 def payment(request):
     return render(request, 'tutor/payment.html')
+def paymentConfirmation(request):
+    request.session['paid'] = 'true'
+    return render(request, 'tutor/paymentConfirmation.html')

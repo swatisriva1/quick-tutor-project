@@ -65,7 +65,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'QuickTutor.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -124,6 +123,7 @@ MESSAGE_TAGS = {
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
+SESSION_ENGINE=  "django.contrib.sessions.backends.signed_cookies"
 
 USE_I18N = True
 
@@ -165,7 +165,6 @@ PAYPAL_TEST = True
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
