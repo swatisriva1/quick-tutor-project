@@ -68,8 +68,8 @@
       },
       onApprove: function(data, actions) {
           return actions.order.capture().then(function(details) {
-              alert('Transaction successful! Your tutor will be meeting you shortly');
-              window.location.replace("requesttutor");
+              alert('Transaction successful! We hope you will use QuickTutor again!');
+              window.location.replace("../../paymentConfirmation");
           });
       }
   }).render('#paypal-button-container');

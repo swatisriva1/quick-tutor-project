@@ -26,6 +26,7 @@ class SessionInfo(generic.DetailView):
 
 
 
+
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 
 class AcceptedJobs(SingleTableView):
@@ -34,6 +35,10 @@ class AcceptedJobs(SingleTableView):
     def get(self, request):
         jobs = Job.objects.filter(tutor_user=self.request.user)
         table = tutorJobs(jobs)
+        if 'paid'  not in request.session:
+            request.session['paid']='true'
+        if (request.session.get('paid') != 'true'):
+            return redirect('/payment')
         return render(request, 'tutor/acceptedjobs.html', {
             "table":table, 
             "job": jobs,
@@ -56,6 +61,7 @@ class AvailableJobs(generic.ListView):
 
     def get_queryset(self):
         current_user = self.request.user
+
 
         tutor_profile = Profile.objects.get(user=current_user)
         subjects_set = tutor_profile.subjects_can_help.all()
@@ -91,8 +97,10 @@ class RequestedJobs(generic.ListView):
 
     template_name = 'tutor/requested_jobs_list.html'
     context_object_name = 'job_list'
+
     def get_queryset(self):
         current_user = self.request.user
+
         return Job.objects.filter(customer_user=current_user)
 
 
@@ -124,7 +132,7 @@ class RequestTutorView(generic.ListView):
                 req.save()
                 request.session['paid']='false'
                 messages.success(request, 'Your request has been submitted')
-                return redirect(reverse_lazy('tutor:index'))
+                return redirect(reverse_lazy('tutor:requests'))
             return render(request, 'tutor/requestTutor.html', {'form': form})
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
@@ -189,10 +197,6 @@ class ProfileUpdate(generic.ListView):
 
 @login_required(redirect_field_name='')
 def welcome(request):
-    if 'paid' not in request.session:
-        request.session['paid'] = 'true'
-    if (request.session.get('paid') != 'true'):
-        return redirect('/payment')
     return render(request, 'tutor/welcome.html')
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
@@ -210,10 +214,6 @@ class TutorProfileView(generic.ListView):
 
 
 def index(request):
-    if 'paid' not in request.session:
-        request.session['paid'] = 'true'
-    if (request.session.get('paid') != 'true'):
-        return redirect('/payment')
     return render(request, 'tutor/home.html')
 
 @login_required(redirect_field_name='')

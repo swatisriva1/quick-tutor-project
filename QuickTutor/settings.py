@@ -123,8 +123,7 @@ MESSAGE_TAGS = {
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-
-SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+SESSION_ENGINE=  "django.contrib.sessions.backends.signed_cookies"
 
 USE_I18N = True
 
