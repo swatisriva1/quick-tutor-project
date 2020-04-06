@@ -17,4 +17,5 @@ urlpatterns = [
     path('requesttutor/', views.RequestTutorView.as_view(), name = 'requestTutor'),
     path('jobs/', views.AvailableJobs.as_view(), name = "job_list"),
     path('requests/',views.RequestedJobs.as_view(), name="requests"),
+    path('<int:pk>/session/', views.SessionInfo.as_view(), name='session'),
 ]

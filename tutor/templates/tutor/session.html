@@ -1,0 +1,11 @@
+{% extends 'tutor/base.html' %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+{% bootstrap_css %}
+
+{% block content %}
+<h2>Current Tutoring Session</h2>
+<h4>Student: {{ job.customer_profile.first_name }}</h4>
+
+<h4>Tutor: {{ job.tutor_profile.first_name }}</h4>
+{% endblock content %}
