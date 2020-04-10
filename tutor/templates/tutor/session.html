@@ -2,7 +2,7 @@
 {% load bootstrap4 %}
 {% load crispy_forms_tags %}
 {% bootstrap_css %}
-
+{% load easy_maps_tags %}
 {% block content %}
 
 <h2>Current Tutoring Session</h2>
@@ -24,13 +24,17 @@
         <h5>Student: {{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}</h5>
         <h5>{{ job.customer_profile.phone_number }}</h5>
         <h5>{{ job.customer_profile.email_addr }}</h5>
-    </div>
+    <h5>
+        Meet at {{ job.location }} to begin the session.
+        {% with 300 as w and 300 as h and "easy_maps/map.html" as t  %}
+      {% easy_map job.location w h using t %}
+    {% endwith %}
+    </h5>
 <!--    <div class="col-sm">
         <h5>Subject: {{ job.subject }}  </h5>
         <h5>Course: {{ job.course }}  </h5>
 
-
-        <h5>Location: {{ job.location }} </h5>
+        <h5>Location: {  }} </h5>
     </div>-->
     <div class="col-md-6 col-md-offset-1">
         <img src="{{  job.tutor_profile.get_pic_url  }}" width="120" alt="img">
