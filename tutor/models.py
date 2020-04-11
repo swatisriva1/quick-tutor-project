@@ -45,7 +45,8 @@ class Profile(models.Model):
         if self.pic and hasattr(self.pic, 'url'):
             return self.pic.url
         else:
-            return "/media/default_profile_pic.png"
+            # return "/media/default_profile_pic.png"
+            return "/static/tutor/default_profile_pic.png"
 
     # Method to rotate profile picture into correct orientation
     # Taken from https://medium.com/@giovanni_cortes/rotate-image-in-django-when-saved-in-a-model-8fd98aac8f2a
