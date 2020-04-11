@@ -147,6 +147,13 @@ class RequestTutorFormTest(TestCase):
         self.assertTrue(form.is_bound)
         self.assertTrue(form.is_valid())
 
+    # Form with improper course name should not be valid, course subject code should be capitalized and there should be a space between it and course number
+    def test_improper_course_job(self):
+        test_job = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='test2020', notes='testing', location='Alderman Library')
+        form = RequestTutor(data={'subject': test_job.subject, 'course': test_job.course, 'location': test_job.location, 'notes': test_job.notes}, instance=test_job)
+        self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_valid())
+
 class StudentProfileViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
