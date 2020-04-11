@@ -25,7 +25,7 @@ class ProfileModelTest(TestCase):
     def test_first_name_max_length(self):
         profile = Profile.objects.get(user=self.test_user)
         max_length = profile._meta.get_field('first_name').max_length
-        self.assertEquals(max_length, 200)
+        self.assertEquals(max_length, 30)
 
     # ** figure out how to edit profile-specific fields
 
