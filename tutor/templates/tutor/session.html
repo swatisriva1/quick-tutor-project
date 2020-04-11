@@ -8,11 +8,11 @@
 <h2>Current Tutoring Session</h2>
 
 {% if user == job.customer_user %}
-<h4>{{ job.tutor_profile.first_name }} will tutor you in {{ job.subject }} {{ job.course }} at {{ job.location }}.</h4>
+<h4>{{ job.tutor_profile.first_name }} will tutor you in {{ job.course }} at {{ job.location }}.</h4>
 {% endif %}
 
 {% if user == job.tutor_user %}
-<h4>You'll be tutoring {{ job.customer_profile.first_name }} in {{ job.subject }} {{ job.course }} at {{ job.location }}.</h4>
+<h4>You'll be tutoring {{ job.customer_profile.first_name }} in {{ job.course }} at {{ job.location }}.</h4>
 {% endif %}
 
 <br>
