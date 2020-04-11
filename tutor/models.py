@@ -26,7 +26,7 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE, default="")
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$')
-    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, default='+999999999', help_text="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=False, help_text="Phone number must be entered in the format: '999-999-9999'. Up to 15 digits allowed.")
     # don't want to use simple text field for phone number
     # (want to validate) but not sure what to use
     first_name = models.CharField(max_length=200, default='First')
