@@ -172,7 +172,7 @@ class Job(models.Model):
     tutor_user = models.ForeignKey(User, related_name='Tutor', on_delete=models.CASCADE, null=True, blank=True) #tutor user
     customer_profile = models.ForeignKey('Profile', related_name='CustomerProfile', on_delete=models.CASCADE, null=True, blank=True)
     tutor_profile = models.ForeignKey('Profile', related_name='TutorProfile', on_delete=models.CASCADE, null=True, blank=True)
-    course_validator = RegexValidator(regex=r'[A-Z]{2,4} \d{4}')
+    course_validator = RegexValidator(regex=r'[A-Z]{2,4} \d{4}', message="Enter a valid course code using following format: TEST 2010 (Make sure to capitalize the course subject!)")
     course = models.CharField(validators=[course_validator], max_length=9, default="", help_text="Ex: ECON 2010, MATH 1010")
     subject = models.CharField(max_length=200, choices=SUBJECTS, help_text="Select a subject that you need help in.", default=SUBJECTS[0][0])
     notes = models.TextField(max_length=1000, default="", help_text="Any additional notes you might have about your request?")
