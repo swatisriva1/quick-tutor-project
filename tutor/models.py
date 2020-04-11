@@ -176,6 +176,7 @@ class Job(models.Model):
     subject = models.CharField(max_length=200, choices=SUBJECTS, help_text="Select a subject that you need help in.", default=SUBJECTS[0][0])
     notes = models.TextField(max_length=1000, default="", help_text="Any additional notes you might have about your request?")
     location = models.CharField(max_length=200, choices=LOCATIONS, help_text="Select a meeting spot for your session.", default='None')
+    session_date = models.DateTimeField(auto_now=True)
     isConfirmed = models.BooleanField(default=False)
     started = models.BooleanField(default=False)
     isComplete = models.BooleanField(default=False)

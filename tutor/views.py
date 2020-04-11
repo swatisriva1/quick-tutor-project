@@ -27,9 +27,9 @@ class AccountHistory(generic.ListView):
         context = super().get_context_data(**kwargs) 
         current_user = self.request.user
         as_tutor = Q(tutor_user = current_user) & Q(isComplete = True)
-        as_student = Q(customer_user = current_user) & Q(isComplete = True)
-        context['as_tutor'] = as_tutor
-        context['as_student'] = as_student
+        as_student = Q(customer_user = current_user) & Q(isComplete = True) 
+        context['as_tutor'] = Job.objects.filter(as_tutor)
+        context['as_student'] = Job.objects.filter(as_student) 
         return context
     
 

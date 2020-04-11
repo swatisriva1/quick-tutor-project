@@ -7,8 +7,9 @@
 
     {% csrf_token %}
     <h1 class="page-header">
-        Completed Sessions
+        Your Completed Sessions
     </h1>
+    <h5>When you were the tutor</h5> 
     <table class="table table-hover">
         <thead>
             <tr>
@@ -24,14 +25,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for job in job_list %}
+            {% for job in as_tutor %}
             <tr>
                 <td>
-                    {% if job.tutor_profile != None %}
+<!--                {% if job.tutor_profile != None %}
                     <span>&#9989;</span>
                     {% else %}
                     <span>&#8987;</span>
-                    {% endif %}
+                    {% endif %} -->
+                    {{job.session_date}}
                 </td>
                 <td>
                     {% if job.tutor_profile != None %}
@@ -70,12 +72,13 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="10" class="text-center bg-warning">No jobs requested</td>
+                <td colspan="10" class="text-center bg-warning">No sessions</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-
+<br><br>
+<h5>When you were the student</h5>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -137,7 +140,7 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="10" class="text-center bg-warning">No jobs requested</td>
+                <td colspan="10" class="text-center bg-warning">No sessions</td>
             </tr>
             {% endfor %}
         </tbody>
