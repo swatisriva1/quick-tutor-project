@@ -178,6 +178,7 @@ class Job(models.Model):
     location = models.CharField(max_length=200, choices=LOCATIONS, help_text="Select a meeting spot for your session.", default='None')
     isConfirmed = models.BooleanField(default=False)
     started = models.BooleanField(default=False)
+    isComplete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.subject
