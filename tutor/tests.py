@@ -58,7 +58,7 @@ class ListFormTest(TestCase):
     def setUpTestData(cls):
         cls.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
         
-    # Profile lacking the proper fields (subjects_can_help, first_name, last_name in this case) should return false
+    # Profile lacking the proper fields (subjects_can_help, first_name, last_name, phone_number in this case) should return false
     def test_empty_profile(self):
         profile = Profile.objects.get(user=self.test_user)
         form = List(data={'first_name': profile.first_name, 'last_name': profile.last_name, 'email_addr': profile.email_addr, 
