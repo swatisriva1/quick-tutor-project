@@ -19,13 +19,25 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
+class AccountHistory(generic.ListView):
+    model = Job
+    template_name = 'tutor/account_history.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs) 
+        current_user = self.request.user
+        as_tutor = Q(tutor_user = current_user) & Q(isComplete = True)
+        as_student = Q(customer_user = current_user) & Q(isComplete = True) 
+        context['as_tutor'] = Job.objects.filter(as_tutor)
+        context['as_student'] = Job.objects.filter(as_student) 
+        return context
+    
+
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
 
 class SessionInfo(generic.DetailView):
     model=Job
     template_name = 'tutor/session.html'
-
-
-
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 
@@ -219,6 +231,10 @@ def index(request):
 @login_required(redirect_field_name='')
 def payment(request):
     return render(request, 'tutor/payment.html')
+
 def paymentConfirmation(request):
     request.session['paid'] = 'true'
+    # specify that the model is Job
+    # access the current job instance (the one that you've paid for)
+    # change that job's isComplete from false to true   
     return render(request, 'tutor/paymentConfirmation.html')

@@ -26,7 +26,7 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE, default="")
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$')
-    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, default='+999999999', help_text="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=False, help_text="Phone number must be entered in the format: '999-999-9999'. Up to 15 digits allowed.")
     # don't want to use simple text field for phone number
     # (want to validate) but not sure what to use
     first_name = models.CharField(max_length=200, default='First')
@@ -45,7 +45,8 @@ class Profile(models.Model):
         if self.pic and hasattr(self.pic, 'url'):
             return self.pic.url
         else:
-            return "/media/default_profile_pic.png"
+            # return "/media/default_profile_pic.png"
+            return "/static/tutor/default_profile_pic.png"
 
     # Method to rotate profile picture into correct orientation
     # Taken from https://medium.com/@giovanni_cortes/rotate-image-in-django-when-saved-in-a-model-8fd98aac8f2a
@@ -175,8 +176,10 @@ class Job(models.Model):
     subject = models.CharField(max_length=200, choices=SUBJECTS, help_text="Select a subject that you need help in.", default=SUBJECTS[0][0])
     notes = models.TextField(max_length=1000, default="", help_text="Any additional notes you might have about your request?")
     location = models.CharField(max_length=200, choices=LOCATIONS, help_text="Select a meeting spot for your session.", default='None')
+    session_date = models.DateTimeField(auto_now=True)
     isConfirmed = models.BooleanField(default=False)
     started = models.BooleanField(default=False)
+    isComplete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.subject

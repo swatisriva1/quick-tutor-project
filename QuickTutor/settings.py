@@ -123,7 +123,7 @@ MESSAGE_TAGS = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 SESSION_ENGINE=  "django.contrib.sessions.backends.signed_cookies"
 
 USE_I18N = True
