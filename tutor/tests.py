@@ -165,6 +165,14 @@ class StudentProfileViewTest(TestCase):
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
+    # logged in user is not redirected and shown proper template (student.html)
+    def test_logged_in_user(self):
+        self.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
+        self.client.force_login(self.test_user)
+        response = self.client.get('/student/')
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, template_name='tutor/student.html')
+
 class AvailableJobsViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -175,6 +183,14 @@ class AvailableJobsViewTest(TestCase):
         response = self.client.get('/jobs/')
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+    # logged in user is not redirected and shown proper template (jobs_list.html)
+    def test_logged_in_user(self):
+        self.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
+        self.client.force_login(self.test_user)
+        response = self.client.get('/jobs/')
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, template_name='tutor/jobs_list.html')
 
 class ProfileUpdateViewTest(TestCase):
     @classmethod
@@ -187,6 +203,14 @@ class ProfileUpdateViewTest(TestCase):
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
+    # logged in user is not redirected and shown proper template (studentUpdate.html)
+    def test_logged_in_user(self):
+        self.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
+        self.client.force_login(self.test_user)
+        response = self.client.get('/updateinfo/')
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, template_name='tutor/studentUpdate.html')
+
 class RequestedJobsViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -198,6 +222,15 @@ class RequestedJobsViewTest(TestCase):
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
+    # logged in user is not redirected and shown proper template (requested_jobs_list.html)
+    def test_logged_in_user(self):
+        self.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
+        self.client.force_login(self.test_user)
+        response = self.client.get('/requests/')
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, template_name='tutor/requested_jobs_list.html')
+
+    
 class AcceptedJobsViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -209,6 +242,14 @@ class AcceptedJobsViewTest(TestCase):
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
+    # logged in user is not redirected and shown proper template (acceptedjobs.html)
+    def test_logged_in_user(self):
+        self.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
+        self.client.force_login(self.test_user)
+        response = self.client.get('/acceptedjobs/')
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, template_name='tutor/acceptedjobs.html')
+
 class RequestTutorViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -219,3 +260,11 @@ class RequestTutorViewTest(TestCase):
         response = self.client.get('/requesttutor/')
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, reverse('tutor:index'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+
+    # logged in user is not redirected and shown proper template (acceptedjobs.html)
+    def test_logged_in_user(self):
+        self.test_user = User.objects.create_user(username='testuser', password='12345', email='test@gmail.com')
+        self.client.force_login(self.test_user)
+        response = self.client.get('/requesttutor/')
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, template_name='tutor/requestTutor.html')
