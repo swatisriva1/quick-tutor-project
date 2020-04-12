@@ -468,8 +468,7 @@ class AcceptedJobsViewTest(TestCase):
         url = reverse('tutor:session', args=(self.test_job1.id,))
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, url, status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
-        self.test_job1 = Job.objects.get(id=1)
-        self.assertTrue(self.test_job1.started)
+
 
 class RequestTutorViewTest(TestCase):
     @classmethod
