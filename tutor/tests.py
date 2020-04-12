@@ -142,7 +142,7 @@ class RequestTutorFormTest(TestCase):
 
     # Form with required fields properly filled should be valid
     def test_proper_job(self):
-        test_job = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library')
+        test_job = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library in Charlottesville, Virginia')
         form = RequestTutor(data={'subject': test_job.subject, 'course': test_job.course, 'location': test_job.location, 'notes': test_job.notes}, instance=test_job)
         self.assertTrue(form.is_bound)
         self.assertTrue(form.is_valid())

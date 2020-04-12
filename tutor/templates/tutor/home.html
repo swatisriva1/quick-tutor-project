@@ -5,7 +5,7 @@
 
 {% block content %}
 
-
+<link rel="stylesheet" href="{% static 'tutor/style.css' %}">
 
 <div class="modal fade" tabindex="-1" role="dialog" id="modal">
   <div class="modal-dialog" role="document">
@@ -13,52 +13,66 @@
   </div>
 </div>
 
-<div class="jumbotron">
-  <div class="text-left">
-    <img src="static/tutor/QuickTutor.png" width=full-width>
-  </div>
-  {% if user.is_authenticated %}
-  <!--      <a class="btn btn-primary" href="tutor/logout/">Logout</a>-->
-  {% if user.profile.first_name %}
-  <h4 class="display-4">Welcome back {{ user.profile.first_name }}!</h4>
-  {% else %}
-  <h4 class="display-4">Welcome! Please set up your account!</h4>
-  {% endif %}
-  <p class="lead">
-    QuickTutor is the tutoring service for customers and tutors on-the go, connecting students all over Grounds.
-    <hr class="my-4">
-    <p class="lead">
-      Got a problem? We'll get you someone who can help you solve it.
-    </p>
-  </p>
-  <div class="text-center">
-    <button class="requestTutor btn-info btn-lg" type="button" data-toggle="modal" data-target="#requestTutor" onclick="location.href='{% url 'tutor:requestTutor' %}'">
-      Request A Tutor
-    </button>
-    <button class="requestTutor btn-info btn-lg" type="button" href="{% url 'tutor:job_list' %}">
-      Start Tutoring
-    </button>
-  </div>
-  {% else %}
-  <h4 class="display-4">Welcome</h4>
-  <p class="lead">
-    QuickTutor is the tutoring service for customers and tutors on-the go, connecting students all over Grounds.
-    <hr class="my-4">
-    <p class="lead">
-      Got a problem? We'll get you someone who can help you solve it.
-    </p>
-  </p>
-  <div class="col s12 m6 offset-m3 center-align">
-    <a class="oauth-container btn darken-4 white black-text" href="{% url 'social:begin' 'google-oauth2' %}"
-      style="text-transform:none">
-      <div class="left">
-        <img width="20px" style="margin-top:-4px; margin-right:10px" alt="Google sign-in"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+<div style="height: 700px;">
+<div class="jumbotron" style="background-image: url({% static 'tutor/home.png' %})">
+    <div class="text-left">
+      <img src="static/tutor/QuickTutor.png" style="width:55%">
+    </div>
+    {% if user.is_authenticated %}
+    <!--      <a class="btn btn-primary" href="tutor/logout/">Logout</a>-->
+      {% if user.profile.first_name %}
+      <span class="border-bottom-0">
+      <div class="card text-white" style="width: 36%; background-color:#122C34">
+        <div class="card-body">
+          <h5 class="display-4"><b>Welcome back {{ user.profile.first_name }}!</b></h4>
+        {% else %}
+          <h4 class="display-4"><b>Welcome! Please set up your account!</b></h4>
+        {% endif %}
+        <blockquote class="blockquote">
+          QuickTutor is the tutoring service for customers and tutors on-the go, 
+          connecting students all over grounds.
+          <p class="lead" style="color:#CDEDF6">
+            Got a problem? We'll get you someone who can help you solve it.
+          </p>
+        </blockquote>
+        </div>
       </div>
-      Login with Google
-    </a>
+    </span>
+
+        <div class="text-center">
+          <button class="requestTutor btn-info btn-lg float-left" type="button" style="background-color:	#047a89; color: white;" data-toggle="modal" data-target="#requestTutor" onclick="location.href='{% url 'tutor:requestTutor' %}'">
+            Request A Tutor
+          </button>
+          <button class="requestTutor btn-info btn-lg float-left" type="button" style="background-color: #047a89; color: white;" href="{% url 'tutor:job_list' %}">
+            Start Tutoring
+          </button>
+        </div>
+    {% else %}
+    <span class="border-bottom-0">
+    <div class="card text-white" style="width: 35%; background-color:#122C34">
+      <div class="card-body">
+      <h4 class="display-4">Welcome</h4>
+      <blockquote class="blockquote">
+        QuickTutor is the tutoring service for customers and tutors on-the go, 
+        connecting students all over grounds.
+        <p class="lead" margin: 0>
+          Got a problem? We'll get you someone who can help you solve it.
+        </p>
+      </blockquote>
+    </div>
+  </span>
   </div>
+      <div class="col s12 m6 offset-m3 left-align">
+        <a class="oauth-container btn darken-4 white black-text" href="{% url 'social:begin' 'google-oauth2' %}"style="text-transform:none">
+        <div class="left">
+          <img width="20px" style="margin-top:-4px; margin-right:10px" alt="Google sign-in"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+        </div>
+         Login with Google
+        </a>
+      </div>
   {% endif %}
+</div>
 
 
   <div class="modal fade" id="requestTutor" tabindex="-1" role="dialog" aria-labelledby="requestTutor"

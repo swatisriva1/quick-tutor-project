@@ -2,68 +2,90 @@
 {% load bootstrap4 %}
 {% load crispy_forms_tags %}
 {% bootstrap_css %}
-
+{% load easy_maps_tags %}
 {% block content %}
 
-<h2>Current Tutoring Session</h2>
+<div class="container-fluid">
+  <div class="border border-light p-3 mb-4">
+    <div class="row">
+      <div class="col-sm-6">
+        <h1>Current Tutoring Session</h1>
+        {% if user == job.customer_user %}
+          <h4>{{ job.tutor_profile.first_name }} will tutor you in {{ job.subject }} {{ job.course }} at {{ job.location }}.</h4>
+        {% endif %}
 
-{% if user == job.customer_user %}
-<h4>{{ job.tutor_profile.first_name }} will tutor you in {{ job.course }} at {{ job.location }}.</h4>
-{% endif %}
+        {% if user == job.tutor_user %}
+          <h4>You'll be tutoring {{ job.customer_profile.first_name }} in {{ job.subject }} {{ job.course }} at {{ job.location }}.</h4>
+        {% endif %}
+      </div>
+    <div class="row">
 
-{% if user == job.tutor_user %}
-<h4>You'll be tutoring {{ job.customer_profile.first_name }} in {{ job.course }} at {{ job.location }}.</h4>
-{% endif %}
+      <div class="col-sm-6">
+        <div class="float-left">
+          Meet at {{ job.location }} to begin the session.
+        </div>
+          {% with 600 as w and 600 as h and "easy_maps/map.html" as t  %}
+          {% easy_map job.location w h using t %}
+          {% endwith %}
+      </div>
 
-<br>
+      <div class="col-sm-3">
+        <div class="card" style="width: 25rem; background-color:#CDEDF6;">
+          <img class="card-img-top" src="{{  job.customer_profile.get_pic_url  }}" alt="img">
+          <div class="card-body">
+            <h3 class="card-title">Student</h3>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}</li>
+              <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.customer_profile.phone_number }}</li>
+              <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.customer_profile.email_addr }}</li>
+              {% if user == job.customer_user %}
+              <li class="list-group-item" style="background-color:#CDEDF6;">
+                <h6>Your Notes:</h6>
+                <p class="card-text" style="background-color:#CDEDF6;">{{ job.notes }}</p>
+              </li>
+              {% endif %}
+              {% if user == job.tutor_user %}
+                <li class="list-group-item" style="background-color:#CDEDF6;">
+                  <h6>Student's Notes:</h6>
+                  <p class="card-text" style="background-color:#CDEDF6;">{{ job.notes }}</p>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm">
-        <img src="{{  job.customer_profile.get_pic_url  }}" width="120" alt="img">
-        <h5>Student: {{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}</h5>
-        <h5>{{ job.customer_profile.phone_number }}</h5>
-        <h5>{{ job.customer_profile.email_addr }}</h5>
-    </div>
-<!--    <div class="col-sm">
-        <h5>Subject: {{ job.subject }}  </h5>
-        <h5>Course: {{ job.course }}  </h5>
-
-
-        <h5>Location: {{ job.location }} </h5>
-    </div>-->
-    <div class="col-md-6 col-md-offset-1">
-        <img src="{{  job.tutor_profile.get_pic_url  }}" width="120" alt="img">
-        <h5>Tutor: {{ job.tutor_profile.first_name }} {{ job.tutor_profile.last_name }}</h5>
-        <h5>{{ job.tutor_profile.phone_number }}</h5>
-        <h5>{{ job.tutor_profile.email_addr }}</h5>
+      <div class="col-sm-3">
+        <div class=container-fluid>
+          <div class="card" style="width: 25rem; background-color:#CDEDF6;">
+            <img class="card-img-top" src="{{  job.tutor_profile.get_pic_url  }}" alt="img">
+            <div class="card-body">
+              <h3 class="card-title">Tutor</h3>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.tutor_profile.first_name }} {{ job.tutor_profile.last_name }}</li>
+                <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.tutor_profile.phone_number }}</li>
+                <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.tutor_profile.email_addr }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+    
 
 {% if user == job.customer_user %}
-<h5>Your Notes:</h5>
+<div class=text-center>
+  <p>
+    <button class="requestTutor btn-info btn-lg" type="button" data-toggle="modal" data-target="#requestTutor">
+      End Session
+    </button>
+  </p>
+</div>
 {% endif %}
-{% if user == job.tutor_user %}
-<h5>Student's Notes:</h5>
-{% endif %}
-<p>{{ job.notes }}</p>
 
 
-
-
-<br>
-
-
-
-
-
-
-{% if user == job.customer_user %}
-<button class="requestTutor btn-info btn-lg" type="button" data-toggle="modal" data-target="#requestTutor">
-    End Session
-</button>
-{% endif %}
 
 <div class="modal fade" id="requestTutor" tabindex="-1" role="dialog" aria-labelledby="requestTutor"
     aria-hidden="true">
@@ -83,6 +105,7 @@
           </div>
 
         <div id="paypal-button-container"></div>
+
 <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD" data-sdk-integration-source="button-factory"></script>
 <script>
   paypal.Buttons({
