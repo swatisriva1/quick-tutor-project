@@ -63,7 +63,7 @@ class AcceptedJobs(SingleTableView):
             b.started = True
             b.save()
             messages.success(request, 'Your session has begun!')
-            return redirect(reverse('tutor:session', args=(Job.id,)))
+            return redirect(reverse_lazy('tutor:session', args=(id)))
 
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
@@ -118,7 +118,7 @@ class RequestedJobs(generic.ListView):
 
     def post(self, request):
         if request.method == 'POST':
-            return redirect(reverse('tutor:session', args=(Job.id,)))
+            return redirect(reverse_lazy('tutor:session', args=(Job.id,)))
 
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
