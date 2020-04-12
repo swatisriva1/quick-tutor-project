@@ -38,6 +38,7 @@
                             <h2 class="text-light" style="background-color:#122C34; padding: 2rem;"> 
                                 Your Profile
                             </h2>
+
                             {% if user.profile.first_name and user.profile.last_name %}
                                 {% if user.profile.subjects_can_help %}
                                     <h4 class="text-info" style="padding: 1rem;"> <b>Student | Tutor</b></h4>
@@ -48,7 +49,7 @@
                                 <h5 class="text-secondary" style="padding: 1rem;"> <b>Last Name:</b> {{ user.profile.last_name }}</h5>
                             {% else %}
                                 <h2 class="text-secondary text-light" style="background-color:#122C34; padding: 2rem;"> 
-                                    Please fill in your info 
+                                    Trying to request a tutor? Make sure you have the correct information below.
                                 </h2>
                                 <h4 class="text-info" style="padding: 1rem;"> <b>Student</b></h4>
                                 <h5 class="text-secondary" style="padding: 1rem;"> <b>First Name:</b> None</h5>
