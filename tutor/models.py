@@ -184,6 +184,8 @@ class Job(models.Model):
         return self.subject
 
 
+
+
 def create_profile(sender, instance, created, **kwargs):
     if created:
         user_profile = Profile()

@@ -6,7 +6,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib import messages
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 from django_tables2 import SingleTableView
 from .tables import tutorJobs
@@ -49,7 +49,7 @@ class AcceptedJobs(SingleTableView):
             b.started = True
             b.save()
             messages.success(request, 'Your session has begun!')
-            return redirect(reverse('tutor:session', args=(Job.id,)))
+            return redirect(reverse('tutor:session', args=(b.id,)))
 
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
@@ -181,7 +181,7 @@ class ProfileUpdate(generic.ListView):
                 form.save()
                 pic_form.save()
                 messages.success(request, f'Your account has been updated')
-                return redirect('/student')
+                return redirect('/student/')
 
             else:
                 messages.warning(request, 'Input not valid')
