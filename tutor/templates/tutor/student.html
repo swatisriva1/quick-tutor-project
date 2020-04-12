@@ -5,70 +5,83 @@
 {% bootstrap_css %}
 
 {% block content %}
-<div class="content-section">
+<div class="container-fluid">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <fieldset class="form-group">
             <div class="border border-light p-3 mb-4">
-                <div class="text-left">
-                    <h1> Your Profile </h1>
-                    <!-- {% if user.profile.pic%} -->
-                    <img src="{{  user.profile.get_pic_url  }}" width="240" alt="img">
-                    <!-- {% endif %} -->
-                    <br><br>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div container="container-fluid" style="background-color:#F46036; padding: 1rem;">
+                            <div class="text-center">
+                                {% if user.profile.first_name and user.profile.last_name %} 
+                                    <h3 class="text-light">
+                                        {{ user.profile.first_name }} {{ user.profile.last_name }}
+                                    </h3>
+                                {%else%}
+                                    <h3 class="text-secondary text-light">
+                                        New User
+                                    </h3>
+                                {% endif %}
+                            </div>
+                            <div class="text-center">
+                                <img src="{{  user.profile.get_pic_url  }}" class="rounded-circle" height="275px;" width="275px" object-fit="cover;" alt="img">
+                                <p><p>
+                                        <a class="btn btn-info btn-lg" href="{% url 'tutor:updateinfo' %}">Update Info</a>
+                                </p></p>
+                            </div>
+                        </div>
+                    </div>
 
-                    {% if user.profile.first_name and user.profile.last_name %}
-                        <p class="text-secondary"> <b>First Name:</b> {{ user.profile.first_name }}</p>
-                        <p class="text-secondary"> <b>Last Name:</b> {{ user.profile.last_name }}</p>
-                    {% else %}
-                        <p class="text-secondary"> <b>First Name:</b> None</p>
-                        <p class="text-secondary"> <b>Last Name:</b> None</p>
-                    {% endif %}
+                    <div class="col-md-8">
+                        <div container="container-fluid" style="background-color:whitesmoke; padding: 1rem;">
+                            <h2 class="text-light" style="background-color:#122C34; padding: 2rem;"> 
+                                Your Profile
+                            </h2>
+                            {% if user.profile.first_name and user.profile.last_name %}
+                                {% if user.profile.subjects_can_help %}
+                                    <h4 class="text-info" style="padding: 1rem;"> <b>Student | Tutor</b></h4>
+                                {% else %}
+                                    <h4 class="text-info" style="padding: 1rem;"> <b>Student</b></h4>
+                                {% endif %}
+                                <h5 class="text-secondary" style="padding: 1rem;"> <b>First Name:</b> {{ user.profile.first_name }}</h5>
+                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Last Name:</b> {{ user.profile.last_name }}</h5>
+                            {% else %}
+                                <h2 class="text-secondary text-light" style="background-color:#122C34; padding: 2rem;"> 
+                                    Please fill in your info 
+                                </h2>
+                                <h4 class="text-info" style="padding: 1rem;"> <b>Student</b></h4>
+                                <h5 class="text-secondary" style="padding: 1rem;"> <b>First Name:</b> None</h5>
+                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Last Name:</b> None</h5>
+                            {% endif %}
 
-                    {% if user.profile.email_addr %}
-                        <p class="text-secondary"> <b>Email:</b> {{ user.profile.email_addr }}</p>
-                    {% else %}
-                        <p class="text-secondary"> <b>Email:</b> None</p>
-                    {% endif %}
+                            {% if user.profile.email_addr %}
+                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Email:</b> {{ user.profile.email_addr }}</h5>
+                            {% else %}
+                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Email:</b> None</h5>
+                            {% endif %}
 
-                    {% if user.profile.phone_number %}
-                        <p class="text-secondary"> <b>Phone Number:</b> {{ user.profile.phone_number }}</p>
-                    {% else %}
-                        <p class="text-secondary"> <b>Phone Number:</b> None</p>
-                    {% endif %}
+                            {% if user.profile.phone_number %}
+                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Phone Number:</b> {{ user.profile.phone_number }}</h5>
+                            {% else %}
+                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Phone Number:</b> None</h5>
+                            {% endif %}
 
-                    <!-- CAN PORT OVER TO A DIFFERENT TEMPLATE IF NECESSARY -CALEB -->
-                    {% if user.profile.subjects_can_help %}
-                        <p class="text-secondary"> <b>Subjects you tutor in:</b> </p>
-                        <ul class="list-group ">
-                            {% for subject in user.profile.subjects_can_help.all %}
-                            <li class="list-group-item">{{ subject }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p class="text-secondary"> <b>Subjects you tutor in:</b> None</p>
-                    {% endif %}
-
-                    <!-- not using this field anymore, dealt with on request tutor form
-                    {% if user.profile.subjects_need_help %}
-                        <p class="text-secondary"> Subjects you need help in: </p>
-                        <ul>
-                            {% for subject in user.profile.subjects_need_help.all %}
-                            <li>{{ subject }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p class="text-secondary"> Subjects you need help in: None</p>
-                    {% endif %} -->
+                             <!-- CAN PORT OVER TO A DIFFERENT TEMPLATE IF NECESSARY -CALEB -->
+                            {% if user.profile.subjects_can_help %}
+                            <h5 class="text-secondary" style="padding: 1rem;"> <b>Subjects you tutor in:</b> </h5>
+                            <ul class="list-group">
+                                {% for subject in user.profile.subjects_can_help.all %}
+                                <li class="list-group-item">{{ subject }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                                <h5 class="text-secondary"> <b>Subjects you tutor in:</b> None</h5>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
         </fieldset>
-        
-            <p>
-                <div class="text-center">
-                    <a class="btn btn-info btn-lg" href="{% url 'tutor:updateinfo' %}">Update Info</a>
-                </div>
-            </p>
-        
-        </form>
+    </form>
 </div>
     {% endblock content%}
