@@ -29,8 +29,8 @@ class Profile(models.Model):
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, default='+999999999', help_text="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     # don't want to use simple text field for phone number
     # (want to validate) but not sure what to use
-    first_name = models.CharField(max_length=200, default='First')
-    last_name = models.CharField(max_length=20, default='Last')
+    first_name = models.CharField(max_length=30, default='First')
+    last_name = models.CharField(max_length=30, default='Last')
     email_addr = models.EmailField(max_length=200, default='example@email.com', help_text="Ex: example@email.com")
     #= for now, use simple text field for phone number, but later make sure we validate it somehow
     # use this? https://pypi.org/project/django-phone-field/
@@ -172,7 +172,8 @@ class Job(models.Model):
     tutor_user = models.ForeignKey(User, related_name='Tutor', on_delete=models.CASCADE, null=True, blank=True) #tutor user
     customer_profile = models.ForeignKey('Profile', related_name='CustomerProfile', on_delete=models.CASCADE, null=True, blank=True)
     tutor_profile = models.ForeignKey('Profile', related_name='TutorProfile', on_delete=models.CASCADE, null=True, blank=True)
-    course = models.CharField(max_length=200, default="", help_text="Ex: ECON 2010, MATH 1010")
+    course_validator = RegexValidator(regex=r'[A-Z]{2,4} \d{4}', message="Enter a valid course code using following format: TEST 2010 (Make sure to capitalize the course subject!)")
+    course = models.CharField(validators=[course_validator], max_length=9, default="", help_text="Ex: ECON 2010, MATH 1010")
     subject = models.CharField(max_length=200, choices=SUBJECTS, help_text="Select a subject that you need help in.", default=SUBJECTS[0][0])
     notes = models.TextField(max_length=1000, default="", help_text="Any additional notes you might have about your request?")
     location = models.CharField(max_length=200, choices=LOCATIONS, help_text="Select a meeting spot for your session.", default='None')
@@ -181,6 +182,8 @@ class Job(models.Model):
 
     def __str__(self):
         return self.subject
+
+
 
 
 def create_profile(sender, instance, created, **kwargs):
