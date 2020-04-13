@@ -5,32 +5,30 @@
 {% load easy_maps_tags %}
 {% block content %}
 
+
 <div class="container-fluid">
   <div class="border border-light p-3 mb-4">
-    <div class="row">
-      <div class="col-sm-6">
-        <h1>Current Tutoring Session</h1>
+    <h1 class="text-light" style="background-color:#F46036; padding: 1rem;">Current Tutoring Session</h1>
         {% if user == job.customer_user %}
-          <h4>{{ job.tutor_profile.first_name }} will tutor you in {{ job.course }} at {{ job.location }}.</h4>
+          <h4><i>{{ job.tutor_profile.first_name }} will tutor you in {{ job.course }} at {{ job.location }}.</i></h4>
         {% endif %}
 
         {% if user == job.tutor_user %}
-          <h4>You'll be tutoring {{ job.customer_profile.first_name }} in {{ job.course }} at {{ job.location }}.</h4>
+          <h4><i>You'll be tutoring {{ job.customer_profile.first_name }} in {{ job.course }} at {{ job.location }}.</i></h4>
         {% endif %}
-      </div>
-    <div class="row">
 
-      <div class="col-sm-6">
-        <div class="float-left">
-          Meet at {{ job.location }} to begin the session.
-        </div>
-          {% with 600 as w and 600 as h and "easy_maps/map.html" as t  %}
-          {% easy_map job.location w h using t %}
-          {% endwith %}
+    <div class="row">
+      <div class="col-sm-6" style="background-color:whitesmoke;">
+          <h5>Meet at {{ job.location }} to begin the session.</h5>
+          <div class=text-align>
+            {% with 450 as w and 400 as h and "easy_maps/map.html" as t  %}
+            {% easy_map job.location w h using t %}
+            {% endwith %}
+          </div>
       </div>
 
       <div class="col-sm-3">
-        <div class="card" style="width: 25rem; background-color:#CDEDF6;">
+        <div class="card" style="width: 18rem; background-color:#CDEDF6;display:inline-block;">
           <img class="card-img-top" src="{{  job.customer_profile.get_pic_url  }}" alt="img">
           <div class="card-body">
             <h3 class="card-title">Student</h3>
@@ -57,7 +55,7 @@
 
       <div class="col-sm-3">
         <div class=container-fluid>
-          <div class="card" style="width: 25rem; background-color:#CDEDF6;">
+          <div class="card" style="width: 18rem; background-color:#CDEDF6;display:inline-block;">
             <img class="card-img-top" src="{{  job.tutor_profile.get_pic_url  }}" alt="img">
             <div class="card-body">
               <h3 class="card-title">Tutor</h3>
@@ -73,37 +71,52 @@
     </div>
   </div>
 </div>
-    
 
-{% if user == job.customer_user %}
 <div class=text-center>
   <p>
-    <button class="requestTutor btn-info btn-lg" type="button" data-toggle="modal" data-target="#requestTutor">
-      End Session
-    </button>
+    <button class="cancelSession btn-danger btn-lg" type="button" data-toggle="modal" data-target="#cancelSession" style="background-color: darkred;">
+      Cancel
+    </a>
+    <!-- <button class="btn-danger btn-lg" type="button" style="background-color: darkred; color:white; border-spacing: 1rem;">Cancel</a> -->
+    {% if user == job.customer_user %}
+      <button class="requestTutor btn-info btn-lg" type="button" data-toggle="modal" data-target="#requestTutor">
+        End Session
+      </button>
+    {% endif %}
   </p>
 </div>
-{% endif %}
 
+<div class="modal fade cancel-modal-sm" id="cancelSession" tabindex="-1" role="dialog" aria-labelledby="cancelSessionLabel" aria-hidden="true" style="width: 40%;">
+  <div class="modal-dialog modal-dialog-centered" role="alert">
+    <div class="modal-content" style="outline: none;">
+      <div class="modal-header">
+        <h4 class="modal-title" id="cancelSessionLabel"><b>Cancel Session</b></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Are you sure you want to cancel this session?</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+        <a href="{% url 'tutor:cancel' job.id %}" class="btn btn-danger" style="background-color:darkred">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-
-<div class="modal fade" id="requestTutor" tabindex="-1" role="dialog" aria-labelledby="requestTutor"
-    aria-hidden="true">
+<div class="modal fade" id="requestTutor" tabindex="-1" role="dialog" aria-labelledby="requestTutor" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="modal-header">
-            <h5 class="modal-title"> Please select one of the options below to complete your payment.</h5>
+            <h4 class="modal-title"> Please select one of the options below to complete your payment.</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-
-          <div class="modal-body">
-            {{ form|crispy }}
-          </div>
-
         <div id="paypal-button-container"></div>
 
 <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD" data-sdk-integration-source="button-factory"></script>

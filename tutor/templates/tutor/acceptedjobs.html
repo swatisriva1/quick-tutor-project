@@ -70,6 +70,7 @@
                     <a href="{% url 'tutor:beginSession' job.id %}" class="btn btn-info btn-sm" name='id' id="begin-btn">
                         Begin
                     </a>
+                    <a type="button" href="{% url 'tutor:cancel' job.id %}" class="btn btn-danger" style="background-color: darkred; color:white">Cancel</a>
                 </td>
             </tr>
             {% empty %}

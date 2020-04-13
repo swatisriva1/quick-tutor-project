@@ -123,7 +123,7 @@ class RequestTutorView(generic.ListView):
                 req.customer_user = self.request.user
                 req.customer_profile = self.request.user.profile
                 req.save()
-                request.session['paid']='false'
+                #request.session['paid']='false'
                 messages.success(request, 'Your request has been submitted')
                 return redirect(reverse_lazy('tutor:requests'))
             return render(request, 'tutor/requestTutor.html', {'form': form})
@@ -203,12 +203,23 @@ class TutorProfileView(generic.ListView):
     def tutorprofile(request):
         return render(request, template_name)
 
+def cancelSession(request, job_id=None):
+    job = Job.objects.get(id=job_id)
+    job.started = False
+    job.isConfirmed = False
+    job.tutor_user = None
+    job.tutor_profile = None
+    job.save()
+    messages.warning(request, 'Your session has been canceled.')
+    return redirect(reverse_lazy('tutor:accepted'))
+
+def cancelRequest(request, job_id=None):
+    job = Job.objects.get(id=job_id)
+    job.delete()
+    messages.warning(request, 'Your request has been canceled.')
+    return redirect(reverse_lazy('tutor:requests'))
 
 def beginSession(request, job_id=None):
-    if 'paid' not in request.session:
-        request.session['paid']='true'
-    if(request.session.get('paid') != 'true'):
-        return redirect('/payment')
     job = Job.objects.get(id=job_id)
     job.started = True
     job.save()
