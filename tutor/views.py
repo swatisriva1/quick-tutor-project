@@ -33,6 +33,13 @@ class AccountHistory(generic.ListView):
         context['as_tutor'] = Job.objects.filter(as_tutor)
         context['as_student'] = Job.objects.filter(as_student) 
         return context
+
+    def get(self, request):
+        if 'paid'  not in request.session:
+            request.session['paid']='true'
+        if (request.session.get('paid') != 'true'):
+            return redirect('/payment')
+        return render(request, 'tutor/account_history.html')
     
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
@@ -48,7 +55,7 @@ class AcceptedJobs(SingleTableView):
     context_object_name = 'job_list'
     def get_queryset(self):
         current_user = self.request.user
-        return Job.objects.filter(tutor_user=current_user)
+        return Job.objects.filter(tutor_user=current_user).filter(isComplete=False)
 
 
 
@@ -99,7 +106,7 @@ class RequestedJobs(generic.ListView):
 
     def get_queryset(self):
         current_user = self.request.user
-        return Job.objects.filter(customer_user=current_user)
+        return Job.objects.filter(customer_user=current_user).filter(isComplete=False)
 
 
     def post(self, request):
