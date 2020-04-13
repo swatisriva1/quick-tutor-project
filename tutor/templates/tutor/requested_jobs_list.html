@@ -61,9 +61,9 @@
                 <td>{{ job.notes }}</td>
                 <td>
                     {% if job.tutor_profile != None and job.started %}
-                        <a class="btn btn-info" href="{% url 'tutor:session' job.id %}">
-                            Join
-                        </a>
+                       <a href="{% url 'tutor:beginSession' job.id %}" class="btn btn-info btn-sm" name='id' id="begin-btn">
+                        Begin
+                    </a>
                     {% else %}
                         {% if job.tutor_profile != None and job.isConfirmed %}
                             <button type="button" class="btn btn-info" disabled>Waiting on Tutor</button>

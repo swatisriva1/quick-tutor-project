@@ -6,7 +6,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib import messages
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy,reverse
 from django.db.models import Q
 from django_tables2 import SingleTableView
 from .tables import tutorJobs
@@ -71,6 +71,8 @@ class AvailableJobs(generic.ListView):
 
     def post(self, request):
         if request.method == 'POST':
+            if 'isTutor' not in request.session:
+                request.session['isTutor'] = 'false'
             accepted_jobs = request.POST.getlist('selected_job')
             if not accepted_jobs:
                 messages.warning(request, 'No job was selected.')
@@ -83,6 +85,7 @@ class AvailableJobs(generic.ListView):
                     match.isConfirmed = True
                     match.save()
                     messages.success(request, 'Your job(s) have been confirmed!')
+                request.session['isTutor']='true'
                 return redirect(reverse_lazy('tutor:accepted'))
         return redirect(reverse_lazy('tutor:job_list'))
 
@@ -99,8 +102,13 @@ class RequestedJobs(generic.ListView):
 
 
     def post(self, request):
-        if request.method == 'POST':
-            return redirect(reverse_lazy('tutor:session', args=(Job.id,)))
+        if 'begin-btn' in request.POST:
+            begin_job = request.POST.get("id", False)
+            b = Job.objects.get(id=begin_job)
+            b.started = True
+            b.save()
+            messages.success(request, 'Your session has begun!')
+            return redirect(reverse('tutor:session', args=(b.id,)))
 
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
@@ -118,12 +126,14 @@ class RequestTutorView(generic.ListView):
     def post(self, request):
         form = RequestTutor(request.POST)
         if request.method == 'POST':
+            if 'isTutor' not in request.session:
+                request.session['isTutor'] = 'false'
             if form.is_valid():
                 req = form.save(commit=False)
                 req.customer_user = self.request.user
                 req.customer_profile = self.request.user.profile
                 req.save()
-                #request.session['paid']='false'
+                request.session['isTutor']='false'
                 messages.success(request, 'Your request has been submitted')
                 return redirect(reverse_lazy('tutor:requests'))
             return render(request, 'tutor/requestTutor.html', {'form': form})
@@ -210,6 +220,7 @@ def cancelSession(request, job_id=None):
     job.tutor_user = None
     job.tutor_profile = None
     job.save()
+    request.session['paid'] = 'true'
     messages.warning(request, 'Your session has been canceled.')
     return redirect(reverse_lazy('tutor:accepted'))
 
@@ -217,12 +228,17 @@ def cancelRequest(request, job_id=None):
     job = Job.objects.get(id=job_id)
     job.delete()
     messages.warning(request, 'Your request has been canceled.')
+    request.session['paid']='true'
     return redirect(reverse_lazy('tutor:requests'))
 
 def beginSession(request, job_id=None):
     job = Job.objects.get(id=job_id)
     job.started = True
     job.save()
+    if 'isTutor' not in request.session:
+        request.session['isTutor'] = 'false'
+    if request.session['isTutor'] =='false':
+        request.session['paid']='false'
     messages.success(request, 'Your session has begun!')
     return redirect(reverse_lazy('tutor:session', args=(job.id,)))
 
