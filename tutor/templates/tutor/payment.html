@@ -38,7 +38,6 @@
       },
       onApprove: function(data, actions) {
           return actions.order.capture().then(function(details) {
-alert('Transaction successful! We hope you will use QuickTutor again!');
             window.location.replace("../paymentConfirmation");
           });
       }
