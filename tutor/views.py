@@ -247,7 +247,6 @@ def endSession(request, job_id=None):
     job.isComplete = True
     job.save()
     messages.success(request, 'Your session has ended. Please provide your payment information below')
-    request.session['paid']='true'
     return redirect(reverse_lazy('tutor:payment'))
 
 @login_required(redirect_field_name='')
