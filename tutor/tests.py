@@ -424,7 +424,7 @@ class AcceptedJobsViewTest(TestCase):
         sub1.save()
         self.profile.subjects_can_help.add(sub1)
         self.profile.save()
-        test_job1 = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library', subject=sub1)
+        test_job1 = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library in Charlottesville, VA', subject=sub1)
         response = self.client.get('/acceptedjobs/')
         self.assertEqual(200, response.status_code)
         self.assertListEqual(list(response.context['job']), list(Job.objects.filter(tutor_user=self.test_user)))
@@ -460,7 +460,7 @@ class AcceptedJobsViewTest(TestCase):
         self.profile.subjects_can_help.add(sub1)
         self.profile.save()
         customer = Profile.objects.get(user=self.test_user2)
-        self.test_job1 = Job.objects.create(customer_user=self.test_user2, customer_profile=customer, course='TEST 2020', notes='testing', location='Alderman Library', subject=str(sub1))
+        self.test_job1 = Job.objects.create(customer_user=self.test_user2, customer_profile=customer, course='TEST 2020', notes='testing', location='Alderman Library in Charlottesville, Virginia', subject=str(sub1))
         self.test_job1.tutor_user = self.test_user
         self.test_job1.tutor_profile = self.profile
         self.test_job1.save()
@@ -522,7 +522,7 @@ class RequestTutorViewTest(TestCase):
         sub1.save()
         self.profile.subjects_can_help.add(sub1)
         self.profile.save()
-        response = self.client.post('/requesttutor/', data={'customer_user': self.test_user, 'customer_profile': self.profile, 'course': 'improper', 'notes': 'testing', 'location': 'Alderman Library', 'subject': str(sub1)})
+        response = self.client.post('/requesttutor/', data={'customer_user': self.test_user, 'customer_profile': self.profile, 'course': 'improper', 'notes': 'testing', 'location': 'Alderman Library in Charlottesville, Virginia', 'subject': str(sub1)})
         self.assertEqual(200, response.status_code)
         self.assertFormError(response, 'form', 'course', 'Enter a valid course code using following format: TEST 2010 (Make sure to capitalize the course subject!)')
 
@@ -537,7 +537,7 @@ class SessionInfoViewTest(TestCase):
         self.profile = Profile.objects.get(user=self.test_user)
         sub1 = Subject(subject_name='Physics')
         sub1.save()
-        test_job1 = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library', subject=sub1)
+        test_job1 = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library in Charlottesville, Virginia', subject=sub1)
         url = reverse('tutor:session', args=(test_job1.id,))
         response = self.client.get(url)
         self.assertEqual(302, response.status_code)
