@@ -36,8 +36,6 @@ class AccountHistory(generic.ListView):
     
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
-
-
 class SessionInfo(generic.DetailView):
     model=Job
     template_name = 'tutor/session.html'
@@ -216,6 +214,7 @@ class TutorProfileView(generic.ListView):
     def tutorprofile(request):
         return render(request, template_name)
 
+@login_required(redirect_field_name='')
 def cancelSession(request, job_id=None):
     job = Job.objects.get(id=job_id)
     job.started = False
@@ -227,6 +226,7 @@ def cancelSession(request, job_id=None):
     messages.warning(request, 'Your session has been canceled.')
     return redirect(reverse_lazy('tutor:accepted'))
 
+@login_required(redirect_field_name='')
 def cancelRequest(request, job_id=None):
     job = Job.objects.get(id=job_id)
     job.delete()
@@ -234,6 +234,7 @@ def cancelRequest(request, job_id=None):
     request.session['paid']='true'
     return redirect(reverse_lazy('tutor:requests'))
 
+@login_required(redirect_field_name='')
 def beginSession(request, job_id=None):
     job = Job.objects.get(id=job_id)
     job.started = True
