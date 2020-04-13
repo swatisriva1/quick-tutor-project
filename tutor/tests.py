@@ -26,7 +26,7 @@ class ProfileModelTest(TestCase):
     def test_first_name_max_length(self):
         profile = Profile.objects.get(user=self.test_user)
         max_length = profile._meta.get_field('first_name').max_length
-        self.assertEquals(max_length, 30)
+        self.assertEqual(max_length, 30)
 
     # ** figure out how to edit profile-specific fields
 
@@ -40,11 +40,11 @@ class SubjectModelTest(TestCase):
 
     def test_subject_name_max_length(self):
         self.max_length = self.test_subject._meta.get_field('subject_name').max_length
-        self.assertEquals(self.max_length, 30)
+        self.assertEqual(self.max_length, 30)
 
     def test_subject_name(self):
         name = str(self.test_subject)
-        self.assertEquals(name, 'test')
+        self.assertEqual(name, 'test')
 
     def test_ordering(self):
         Subject.objects.create(subject_name="math")
