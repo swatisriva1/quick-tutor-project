@@ -81,6 +81,8 @@ class AvailableJobs(generic.ListView):
         if request.method == 'POST':
             if 'isTutor' not in request.session:
                 request.session['isTutor'] = 'false'
+            if 'paid' not in request.session:
+                request.session['paid'] = 'true'
             accepted_jobs = request.POST.getlist('selected_job')
             if not accepted_jobs:
                 messages.warning(request, 'No job was selected.')
