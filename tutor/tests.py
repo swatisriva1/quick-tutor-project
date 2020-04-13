@@ -502,7 +502,7 @@ class RequestTutorViewTest(TestCase):
         sub1.save()
         self.profile.subjects_can_help.add(sub1)
         self.profile.save()
-        response = self.client.post('/requesttutor/', data={'customer_user': self.test_user, 'customer_profile': self.profile, 'course': 'TEST 2020', 'notes': 'testing', 'location': 'Alderman Library', 'subject': str(sub1)})
+        response = self.client.post('/requesttutor/', data={'customer_user': self.test_user, 'customer_profile': self.profile, 'course': 'TEST 2020', 'notes': 'testing', 'location': 'Alderman Library in Charlottesville, Virginia', 'subject': str(sub1)})
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, reverse('tutor:requests'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
         redir_response = self.client.get('/requests/')
