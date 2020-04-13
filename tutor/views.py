@@ -39,31 +39,16 @@ class SessionInfo(generic.DetailView):
     model=Job
     template_name = 'tutor/session.html'
 
-@method_decorator(login_required(redirect_field_name=''), name='dispatch')
 
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class AcceptedJobs(SingleTableView):
     model = Job
+    template_name = 'tutor/acceptedjobs.html'
+    context_object_name = 'job_list'
 
-    def get(self, request):
-        jobs = Job.objects.filter(tutor_user=self.request.user)
-        table = tutorJobs(jobs)
-        if 'paid'  not in request.session:
-            request.session['paid']='true'
-        if (request.session.get('paid') != 'true'):
-            return redirect('/payment')
-        return render(request, 'tutor/acceptedjobs.html', {
-            "table":table, 
-            "job": jobs,
-        })
-
-    def post(self, request):
-        if 'begin-btn' in request.POST:
-            begin_job = request.POST.get("id", False)
-            b = Job.objects.get(id=begin_job)
-            b.started = True
-            b.save()
-            messages.success(request, 'Your session has begun!')
-            return redirect(reverse_lazy('tutor:session', args=(id)))
+    def get_queryset(self):
+        current_user = self.request.user
+        return Job.objects.filter(tutor_user=current_user)
 
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
@@ -73,8 +58,6 @@ class AvailableJobs(generic.ListView):
 
     def get_queryset(self):
         current_user = self.request.user
-
-
         tutor_profile = Profile.objects.get(user=current_user)
         subjects_set = tutor_profile.subjects_can_help.all()
         matches = Q()
@@ -112,7 +95,6 @@ class RequestedJobs(generic.ListView):
 
     def get_queryset(self):
         current_user = self.request.user
-
         return Job.objects.filter(customer_user=current_user)
 
 
@@ -124,7 +106,6 @@ class RequestedJobs(generic.ListView):
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class RequestTutorView(generic.ListView):
     model = Job
-    # Job.objects.all().delete()
 
     def get(self, request):
         form = RequestTutor()
@@ -205,8 +186,6 @@ class ProfileUpdate(generic.ListView):
             messages.error(request, 'Something went wrong. Please try again.')
         return render(request, 'tutor/studentUpdate.html', context)
 
-# renders the home landing page
-
 @login_required(redirect_field_name='')
 def welcome(request):
     return render(request, 'tutor/welcome.html')
@@ -224,6 +203,17 @@ class TutorProfileView(generic.ListView):
     def tutorprofile(request):
         return render(request, template_name)
 
+
+def beginSession(request, job_id=None):
+    if 'paid' not in request.session:
+        request.session['paid']='true'
+    if(request.session.get('paid') != 'true'):
+        return redirect('/payment')
+    job = Job.objects.get(id=job_id)
+    job.started = True
+    job.save()
+    messages.success(request, 'Your session has begun!')
+    return redirect(reverse_lazy('tutor:session', args=(job.id,)))
 
 def index(request):
     return render(request, 'tutor/home.html')

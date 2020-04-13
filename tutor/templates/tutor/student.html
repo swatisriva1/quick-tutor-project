@@ -35,42 +35,43 @@
 
                     <div class="col-md-8">
                         <div container="container-fluid" style="background-color:whitesmoke; padding: 1rem;">
-                            <h2 class="text-light" style="background-color:#122C34; padding: 2rem;"> 
+                            <h2 class="text-light" style="background-color:#122C34; padding: 1rem;"> 
                                 Your Profile
                             </h2>
 
                             {% if user.profile.first_name and user.profile.last_name %}
                                 {% if user.profile.subjects_can_help %}
-                                    <h4 class="text-info" style="padding: 1rem;"> <b>Student | Tutor</b></h4>
+                                    <h4 class="text-info" style="padding: 0.5rem;"> <b>Student | Tutor</b></h4>
                                 {% else %}
-                                    <h4 class="text-info" style="padding: 1rem;"> <b>Student</b></h4>
+                                    <h4 class="text-info" style="padding: 0.5rem;"> <b>Student</b></h4>
                                 {% endif %}
-                                <h5 class="text-secondary" style="padding: 1rem;"> <b>First Name:</b> {{ user.profile.first_name }}</h5>
-                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Last Name:</b> {{ user.profile.last_name }}</h5>
+                                <h5 class="text-secondary" style="padding: 0.5rem;"> <b>First Name:</b> {{ user.profile.first_name }}</h5>
+                                <h5 class="text-secondary" style="padding: 0.5rem;"> <b>Last Name:</b> {{ user.profile.last_name }}</h5>
                             {% else %}
-                                <h2 class="text-secondary text-light" style="background-color:#122C34; padding: 2rem;"> 
-                                    Trying to request a tutor? Make sure you have the correct information below.
-                                </h2>
-                                <h4 class="text-info" style="padding: 1rem;"> <b>Student</b></h4>
-                                <h5 class="text-secondary" style="padding: 1rem;"> <b>First Name:</b> None</h5>
-                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Last Name:</b> None</h5>
+                                <h5 class="text-secondary text-dark" style="padding: 0.5rem;"> 
+                                    <i>Trying to request a tutor? Want to connect with our students?</i>
+                                    <p><i><b>Make sure you have the correct information below.</b></i></p>
+                                </h5>
+                                <h4 class="text-info" style="padding: 0.5rem;"> <b>Student</b></h4>
+                                <h5 class="text-secondary" style="padding: 0.5rem;"> <b>First Name:</b> None</h5>
+                                <h5 class="text-secondary" style="padding: 0.5rem;"> <b>Last Name:</b> None</h5>
                             {% endif %}
 
                             {% if user.profile.email_addr %}
-                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Email:</b> {{ user.profile.email_addr }}</h5>
+                                <h5 class="text-secondary" style="padding: 0.5rem;"> <b>Email:</b> {{ user.profile.email_addr }}</h5>
                             {% else %}
-                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Email:</b> None</h5>
+                                <h5 class="text-secondary" style="padding: 0.5rem;"> <b>Email:</b> None</h5>
                             {% endif %}
 
                             {% if user.profile.phone_number %}
-                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Phone Number:</b> {{ user.profile.phone_number }}</h5>
+                                <h5 class="text-secondary" style="padding: 0.5rem;"> <b>Phone Number:</b> {{ user.profile.phone_number }}</h5>
                             {% else %}
-                                <h5 class="text-secondary" style="padding: 1rem;"> <b>Phone Number:</b> None</h5>
+                                <h5 class="text-secondary" style="padding: 0.5rem;"> <b>Phone Number:</b> None</h5>
                             {% endif %}
 
                              <!-- CAN PORT OVER TO A DIFFERENT TEMPLATE IF NECESSARY -CALEB -->
                             {% if user.profile.subjects_can_help %}
-                            <h5 class="text-secondary" style="padding: 1rem;"> <b>Subjects you tutor in:</b> </h5>
+                            <h5 class="text-secondary" style="padding: 0.5rem;"> <b>Subjects you tutor in:</b> </h5>
                             <ul class="list-group">
                                 {% for subject in user.profile.subjects_can_help.all %}
                                 <li class="list-group-item">{{ subject }}</li>
@@ -85,4 +86,4 @@
         </fieldset>
     </form>
 </div>
-    {% endblock content%}
+{% endblock content%}
