@@ -26,7 +26,7 @@ class ProfileModelTest(TestCase):
     def test_first_name_max_length(self):
         profile = Profile.objects.get(user=self.test_user)
         max_length = profile._meta.get_field('first_name').max_length
-        self.assertEquals(max_length, 30)
+        self.assertEqual(max_length, 30)
 
     # ** figure out how to edit profile-specific fields
 
@@ -40,11 +40,11 @@ class SubjectModelTest(TestCase):
 
     def test_subject_name_max_length(self):
         self.max_length = self.test_subject._meta.get_field('subject_name').max_length
-        self.assertEquals(self.max_length, 30)
+        self.assertEqual(self.max_length, 30)
 
     def test_subject_name(self):
         name = str(self.test_subject)
-        self.assertEquals(name, 'test')
+        self.assertEqual(name, 'test')
 
     def test_ordering(self):
         Subject.objects.create(subject_name="math")
@@ -143,7 +143,7 @@ class RequestTutorFormTest(TestCase):
 
     # Form with required fields properly filled should be valid
     def test_proper_job(self):
-        test_job = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library')
+        test_job = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library in Charlottesville, Virginia')
         form = RequestTutor(data={'subject': test_job.subject, 'course': test_job.course, 'location': test_job.location, 'notes': test_job.notes}, instance=test_job)
         self.assertTrue(form.is_bound)
         self.assertTrue(form.is_valid())
@@ -424,10 +424,10 @@ class AcceptedJobsViewTest(TestCase):
         sub1.save()
         self.profile.subjects_can_help.add(sub1)
         self.profile.save()
-        test_job1 = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library', subject=sub1)
+        test_job1 = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library in Charlottesville, VA', subject=sub1)
         response = self.client.get('/acceptedjobs/')
         self.assertEqual(200, response.status_code)
-        self.assertListEqual(list(response.context['job']), list(Job.objects.filter(tutor_user=self.test_user)))
+        self.assertListEqual(list(response.context['job_list']), list(Job.objects.filter(tutor_user=self.test_user)))
 
     # Should return list of accepted jobs if a job has been accepted
     def test_get_accepted_jobs(self):
@@ -442,32 +442,11 @@ class AcceptedJobsViewTest(TestCase):
         self.profile.subjects_can_help.add(sub1)
         self.profile.save()
         customer = Profile.objects.get(user=self.test_user2)
-        test_job1 = Job.objects.create(customer_user=self.test_user2, customer_profile=customer, tutor_user=self.test_user, tutor_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library', subject=sub1)
+        test_job1 = Job.objects.create(customer_user=self.test_user2, customer_profile=customer, tutor_user=self.test_user, tutor_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library in Charlottesville, Virginia', subject=sub1)
         response = self.client.get('/acceptedjobs/')
         self.assertEqual(200, response.status_code)
-        self.assertListEqual(list(response.context['job']), list(Job.objects.filter(tutor_user=self.test_user)))
+        self.assertListEqual(list(response.context['job_list']), list(Job.objects.filter(tutor_user=self.test_user)))
 
-    # Starting a job should change boolean value and redirect to the session page
-    def test_post(self):
-        self.client.force_login(self.test_user)
-        self.profile = Profile.objects.get(user=self.test_user)
-        self.profile.first_name = 'Test'
-        self.profile.last_name = 'User'
-        self.profile.email_addr = 'test@gmail.com'
-        self.profile.phone_number = '+5555555555'
-        sub1 = Subject(subject_name='Physics')
-        sub1.save()
-        self.profile.subjects_can_help.add(sub1)
-        self.profile.save()
-        customer = Profile.objects.get(user=self.test_user2)
-        self.test_job1 = Job.objects.create(customer_user=self.test_user2, customer_profile=customer, course='TEST 2020', notes='testing', location='Alderman Library', subject=str(sub1))
-        self.test_job1.tutor_user = self.test_user
-        self.test_job1.tutor_profile = self.profile
-        self.test_job1.save()
-        response = self.client.post('/acceptedjobs/', data={'begin-btn': True, 'id': self.test_job1.id})
-        url = reverse('tutor:session', args=(self.test_job1.id,))
-        self.assertEqual(302, response.status_code)
-        self.assertRedirects(response, url, status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
 
 class RequestTutorViewTest(TestCase):
@@ -502,7 +481,7 @@ class RequestTutorViewTest(TestCase):
         sub1.save()
         self.profile.subjects_can_help.add(sub1)
         self.profile.save()
-        response = self.client.post('/requesttutor/', data={'customer_user': self.test_user, 'customer_profile': self.profile, 'course': 'TEST 2020', 'notes': 'testing', 'location': 'Alderman Library', 'subject': str(sub1)})
+        response = self.client.post('/requesttutor/', data={'customer_user': self.test_user, 'customer_profile': self.profile, 'course': 'TEST 2020', 'notes': 'testing', 'location': 'Alderman Library in Charlottesville, Virginia', 'subject': str(sub1)})
         self.assertEqual(302, response.status_code)
         self.assertRedirects(response, reverse('tutor:requests'), status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
         redir_response = self.client.get('/requests/')
@@ -522,7 +501,7 @@ class RequestTutorViewTest(TestCase):
         sub1.save()
         self.profile.subjects_can_help.add(sub1)
         self.profile.save()
-        response = self.client.post('/requesttutor/', data={'customer_user': self.test_user, 'customer_profile': self.profile, 'course': 'improper', 'notes': 'testing', 'location': 'Alderman Library', 'subject': str(sub1)})
+        response = self.client.post('/requesttutor/', data={'customer_user': self.test_user, 'customer_profile': self.profile, 'course': 'improper', 'notes': 'testing', 'location': 'Alderman Library in Charlottesville, Virginia', 'subject': str(sub1)})
         self.assertEqual(200, response.status_code)
         self.assertFormError(response, 'form', 'course', 'Enter a valid course code using following format: TEST 2010 (Make sure to capitalize the course subject!)')
 
@@ -537,7 +516,7 @@ class SessionInfoViewTest(TestCase):
         self.profile = Profile.objects.get(user=self.test_user)
         sub1 = Subject(subject_name='Physics')
         sub1.save()
-        test_job1 = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library', subject=sub1)
+        test_job1 = Job.objects.create(customer_user=self.test_user, customer_profile=self.profile, course='TEST 2020', notes='testing', location='Alderman Library in Charlottesville, Virginia', subject=sub1)
         url = reverse('tutor:session', args=(test_job1.id,))
         response = self.client.get(url)
         self.assertEqual(302, response.status_code)

@@ -21,6 +21,7 @@
                 <th>Meeting Location</th>
                 <th>Notes</th>
                 <th>Session</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -59,13 +60,18 @@
                 <td>{{ job.location }}</td>
                 <td>{{ job.notes }}</td>
                 <td>
-                    {% if job.tutor_profile != None %}
-                    <a class="btn btn-info" href="{% url 'tutor:session' job.id %}">
-                        Join
+                    {% if job.tutor_profile != None and job.started %}
+                       <a href="{% url 'tutor:beginSession' job.id %}" class="btn btn-info btn-sm" name='id' id="begin-btn">
+                        Begin
                     </a>
                     {% else %}
-                    <button type="button" class="btn btn-info" disabled>Wait</button>
+                        {% if job.tutor_profile != None and job.isConfirmed %}
+                            <button type="button" class="btn btn-info" disabled>Waiting on Tutor</button>
+                        {% else %}
+                            <button type="button" class="btn btn-info" disabled>Waiting for Match</button>
+                        {% endif %}
                     {% endif %}
+                    <a class="btn btn-danger" href="{% url 'tutor:delete' job.id %}" style="background-color: darkred; color:white">Cancel</a>
                 </td>
             </tr>
             {% empty %}

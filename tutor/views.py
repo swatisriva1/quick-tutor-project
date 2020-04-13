@@ -6,7 +6,9 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib import messages
+
 from django.urls import reverse_lazy, reverse
+
 from django.db.models import Q
 from django_tables2 import SingleTableView
 from .tables import tutorJobs
@@ -19,37 +21,35 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
+class AccountHistory(generic.ListView):
+    model = Job
+    template_name = 'tutor/account_history.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs) 
+        current_user = self.request.user
+        as_tutor = Q(tutor_user = current_user) & Q(isComplete = True)
+        as_student = Q(customer_user = current_user) & Q(isComplete = True) 
+        context['as_tutor'] = Job.objects.filter(as_tutor)
+        context['as_student'] = Job.objects.filter(as_student) 
+        return context
+    
+
+@method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class SessionInfo(generic.DetailView):
     model=Job
     template_name = 'tutor/session.html'
 
 
-
-
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class AcceptedJobs(SingleTableView):
     model = Job
+    template_name = 'tutor/acceptedjobs.html'
+    context_object_name = 'job_list'
+    def get_queryset(self):
+        current_user = self.request.user
+        return Job.objects.filter(tutor_user=current_user)
 
-    def get(self, request):
-        jobs = Job.objects.filter(tutor_user=self.request.user)
-        table = tutorJobs(jobs)
-        if 'paid'  not in request.session:
-            request.session['paid']='true'
-        if (request.session.get('paid') != 'true'):
-            return redirect('/payment')
-        return render(request, 'tutor/acceptedjobs.html', {
-            "table":table, 
-            "job": jobs,
-        })
-
-    def post(self, request):
-        if 'begin-btn' in request.POST:
-            begin_job = request.POST.get("id", False)
-            b = Job.objects.get(id=begin_job)
-            b.started = True
-            b.save()
-            messages.success(request, 'Your session has begun!')
-            return redirect(reverse('tutor:session', args=(b.id,)))
 
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
@@ -59,8 +59,6 @@ class AvailableJobs(generic.ListView):
 
     def get_queryset(self):
         current_user = self.request.user
-
-
         tutor_profile = Profile.objects.get(user=current_user)
         subjects_set = tutor_profile.subjects_can_help.all()
         matches = Q()
@@ -74,6 +72,8 @@ class AvailableJobs(generic.ListView):
 
     def post(self, request):
         if request.method == 'POST':
+            if 'isTutor' not in request.session:
+                request.session['isTutor'] = 'false'
             accepted_jobs = request.POST.getlist('selected_job')
             if not accepted_jobs:
                 messages.warning(request, 'No job was selected.')
@@ -86,6 +86,7 @@ class AvailableJobs(generic.ListView):
                     match.isConfirmed = True
                     match.save()
                     messages.success(request, 'Your job(s) have been confirmed!')
+                request.session['isTutor']='true'
                 return redirect(reverse_lazy('tutor:accepted'))
         return redirect(reverse_lazy('tutor:job_list'))
 
@@ -98,19 +99,22 @@ class RequestedJobs(generic.ListView):
 
     def get_queryset(self):
         current_user = self.request.user
-
         return Job.objects.filter(customer_user=current_user)
 
 
     def post(self, request):
-        if request.method == 'POST':
-            return redirect(reverse('tutor:session', args=(Job.id,)))
+        if 'begin-btn' in request.POST:
+            begin_job = request.POST.get("id", False)
+            b = Job.objects.get(id=begin_job)
+            b.started = True
+            b.save()
+            messages.success(request, 'Your session has begun!')
+            return redirect(reverse('tutor:session', args=(b.id,)))
 
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class RequestTutorView(generic.ListView):
     model = Job
-    # Job.objects.all().delete()
 
     def get(self, request):
         form = RequestTutor()
@@ -123,12 +127,14 @@ class RequestTutorView(generic.ListView):
     def post(self, request):
         form = RequestTutor(request.POST)
         if request.method == 'POST':
+            if 'isTutor' not in request.session:
+                request.session['isTutor'] = 'false'
             if form.is_valid():
                 req = form.save(commit=False)
                 req.customer_user = self.request.user
                 req.customer_profile = self.request.user.profile
                 req.save()
-                request.session['paid']='false'
+                request.session['isTutor']='false'
                 messages.success(request, 'Your request has been submitted')
                 return redirect(reverse_lazy('tutor:requests'))
             return render(request, 'tutor/requestTutor.html', {'form': form})
@@ -191,8 +197,6 @@ class ProfileUpdate(generic.ListView):
             messages.error(request, 'Something went wrong. Please try again.')
         return render(request, 'tutor/studentUpdate.html', context)
 
-# renders the home landing page
-
 @login_required(redirect_field_name='')
 def welcome(request):
     return render(request, 'tutor/welcome.html')
@@ -210,6 +214,37 @@ class TutorProfileView(generic.ListView):
     def tutorprofile(request):
         return render(request, template_name)
 
+@login_required(redirect_field_name='')
+def cancelSession(request, job_id=None):
+    job = Job.objects.get(id=job_id)
+    job.started = False
+    job.isConfirmed = False
+    job.tutor_user = None
+    job.tutor_profile = None
+    job.save()
+    request.session['paid'] = 'true'
+    messages.warning(request, 'Your session has been canceled.')
+    return redirect(reverse_lazy('tutor:accepted'))
+
+@login_required(redirect_field_name='')
+def cancelRequest(request, job_id=None):
+    job = Job.objects.get(id=job_id)
+    job.delete()
+    messages.warning(request, 'Your request has been canceled.')
+    request.session['paid']='true'
+    return redirect(reverse_lazy('tutor:requests'))
+
+@login_required(redirect_field_name='')
+def beginSession(request, job_id=None):
+    job = Job.objects.get(id=job_id)
+    job.started = True
+    job.save()
+    if 'isTutor' not in request.session:
+        request.session['isTutor'] = 'false'
+    if request.session['isTutor'] =='false':
+        request.session['paid']='false'
+    messages.success(request, 'Your session has begun!')
+    return redirect(reverse_lazy('tutor:session', args=(job.id,)))
 
 def index(request):
     return render(request, 'tutor/home.html')
@@ -217,6 +252,10 @@ def index(request):
 @login_required(redirect_field_name='')
 def payment(request):
     return render(request, 'tutor/payment.html')
+
 def paymentConfirmation(request):
     request.session['paid'] = 'true'
+    # specify that the model is Job
+    # access the current job instance (the one that you've paid for)
+    # change that job's isComplete from false to true   
     return render(request, 'tutor/paymentConfirmation.html')

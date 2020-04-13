@@ -1,0 +1,150 @@
+{% extends 'tutor/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-fluid">
+
+    {% csrf_token %}
+    <h1 class="page-header">
+        Your Completed Sessions
+    </h1>
+    <h5>When you were the tutor</h5> 
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Date</th>     
+                <th>Student</th>
+                <!-- <th>Subject</th> -->
+                <th>Student Email</th>
+                <th>Course</th>
+                <!-- <th>Phone Number</th> -->
+                <th>Meeting Location</th>
+                <!-- <th>Notes</th>
+                <th>Session</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in as_tutor %}
+            <tr>
+                <td>
+<!--                {% if job.tutor_profile != None %}
+                    <span>&#9989;</span>
+                    {% else %}
+                    <span>&#8987;</span>
+                    {% endif %} -->
+                    {{job.session_date}}
+                </td>
+                <td>
+                    {% if job.customer_profile != None %}
+                    {{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}
+                    {% else %}
+                    Not Assigned
+                    {% endif %}
+                </td>
+                <!-- <td>{{ job.subject }}</td> -->
+                <td>
+                    {% if job.customer_profile != None %}
+                    {{ job.customer_profile.email_addr }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td>{{ job.course }}</td>                
+<!--                 <td>
+                    {% if job.tutor_profile != None %}
+                    {{ job.tutor_profile.phone_number }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td> -->
+                <td>{{ job.location }}</td>
+                <!-- <td>{{ job.notes }}</td> -->
+<!--                 <td>
+                    {% if job.tutor_profile != None %}
+                    <a class="btn btn-info" href="{% url 'tutor:session' job.id %}">
+                        Join
+                    </a>
+                    {% else %}
+                    <button type="button" class="btn btn-info" disabled>Wait</button>
+                    {% endif %}
+                </td> -->
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10" class="text-center bg-warning">No sessions yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<br><br>
+<h5>When you were the student</h5>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Date</th>      
+            <th>Tutor</th>
+            <!-- <th>Subject</th> -->
+            <th>Tutor Email</th>
+            <th>Course</th>
+            <!-- <th>Phone Number</th> -->
+            <th>Meeting Location</th>
+            <!-- <th>Notes</th>
+            <th>Session</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in as_student %}
+        <tr>
+            <td>
+<!--                {% if job.tutor_profile != None %}
+                <span>&#9989;</span>
+                {% else %}
+                <span>&#8987;</span>
+                {% endif %} -->
+                {{job.session_date}}
+            </td>
+            <td>
+                {% if job.tutor_profile != None %}
+                {{ job.tutor_profile.first_name }} {{ job.tutor_profile.last_name }}
+                {% else %}
+                Not Assigned
+                {% endif %}
+            </td>
+            <!-- <td>{{ job.subject }}</td> -->
+            <td>
+                {% if job.tutor_profile != None %}
+                {{ job.tutor_profile.email_addr }}
+                {% else %}
+                -
+                {% endif %}
+            </td>
+            <td>{{ job.course }}</td>                
+<!--                 <td>
+                {% if job.tutor_profile != None %}
+                {{ job.tutor_profile.phone_number }}
+                {% else %}
+                -
+                {% endif %}
+            </td> -->
+            <td>{{ job.location }}</td>
+            <!-- <td>{{ job.notes }}</td> -->
+<!--                 <td>
+                {% if job.tutor_profile != None %}
+                <a class="btn btn-info" href="{% url 'tutor:session' job.id %}">
+                    Join
+                </a>
+                {% else %}
+                <button type="button" class="btn btn-info" disabled>Wait</button>
+                {% endif %}
+            </td> -->
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10" class="text-center bg-warning">No sessions yet</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

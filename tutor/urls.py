@@ -18,6 +18,9 @@ urlpatterns = [
     path('jobs/', views.AvailableJobs.as_view(), name = "job_list"),
     path('requests/',views.RequestedJobs.as_view(), name="requests"),
     path('<int:pk>/session/', views.SessionInfo.as_view(), name='session'),
-path('paymentConfirmation/', views.paymentConfirmation, name='paymentConf'),
-
+    path('paymentConfirmation/', views.paymentConfirmation, name='paymentConf'),
+    path('accounthistory/', views.AccountHistory.as_view(), name='history'),
+    path('confirm/<int:job_id>/', views.beginSession, name='beginSession'),
+    path('cancel/<int:job_id>/', views.cancelSession, name='cancel'),
+    path('delete/<int:job_id>/', views.cancelRequest, name='delete')
 ]

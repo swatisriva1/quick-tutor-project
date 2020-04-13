@@ -11,16 +11,26 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Title</title>
 </head>
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand">
   <a class="navbar-brand" href="{% url 'tutor:index' %}"><img src="/static/tutor/QTIcon.png" width="50" height="50" alt=""></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler m1-1" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+  <div class="collapse navbar-collapse justify-content-between align-items-center w-100" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <a class="nav-item nav-link " href="{% url 'tutor:index' %}">Home </a>
       {% if user.is_authenticated %}
-        <a class="nav-item nav-link " href="{% url 'tutor:student' %}">My Account</a>
+        <!-- <a class="nav-item nav-link " href="{% url 'tutor:student' %}">My Account</a> -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            My Account
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'tutor:student' %}">Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'tutor:history' %}">Account History</a>
+          </div>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Student
@@ -48,13 +58,13 @@
   </div>
 
     {% if user.is_authenticated %}
-      <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="collapse navbar-collapse justify-content-between align-items-center w-100" id="navbarCollapse">
         <div class="navbar-nav ml-auto">
             <a href="{% url 'tutor:logout' %}" class="nav-item nav-link">Logout</a>
         </div>
       </div>
     {% else %}
-        <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="collapse navbar-collapse justify-content-between align-items-center w-100" id="navbarCollapse">
         <div class="navbar-nav ml-auto">
             <a href="{% url 'social:begin' 'google-oauth2' %}" class="nav-item nav-link">Login</a>
         </div>

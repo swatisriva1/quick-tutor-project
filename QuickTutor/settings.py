@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django_tables2',
     'paypal.standard.ipn',
     'storages',
+    'easy_maps'
 ]
 
 MIDDLEWARE = [
@@ -122,7 +123,7 @@ MESSAGE_TAGS = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 SESSION_ENGINE=  "django.contrib.sessions.backends.signed_cookies"
 
 USE_I18N = True
@@ -153,7 +154,8 @@ AUTHENTICATION_BACKENDS = (
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '21594397326-20c4dmthpoka091b6afut89vmd2dhg5t.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'v4EcmMJV-F2fg0O8dAWfzpwo'
-GOOGLE_MAPS_API_KEY = 'AIzaSyAKPLB2fWdM2Ed-ijZ5vy3mefKpkWI1AEE'
+EASY_MAPS_GOOGLE_KEY= "AIzaSyCXz6Cv3Owl_hgtxWJiimLVWjFtDfXIxCw"
+GOOGLE_MAPS_API_KEY= "AIzaSyCXz6Cv3Owl_hgtxWJiimLVWjFtDfXIxCw"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 

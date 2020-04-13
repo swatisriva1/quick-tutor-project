@@ -4,8 +4,8 @@
 {% load crispy_forms_tags %}
 {% load render_table from django_tables2 %}
 {% bootstrap_css %}
-
-{% block content %}
+<title>Accepted Jobs</title>
+<!-- 
 <div class="container-fluid">
     <form method="POST">
         {% csrf_token %}
@@ -16,5 +16,69 @@
             {% render_table table %}
         </body>
     </form>
+</div> -->
+
+{% block content %}
+<div class="container-fluid">
+
+    {% csrf_token %}
+    <h1 class="page-header">
+        Accepted Jobs
+    </h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Subject</th>
+                <th>Course</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Meeting Location</th>
+                <th>Notes</th>
+                <th>Session</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in job_list %}
+            <tr>
+                <td>
+                    {% if job.customer_profile != None %}
+                    {{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}
+                    {% else %}
+                    Not Assigned
+                    {% endif %}
+                </td>
+                <td>{{ job.subject }}</td>
+                <td>{{ job.course }}</td>
+                <td>
+                    {% if job.customer_profile != None %}
+                    {{ job.customer_profile.email_addr }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if job.customer_profile != None %}
+                    {{ job.customer_profile.phone_number }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td>{{ job.location }}</td>
+                <td>{{ job.notes }}</td>
+                <td>
+                    <a href="{% url 'tutor:beginSession' job.id %}" class="btn btn-info btn-sm" name='id' id="begin-btn">
+                        Begin
+                    </a>
+                    <a type="button" href="{% url 'tutor:cancel' job.id %}" class="btn btn-danger" style="background-color: darkred; color:white">Cancel</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10" class="text-center bg-warning">No jobs confirmed</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-{% endblock content %}
+{% endblock %}

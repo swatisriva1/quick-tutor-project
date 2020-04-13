@@ -10,22 +10,30 @@
         {% csrf_token %}
         <fieldset class="form-group">
             <div class="border border-light p-3 mb-4">
+                {% if user.profile.phone_number == ""  %}
+               <meta http-equiv="Refresh" content="0; url=/student" />
+                {% endif %}
+            {% if user.profile.last_name == ""  %}
+               <meta http-equiv="Refresh" content="0; url=/student" />
+                {% endif %}
+            {% if user.profile.first_name == ""  %}
+               <meta http-equiv="Refresh" content="0; url=/student" />
+                {% endif %}
                 <div class="text-left">
                     <h1> Request a Tutor </h1>
-                        {{ form|crispy }}
-                   <!-- <button type="submit" class="btn btn-primary">Submit Suggestion</button> -->
+                    {{ form|crispy }}
                 </div>
             </div>
         </fieldset>
-        
-            <div class="text-center  ">
-                <h6>You'll be charged $4.99 upon completion of the Tutoring Session</h6>
-                <div class="form-group">
 
-                    <button type="submit" class="btn btn-info btn-lg">Submit</button>
-                </div>
+        <div class="text-center">
+            <h6>You'll be charged $4.99 upon completion of the Tutoring Session</h6>
+            <div class="form-group">
+
+                <button type="submit" class="btn btn-info btn-lg">Submit</button>
             </div>
-        
-        </form>
+        </div>
+
+    </form>
 </div>
 {% endblock content %}
