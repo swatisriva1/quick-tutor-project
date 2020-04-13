@@ -34,12 +34,12 @@ class AccountHistory(generic.ListView):
         context['as_student'] = Job.objects.filter(as_student) 
         return context
 
-    def get(self, request):
+"""     def get(self, request):
         if 'paid'  not in request.session:
             request.session['paid']='true'
         if (request.session.get('paid') != 'true'):
             return redirect('/payment')
-        return render(request, 'tutor/account_history.html')
+        return render(request, 'tutor/account_history.html') """
     
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
