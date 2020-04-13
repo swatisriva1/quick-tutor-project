@@ -235,6 +235,15 @@ def cancelRequest(request, job_id=None):
     return redirect(reverse_lazy('tutor:requests'))
 
 @login_required(redirect_field_name='')
+def endSession(request, job_id=None):
+    job = Job.objects.get(id=job_id)
+    job.isComplete = True
+    job.save()
+    messages.success(request, 'Your session has ended. Please provide your payment information below')
+    request.session['paid']='true'
+    return redirect(reverse_lazy('tutor:payment'))
+
+@login_required(redirect_field_name='')
 def beginSession(request, job_id=None):
     job = Job.objects.get(id=job_id)
     job.started = True

@@ -22,5 +22,6 @@ urlpatterns = [
     path('accounthistory/', views.AccountHistory.as_view(), name='history'),
     path('confirm/<int:job_id>/', views.beginSession, name='beginSession'),
     path('cancel/<int:job_id>/', views.cancelSession, name='cancel'),
-    path('delete/<int:job_id>/', views.cancelRequest, name='delete')
+    path('delete/<int:job_id>/', views.cancelRequest, name='delete'),
+    path('endsession/<int:job_id>/', views.endSession, name='end')
 ]
