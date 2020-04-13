@@ -48,6 +48,7 @@
                                 <h5 class="text-secondary" style="padding: 0.5rem;"> <b>First Name:</b> {{ user.profile.first_name }}</h5>
                                 <h5 class="text-secondary" style="padding: 0.5rem;"> <b>Last Name:</b> {{ user.profile.last_name }}</h5>
                             {% else %}
+
                                 <h5 class="text-secondary text-dark" style="padding: 0.5rem;"> 
                                     <i>Trying to request a tutor? Want to connect with our students?</i>
                                     <p><i><b>Make sure you have the correct information below.</b></i></p>
@@ -55,6 +56,7 @@
                                 <h4 class="text-info" style="padding: 0.5rem;"> <b>Student</b></h4>
                                 <h5 class="text-secondary" style="padding: 0.5rem;"> <b>First Name:</b> None</h5>
                                 <h5 class="text-secondary" style="padding: 0.5rem;"> <b>Last Name:</b> None</h5>
+
                             {% endif %}
 
                             {% if user.profile.email_addr %}

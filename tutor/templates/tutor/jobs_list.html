@@ -13,6 +13,15 @@
     <p>
         No Jobs? Try updating your account profile with subjects you would be interested in tutoring.
     </p>
+    {% if user.profile.phone_number == ""  %}
+               <meta http-equiv="Refresh" content="0; url=/student" />
+                {% endif %}
+            {% if user.profile.last_name == ""  %}
+               <meta http-equiv="Refresh" content="0; url=/student" />
+                {% endif %}
+            {% if user.profile.first_name == ""  %}
+               <meta http-equiv="Refresh" content="0; url=/student" />
+                {% endif %}
     <table class="table table-hover">
         <thead>
             <tr>
