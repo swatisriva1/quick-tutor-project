@@ -16,7 +16,7 @@
 <div style="height: 700px;">
 <div class="jumbotron" style="background-image: url({% static 'tutor/home.png' %})">
     <div class="text-left">
-      <img src="static/tutor/QuickTutor.png" style="width:55%">
+      <img src="static/tutor/QuickTutor.png" style="width:50%">
     </div>
     {% if user.is_authenticated %}
     <!--      <a class="btn btn-primary" href="tutor/logout/">Logout</a>-->
@@ -26,7 +26,9 @@
         <div class="card-body">
           <h5 class="display-4"><b>Welcome back {{ user.profile.first_name }}!</b></h4>
         {% else %}
-          <h4 class="display-4"><b>Welcome! Please set up your account!</b></h4>
+        <div class="card text-white" style="width: 36%; background-color:#122C34">
+        <div class="card-body">
+          <h4 class="display-4"><b>Welcome! Please set up your account.</b></h4>
         {% endif %}
         <blockquote class="blockquote">
           QuickTutor is the tutoring service for customers and tutors on-the go, 
@@ -43,13 +45,19 @@
           <button class="requestTutor btn-info btn-lg float-left" type="button" style="background-color:	#047a89; color: white;" data-toggle="modal" data-target="#requestTutor" onclick="location.href='{% url 'tutor:requestTutor' %}'">
             Request A Tutor
           </button>
-          <button class="requestTutor btn-info btn-lg float-left" type="button" style="background-color: #047a89; color: white;" href="{% url 'tutor:job_list' %}">
-            Start Tutoring
-          </button>
+          {% if user.profile.first_name %}
+            <button class="requestTutor btn-info btn-lg float-left" type="button" style="background-color: #047a89; color: white;" href="{% url 'tutor:job_list' %}" onclick="location.href='{% url 'tutor:job_list' %}'">
+              Start Tutoring
+            </button>
+          {% else %}
+            <button class="requestTutor btn-info btn-lg float-left" type="button" style="background-color: #047a89; color: white;" onclick="location.href='{% url 'tutor:student' %}'">
+              Start Tutoring
+            </button>
+          {% endif %}
         </div>
     {% else %}
     <span class="border-bottom-0">
-    <div class="card text-white" style="width: 35%; background-color:#122C34">
+    <div class="card text-white" style="width: 36%; background-color:#122C34">
       <div class="card-body">
       <h4 class="display-4">Welcome</h4>
       <blockquote class="blockquote">
@@ -73,39 +81,4 @@
       </div>
   {% endif %}
 </div>
-
-
-  <div class="modal fade" id="requestTutor" tabindex="-1" role="dialog" aria-labelledby="requestTutor"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <form method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-
-          <div class="modal-body">
-            {{ form|crispy }}
-          </div>
-
-
-      </form>
-
-    </div>
-  </div>
-
-  <!-- script type="text/javascript">
-  $(document).ready(function () {
-
-    $(".requestTutor").modalForm({
-      formURL: "{% url 'tutor:requestTutor' %}"
-    });
-  });
-</script> -->
-  {% endblock %}
-  <!--
-</body>
-</html>-->
+{% endblock %}
