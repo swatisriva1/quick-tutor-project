@@ -19,5 +19,5 @@ urlpatterns = [
     path('requests/',views.RequestedJobs.as_view(), name="requests"),
     path('<int:pk>/session/', views.SessionInfo.as_view(), name='session'),
 path('paymentConfirmation/', views.paymentConfirmation, name='paymentConf'),
-
+path('accounthistory/', views.AccountHistory.as_view(), name='history')
 ]
