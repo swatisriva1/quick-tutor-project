@@ -175,7 +175,7 @@ class Job(models.Model):
     course_validator = RegexValidator(regex=r'[A-Z]{2,4} \d{4}', message="Enter a valid course code using following format: TEST 2010 (Make sure to capitalize the course subject!)")
     course = models.CharField(validators=[course_validator], max_length=9, default="", help_text="Ex: ECON 2010, MATH 1010")
     subject = models.CharField(max_length=200, choices=SUBJECTS, help_text="Select a subject that you need help in.", default=SUBJECTS[0][0])
-    notes = models.TextField(max_length=1000, default="", help_text="Any additional notes you might have about your request?", blank=True)
+    notes = models.TextField(max_length=250, default="", help_text="Any additional notes you might have about your request?", blank=True)
     location = models.CharField(max_length=200, choices=LOCATIONS, help_text="Select a meeting spot for your session.", default='None')
     session_date = models.DateTimeField(auto_now=True)
     isConfirmed = models.BooleanField(default=False)
