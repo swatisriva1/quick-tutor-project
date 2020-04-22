@@ -231,7 +231,10 @@ def cancelSession(request, job_id=None):
     job.tutor_user = None
     job.tutor_profile = None
     job.save()
-    request.session['paid'] = 'true'
+
+    student = Profile.objects.get(user=job.customer_user)
+    student.started = False
+    student.save()
     messages.warning(request, 'Your session has been canceled.')
     return redirect(reverse_lazy('tutor:accepted'))
 
@@ -240,7 +243,9 @@ def cancelRequest(request, job_id=None):
     job = Job.objects.get(id=job_id)
     job.delete()
     messages.warning(request, 'Your request has been canceled.')
-    request.session['paid']='true'
+    student = Profile.objects.get(user=job.customer_user)
+    student.started = False
+    student.save()
     return redirect(reverse_lazy('tutor:requests'))
 
 @login_required(redirect_field_name='')
@@ -259,7 +264,9 @@ def beginSession(request, job_id=None):
     if 'isTutor' not in request.session:
         request.session['isTutor'] = 'false'
     if request.session['isTutor'] =='false':
-        request.session['paid']='false'
+        student=Profile.objects.get(user=job.customer_user)
+        student.started=True
+        student.save()
     messages.success(request, 'Your session has begun!')
     return redirect(reverse_lazy('tutor:session', args=(job.id,)))
 

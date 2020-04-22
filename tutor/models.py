@@ -38,7 +38,7 @@ class Profile(models.Model):
     rating = models.DecimalField(max_digits=5, decimal_places=2, null=True) # two places past decimal
     # List of subjects a User is able to offer tutoring services in
     subjects_can_help = models.ManyToManyField(Subject, help_text="Crtl-click to select multiple subjects; select 'None' if you do not wish to tutor")
-
+    started = models.BooleanField(default=False)
     # Method that returns profile pic to be displayed (default or user-uploaded)
     @property
     def get_pic_url(self):
