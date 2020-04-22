@@ -13,6 +13,9 @@
                 {% if user.profile.phone_number == ""  %}
                <meta http-equiv="Refresh" content="0; url=/student" />
                 {% endif %}
+                {% if user.profile.started == True %}
+               <meta http-equiv="Refresh" content="0; url=/payment" />
+                {% endif %}
             {% if user.profile.last_name == ""  %}
                <meta http-equiv="Refresh" content="0; url=/student" />
                 {% endif %}
