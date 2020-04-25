@@ -27,18 +27,16 @@ class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE, default="")
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$')
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=False, help_text="Phone number must be entered in the format: '9999999999'. Up to 15 digits allowed.")
-    # don't want to use simple text field for phone number
-    # (want to validate) but not sure what to use
     first_name = models.CharField(max_length=30, default='First')
     last_name = models.CharField(max_length=30, default='Last')
     email_addr = models.EmailField(max_length=200, default='example@email.com', help_text="Ex: example@email.com")
-    #= for now, use simple text field for phone number, but later make sure we validate it somehow
-    # use this? https://pypi.org/project/django-phone-field/
     pic = models.ImageField(upload_to='profile_picture', default = "default_profile_pic.png", blank=True, help_text = "Uploading a profile picture makes it easier for your tutor/student to recognize you.")
-    rating = models.DecimalField(max_digits=5, decimal_places=2, null=True) # two places past decimal
+    rating = models.DecimalField(max_digits=5, decimal_places=2, null=True, default=0) # two places past decimal
     # List of subjects a User is able to offer tutoring services in
     subjects_can_help = models.ManyToManyField(Subject, help_text="Crtl-click to select multiple subjects; select 'None' if you do not wish to tutor")
     started = models.BooleanField(default=False)
+    requestedjobs = models.IntegerField(blank=True, default=0)
+    acceptedjobs = models.IntegerField(blank=True, default=0)
     # Method that returns profile pic to be displayed (default or user-uploaded)
     @property
     def get_pic_url(self):
@@ -181,6 +179,7 @@ class Job(models.Model):
     isConfirmed = models.BooleanField(default=False)
     started = models.BooleanField(default=False)
     isComplete = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.subject

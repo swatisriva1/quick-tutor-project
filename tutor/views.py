@@ -252,6 +252,22 @@ def cancelRequest(request, job_id=None):
 def endSession(request, job_id=None):
     job = Job.objects.get(id=job_id)
     job.isComplete = True
+    
+    current = job.tutor_profile.rating*job.tutor_profile.acceptedjobs
+    job.tutor_profile.acceptedjobs += 1
+    job.customer_profile.requestedjobs +=1
+
+    if 'customRadio1' in request.POST:
+        job.tutor_profile.rating = (current + 1.0)/job.tutor_profile.acceptedjobs
+    if 'customRadio2' in request.POST:
+        job.tutor_profile.rating = (current + 2.0)/job.tutor_profile.acceptedjobs
+    if 'customRadio3' in request.POST:
+        job.tutor_profile.rating = (current + 3.0)/job.tutor_profile.acceptedjobs
+    if 'customRadio4' in request.POST:
+        job.tutor_profile.rating = (current + 4.0)/job.tutor_profile.acceptedjobs
+    if 'customRadio5' in request.POST:
+        job.tutor_profile.rating = (current + 5.0)/job.tutor_profile.acceptedjobs
+
     job.save()
     messages.success(request, 'Your session has ended. Please provide your payment information below')
     return redirect(reverse_lazy('tutor:payment'))
