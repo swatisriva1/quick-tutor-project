@@ -81,7 +81,6 @@ class Profile(models.Model):
 
 
 SUBJECTS = [
-    ('None', 'None'),
     ('Accounting', "Accounting"),
     ('Aerospace Engineering', 'Aerospace Engineering'),
     ('African American & African Studies', 'African American & African Studies'),
