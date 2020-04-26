@@ -115,33 +115,33 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <form method = "POST">
+      <form method = "POST">
+        {% csrf_token %}
+        <div class="modal-body">
           <div class=text-center>
             Please Rate Your Tutor:
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="customRadio1" name="example" value="customEx">
+              <input type="radio" class="custom-control-input" id="customRadio1" name="button" value="one">
               <label class="custom-control-label" for="customRadio1"><p class="font-weight-bold">1</p></label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="customRadio2" name="example" value="customEx">
+              <input type="radio" class="custom-control-input" id="customRadio2" name="button" value="two">
               <label class="custom-control-label" for="customRadio2"><p class="font-weight-bold">2</p></label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="customRadio3" name="example" value="customEx">
+              <input type="radio" class="custom-control-input" id="customRadio3" name="button" value="three">
               <label class="custom-control-label" for="customRadio3"><p class="font-weight-bold">3</p></label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="customRadio4" name="example" value="customEx">
+              <input type="radio" class="custom-control-input" id="customRadio4" name="button" value="four">
               <label class="custom-control-label" for="customRadio4"><p class="font-weight-bold">4</p></label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="customRadio5" name="example" value="customEx">
+              <input type="radio" class="custom-control-input" id="customRadio5" name="button" value="five">
               <label class="custom-control-label" for="customRadio5"><p class="font-weight-bold">5</p></label>
             </div>
           </div>
-        </form>
-        <hr/>
+          <hr/>
           <h7>
             After ending the session, we will redirect you to our payment methods and you will be charged a flat rate of $4.99.
           </h7>
@@ -153,9 +153,10 @@
         </p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
-        <a href="{% url 'tutor:end' job.id %}" class="btn btn-danger" style="background-color:darkred">End Session</a>
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+         <a href="{% url 'tutor:end' job.id %}" class="btn btn-danger" style="background-color:darkred">End Session</a>
       </div>
+    </form>
     </div>
   </div>
 </div>

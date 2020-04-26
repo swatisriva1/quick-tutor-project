@@ -19,6 +19,7 @@ from .forms import List, PicForm, EditProfile, RequestTutor, AvailableJobsForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+import decimal
 
 @method_decorator(login_required(redirect_field_name=''), name='dispatch')
 class AccountHistory(generic.ListView):
@@ -256,18 +257,27 @@ def endSession(request, job_id=None):
     current = job.tutor_profile.rating*job.tutor_profile.acceptedjobs
     job.tutor_profile.acceptedjobs += 1
     job.customer_profile.requestedjobs +=1
+    job.tutor_profile.save()
+    job.customer_profile.save()
+    selected = request.POST.get('button')
 
-    if 'customRadio1' in request.POST:
-        job.tutor_profile.rating = (current + 1.0)/job.tutor_profile.acceptedjobs
-    if 'customRadio2' in request.POST:
-        job.tutor_profile.rating = (current + 2.0)/job.tutor_profile.acceptedjobs
-    if 'customRadio3' in request.POST:
-        job.tutor_profile.rating = (current + 3.0)/job.tutor_profile.acceptedjobs
-    if 'customRadio4' in request.POST:
-        job.tutor_profile.rating = (current + 4.0)/job.tutor_profile.acceptedjobs
-    if 'customRadio5' in request.POST:
-        job.tutor_profile.rating = (current + 5.0)/job.tutor_profile.acceptedjobs
+    if selected == "one":
+        #job.tutor_profile.rating = (current + 1.0)/job.tutor_profile.acceptedjobs
+        job.tutor_profile.rating = decimal.Decimal(1.0)
+    elif selected == "two":
+        #job.tutor_profile.rating = (current + 2.0)/job.tutor_profile.acceptedjobs
+        job.tutor_profile.rating = decimal.Decimal(2.0)
+    elif selected == "three":
+        #job.tutor_profile.rating = (current + 3.0)/job.tutor_profile.acceptedjobs
+        job.tutor_profile.rating = decimal.Decimal(3.0)
+    elif selected == "four":
+        #job.tutor_profile.rating = (current + 4.0)/job.tutor_profile.acceptedjobs
+        job.tutor_profile.rating = decimal.Decimal(4.0)
+    elif selected == "five":
+        job.tutor_profile.rating = decimal.Decimal(5.0)
 
+    job.tutor_profile.save()
+    job.customer_profile.save()
     job.save()
     messages.success(request, 'Your session has ended. Please provide your payment information below')
     return redirect(reverse_lazy('tutor:payment'))
