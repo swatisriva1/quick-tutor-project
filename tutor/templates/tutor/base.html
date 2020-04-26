@@ -53,16 +53,17 @@
             </div>
           </li>
         {% endif %}
+        
       {% endif %}
     </div>
   </div>
 
     {% if user.is_authenticated %}
-      {% if user.profile.first_name.exists %}
-        <div class="navbar-text justify-content-between align-items-center w-80 navbar-nav ml-auto">Hi, {% user.profile.first_name %}</div>
-      {% endif %}
       <div class="collapse navbar-collapse justify-content-between align-items-center w-100" id="navbarCollapse">
         <div class="navbar-nav ml-auto">
+            {% if user.profile.first_name %}
+              <span class="navbar-text mr-4">Hi, {{ user.profile.first_name }}</span>
+            {% endif %}
             <a href="{% url 'tutor:logout' %}" class="nav-item nav-link">Logout</a>
         </div>
       </div>
