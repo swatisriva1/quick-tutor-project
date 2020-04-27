@@ -295,6 +295,8 @@ def cancelSession(request, job_id=None):
     student.started = False
     student.save()
     messages.warning(request, 'Your session has been canceled.')
+    if(request.session['isTutor']=="false"):
+        return redirect(reverse_lazy('tutor:requests'))
     return redirect(reverse_lazy('tutor:accepted'))
 
 @login_required(redirect_field_name='')
