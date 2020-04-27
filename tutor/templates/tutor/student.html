@@ -31,6 +31,15 @@
                                 </p></p>
                             </div>
                         </div>
+                        <hr>
+                        <div container="container-fluid" style="background-color:#122C34; padding: 1rem;">
+                            {% if user.profile.jobinteractions > 1 %} 
+                                <h5 class="text-secondary text-light">
+                                    Your User Rating: <h4 style="color:#F46036"><b>{{ user.profile.rating }}</b></h4>
+                                </h5>
+                            {% endif %}
+                        </div>
+
                     </div>
 
                     <div class="col-md-8">

@@ -24,6 +24,20 @@
             {% easy_map job.location w h using t %}
             {% endwith %}
           </div>
+
+          {% if user == job.customer_user %}
+            <h5 style="color:#D45800"><b>Your Notes:</b></h5>
+            <blockquote class="blockquote">
+              {{ job.notes }}
+            </blockquote>
+          {% endif %}
+          {% if user == job.tutor_user %}
+            <h5 style="color:#D45800"><b>Student's Notes:</b></h5>
+            <blockquote class="blockquote">
+              {{ job.notes }}
+            </blockquote>
+          {% endif %}
+
       </div>
 
       <div class="col-sm-3">
@@ -35,19 +49,6 @@
               <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}</li>
               <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.customer_profile.phone_number }}</li>
               <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.customer_profile.email_addr }}</li>
-              {% if user == job.customer_user %}
-              <li class="list-group-item" style="background-color:#CDEDF6;">
-                <h6>Your Notes:</h6>
-                <p class="card-text" style="background-color:#CDEDF6;">{{ job.notes }}</p>
-              </li>
-              {% endif %}
-              {% if user == job.tutor_user %}
-                <li class="list-group-item" style="background-color:#CDEDF6;">
-                  <h6>Student's Notes:</h6>
-                  <p class="card-text" style="background-color:#CDEDF6;">{{ job.notes }}</p>
-                </li>
-              {% endif %}
-            </ul>
           </div>
         </div>
       </div>
