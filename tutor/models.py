@@ -178,6 +178,8 @@ class Job(models.Model):
     isConfirmed = models.BooleanField(default=False)
     started = models.BooleanField(default=False)
     isComplete = models.BooleanField(default=False)
+    last_tutored_by = models.ForeignKey(User, related_name='lastTutor', on_delete=models.CASCADE, null=True, blank=True) #last previous tutor
+    isCanceled = models.BooleanField(default=False)
 
 
     def __str__(self):

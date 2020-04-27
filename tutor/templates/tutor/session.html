@@ -9,10 +9,10 @@
   <div class="border border-light p-3 mb-4">
     <h1 class="text-light" style="background-color:#D45800; padding: 1rem;">Current Tutoring Session</h1>
         {% if user == job.customer_user %}
-          <h4><i>{{ job.tutor_profile.first_name }} will tutor you in {{ job.course }} at {{ job.location }}.</i></h4>
+          <h4><i>{{ job.last_tutored_by.first_name }} will tutor you in {{ job.course }} at {{ job.location }}.</i></h4>
         {% endif %}
 
-        {% if user == job.tutor_user %}
+        {% if user == job.last_tutored_by %}
           <h4><i>You'll be tutoring {{ job.customer_profile.first_name }} in {{ job.course }} at {{ job.location }}.</i></h4>
         {% endif %}
 
@@ -31,7 +31,7 @@
               {{ job.notes }}
             </blockquote>
           {% endif %}
-          {% if user == job.tutor_user %}
+          {% if user == job.last_tutored_by %}
             <h5 style="color:#D45800"><b>Student's Notes:</b></h5>
             <blockquote class="blockquote">
               {{ job.notes }}
@@ -56,13 +56,13 @@
       <div class="col-sm-3">
         <div class=container-fluid>
           <div class="card" style="width: 18rem; background-color:#CDEDF6;display:inline-block;">
-            <img class="card-img-top" src="{{  job.tutor_profile.get_pic_url  }}" alt="img">
+            <img class="card-img-top" src="{{  job.last_tutored_by.profile.get_pic_url  }}" alt="img">
             <div class="card-body">
               <h3 class="card-title">Tutor</h3>
               <ul class="list-group list-group-flush">
-                <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.tutor_profile.first_name }} {{ job.tutor_profile.last_name }}</li>
-                <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.tutor_profile.phone_number }}</li>
-                <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.tutor_profile.email_addr }}</li>
+                <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.last_tutored_by.profile.first_name }} {{ job.last_tutored_by.profile.last_name }}</li>
+                <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.last_tutored_by.profile.phone_number }}</li>
+                <li class="list-group-item" style="background-color:#CDEDF6;">{{ job.last_tutored_by.profile.email_addr }}</li>
               </ul>
             </div>
           </div>
@@ -103,7 +103,7 @@
             <h6><i>No show?</i></h6>
             {% if user == job.customer_user %}
               <Legend>Please rate your tutor:</Legend>
-            {% elif user == job.tutor_user %}
+            {% elif user == job.last_tutored_by %}
               <Legend>Please rate your student:</Legend>
             {% endif %}
             <div class="custom-control custom-radio custom-control-inline">

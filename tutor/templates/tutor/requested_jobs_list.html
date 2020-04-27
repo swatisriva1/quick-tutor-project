@@ -49,6 +49,8 @@
                 <td>
                     {% if job.tutor_profile.jobinteractions == 1 %}
                         -
+                    {% elif job.tutor_profile == None %}
+                        -
                     {% else %}
                         {{ job.tutor_profile.rating }}
                     {% endif %}
