@@ -14,6 +14,7 @@
             <tr>
                 <th>Status</th>
                 <th>Tutor</th>
+                <th>Rating</th>
                 <th>Subject</th>
                 <th>Course</th>
                 <th>Email</th>
@@ -39,6 +40,13 @@
                     {{ job.tutor_profile.first_name }} {{ job.tutor_profile.last_name }}
                     {% else %}
                     Not Assigned
+                    {% endif %}
+                </td>
+                <td>
+                    {% if job.tutor_profile.jobinteractions == 1 %}
+                        -
+                    {% else %}
+                        {{ job.tutor_profile.rating }}
                     {% endif %}
                 </td>
                 <td>{{ job.subject }}</td>

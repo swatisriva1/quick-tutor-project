@@ -31,12 +31,11 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=30, default='Last')
     email_addr = models.EmailField(max_length=200, default='example@email.com', help_text="Ex: example@email.com")
     pic = models.ImageField(upload_to='profile_picture', default = "default_profile_pic.png", blank=True, help_text = "Uploading a profile picture makes it easier for your tutor/student to recognize you.")
-    rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, default=0) # two places past decimal
+    rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, default=5.0) # two places past decimal
     # List of subjects a User is able to offer tutoring services in
     subjects_can_help = models.ManyToManyField(Subject, help_text="Crtl-click to select multiple subjects; select 'None' if you do not wish to tutor")
     started = models.BooleanField(default=False)
-    requestedjobs = models.IntegerField(blank=True, default=0)
-    acceptedjobs = models.IntegerField(blank=True, default=0)
+    jobinteractions = models.IntegerField(blank=True, default=1)
     # Method that returns profile pic to be displayed (default or user-uploaded)
     @property
     def get_pic_url(self):

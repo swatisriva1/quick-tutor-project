@@ -95,13 +95,53 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <h5>Are you sure you want to cancel this session?</h5>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
-        <a href="{% url 'tutor:cancel' job.id %}" class="btn btn-danger" style="background-color:darkred">Yes</a>
-      </div>
+      <form method = "POST" form action = "{% url 'tutor:cancel' job.id %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class=text-center>
+            <h6><i>No show?</i></h6>
+            {% if user == job.customer_user %}
+              <Legend>Please rate your tutor:</Legend>
+            {% elif user == job.tutor_user %}
+              <Legend>Please rate your student:</Legend>
+            {% endif %}
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" class="custom-control-input" id="customRadio1" name="button" value="1">
+              <label class="custom-control-label" for="customRadio1"><p class="font-weight-bold">1</p></label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" class="custom-control-input" id="customRadio2" name="button" value="2">
+              <label class="custom-control-label" for="customRadio2"><p class="font-weight-bold">2</p></label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" class="custom-control-input" id="customRadio3" name="button" value="3">
+              <label class="custom-control-label" for="customRadio3"><p class="font-weight-bold">3</p></label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" class="custom-control-input" id="customRadio4" name="button" value="4">
+              <label class="custom-control-label" for="customRadio4"><p class="font-weight-bold">4</p></label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" class="custom-control-input" id="customRadio5" name="button" value="5">
+              <label class="custom-control-label" for="customRadio5"><p class="font-weight-bold">5</p></label>
+            </div>
+          </div>
+          <hr/>
+          <h7>
+            After canceling the session, this job will be placed back into circulation.
+          </h7>
+          <h6>
+            <b>
+            Are you sure you want to cancel this session?
+            </b>
+          </h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+          <button type="Submit" class="btn btn-danger" style="background-color:darkred">Yes</button>
+          <!-- <a href="{% url 'tutor:end' job.id %}" class="btn btn-danger" style="background-color:darkred">End Session</a> -->
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -115,30 +155,30 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method = "POST">
+      <form method = "POST" form action = "{% url 'tutor:end' job.id %}">
         {% csrf_token %}
         <div class="modal-body">
           <div class=text-center>
             Please Rate Your Tutor:
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="customRadio1" name="button" value="one">
-              <label class="custom-control-label" for="customRadio1"><p class="font-weight-bold">1</p></label>
+              <input type="radio" class="custom-control-input" id="custom1" name="button2" value="1">
+              <label class="custom-control-label" for="custom1"><p class="font-weight-bold">1</p></label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="customRadio2" name="button" value="two">
-              <label class="custom-control-label" for="customRadio2"><p class="font-weight-bold">2</p></label>
+              <input type="radio" class="custom-control-input" id="custom2" name="button2" value="2">
+              <label class="custom-control-label" for="custom2"><p class="font-weight-bold">2</p></label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="customRadio3" name="button" value="three">
-              <label class="custom-control-label" for="customRadio3"><p class="font-weight-bold">3</p></label>
+              <input type="radio" class="custom-control-input" id="custom3" name="button2" value="3">
+              <label class="custom-control-label" for="custom3"><p class="font-weight-bold">3</p></label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="customRadio4" name="button" value="four">
-              <label class="custom-control-label" for="customRadio4"><p class="font-weight-bold">4</p></label>
+              <input type="radio" class="custom-control-input" id="custom4" name="button2" value="4">
+              <label class="custom-control-label" for="custom4"><p class="font-weight-bold">4</p></label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" id="customRadio5" name="button" value="five">
-              <label class="custom-control-label" for="customRadio5"><p class="font-weight-bold">5</p></label>
+              <input type="radio" class="custom-control-input" id="custom5" name="button2" value="5">
+              <label class="custom-control-label" for="custom5"><p class="font-weight-bold">5</p></label>
             </div>
           </div>
           <hr/>
@@ -150,13 +190,13 @@
             Are you sure you want to end this session?
             </b>
           </h6>
-        </p>
-      </div>
-      <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
-         <a href="{% url 'tutor:end' job.id %}" class="btn btn-danger" style="background-color:darkred">End Session</a>
-      </div>
-    </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+          <button type="Submit" class="btn btn-danger">End Session</button>
+          <!-- <a href="{% url 'tutor:end' job.id %}" class="btn btn-danger" style="background-color:darkred">End Session</a> -->
+        </div>
+      </form>
     </div>
   </div>
 </div>

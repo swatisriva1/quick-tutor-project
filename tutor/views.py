@@ -227,6 +227,61 @@ class TutorProfileView(generic.ListView):
 @login_required(redirect_field_name='')
 def cancelSession(request, job_id=None):
     job = Job.objects.get(id=job_id)
+
+    if request.method == 'POST':
+        r = request.POST.get('button')
+        if(request.user == job.customer_user):
+            current = float(job.tutor_profile.rating)*job.tutor_profile.jobinteractions
+            job.tutor_profile.jobinteractions += 1
+            job.tutor_profile.save()
+            if(r == "1"):
+                current += 1.0
+                current = current/(job.tutor_profile.jobinteractions)
+                job.tutor_profile.rating = decimal.Decimal(current)
+            elif(r == "2"):
+                current += 2.0
+                current = current/(job.tutor_profile.jobinteractions)
+                job.tutor_profile.rating = decimal.Decimal(current)
+            elif(r == "3"):
+                current += 3.0
+                current = current/(job.tutor_profile.jobinteractions)
+                job.tutor_profile.rating = decimal.Decimal(current)
+            elif(r == "4"):
+                current += 4.0
+                current = current/(job.tutor_profile.jobinteractions)
+                job.tutor_profile.rating = decimal.Decimal(current)    
+            elif(r == "5"):
+                current += 5.0
+                current = current/(job.tutor_profile.jobinteractions)
+                job.tutor_profile.rating = decimal.Decimal(current)
+        if(request.user == job.tutor_user):
+            current = float(job.customer_profile.rating)*job.customer_profile.jobinteractions
+            job.customer_profile.jobinteractions += 1
+            job.customer_profile.save()
+            if(r == "1"):
+                current += 1.0
+                current = current/(job.customer_profile.jobinteractions)
+                job.customer_profile.rating = decimal.Decimal(current)
+            elif(r == "2"):
+                current += 2.0
+                current = current/(job.customer_profile.jobinteractions)
+                job.customer_profile.rating = decimal.Decimal(current)
+            elif(r == "3"):
+                current += 3.0
+                current = current/(job.customer_profile.jobinteractions)
+                job.customer_profile.rating = decimal.Decimal(current)
+            elif(r == "4"):
+                current += 4.0
+                current = current/(job.customer_profile.jobinteractions)
+                job.customer_profile.rating = decimal.Decimal(current)    
+            elif(r == "5"):
+                current += 5.0
+                current = current/(job.customer_profile.jobinteractions)
+                job.cunstomer_profile.rating = decimal.Decimal(current)
+
+        job.tutor_profile.save()
+        job.customer_profile.save()
+    
     job.started = False
     job.isConfirmed = False
     job.tutor_user = None
@@ -253,37 +308,41 @@ def cancelRequest(request, job_id=None):
 def endSession(request, job_id=None):
     job = Job.objects.get(id=job_id)
     job.isComplete = True
+    current = float(job.tutor_profile.rating)*job.tutor_profile.jobinteractions
+    job.tutor_profile.jobinteractions += 1
+    job.tutor_profile.save()
     
-    current = job.tutor_profile.rating*job.tutor_profile.acceptedjobs
-    job.tutor_profile.acceptedjobs += 1
-    job.customer_profile.requestedjobs +=1
-    job.tutor_profile.save()
-    job.customer_profile.save()
-    selected = request.POST.get('button')
+    if request.method == 'POST':
+        r = request.POST.get('button2')
+        if(r == "1"):
+            current += 1.0
+            current = current/job.tutor_profile.jobinteractions
+            job.tutor_profile.rating = decimal.Decimal(current)
+        elif(r == "2"):
+            current += 2.0
+            current = current/job.tutor_profile.jobinteractions
+            job.tutor_profile.rating = decimal.Decimal(current)
+        elif(r == "3"):
+            current += 3.0
+            current = current/job.tutor_profile.jobinteractions
+            job.tutor_profile.rating = decimal.Decimal(current)
+        elif(r == "4"):
+            current += 4.0
+            current = current/job.tutor_profile.jobinteractions
+            job.tutor_profile.rating = decimal.Decimal(current)    
+        elif(r == "5"):
+            current += 5.0
+            current = current/job.tutor_profile.jobinteractions
+            job.tutor_profile.rating = decimal.Decimal(current)
+        job.tutor_profile.save()
 
-    if selected == "one":
-        #job.tutor_profile.rating = (current + 1.0)/job.tutor_profile.acceptedjobs
-        job.tutor_profile.rating = decimal.Decimal(1.0)
-    elif selected == "two":
-        #job.tutor_profile.rating = (current + 2.0)/job.tutor_profile.acceptedjobs
-        job.tutor_profile.rating = decimal.Decimal(2.0)
-    elif selected == "three":
-        #job.tutor_profile.rating = (current + 3.0)/job.tutor_profile.acceptedjobs
-        job.tutor_profile.rating = decimal.Decimal(3.0)
-    elif selected == "four":
-        #job.tutor_profile.rating = (current + 4.0)/job.tutor_profile.acceptedjobs
-        job.tutor_profile.rating = decimal.Decimal(4.0)
-    elif selected == "five":
-        job.tutor_profile.rating = decimal.Decimal(5.0)
-
-    job.tutor_profile.save()
-    job.customer_profile.save()
     job.save()
     messages.success(request, 'Your session has ended. Please provide your payment information below')
     return redirect(reverse_lazy('tutor:payment'))
 
 @login_required(redirect_field_name='')
 def beginSession(request, job_id=None):
+    form = endSession
     job = Job.objects.get(id=job_id)
     job.started = True
     job.save()
@@ -294,7 +353,7 @@ def beginSession(request, job_id=None):
         student.started=True
         student.save()
     messages.success(request, 'Your session has begun!')
-    return redirect(reverse_lazy('tutor:session', args=(job.id,)))
+    return redirect(reverse_lazy('tutor:session', args=(job.id,)), {'form': form})
 
 def index(request):
     return render(request, 'tutor/home.html')
