@@ -54,3 +54,4 @@ class AvailableJobsForm(forms.ModelForm):
     class Meta:
         model = Job
         fields = ["subject", "course", "location", "notes"]
+

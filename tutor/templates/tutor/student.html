@@ -31,6 +31,15 @@
                                 </p></p>
                             </div>
                         </div>
+                        <hr>
+                        <div container="container-fluid" style="background-color:#122C34; padding: 1rem;">
+                            {% if user.profile.jobinteractions > 1 %} 
+                                <h5 class="text-secondary text-light">
+                                    Your User Rating: <h4 style="color:#F46036"><b>{{ user.profile.rating }}</b></h4>
+                                </h5>
+                            {% endif %}
+                        </div>
+
                     </div>
 
                     <div class="col-md-8">
@@ -40,10 +49,18 @@
                             </h2>
 
                             {% if user.profile.first_name and user.profile.last_name %}
-                                {% if user.profile.subjects_can_help %}
-                                    <h4 class="text-info" style="padding: 0.5rem;"> <b>Student | Tutor</b></h4>
-                                {% else %}
+                                {% if user.profile.subjects_can_help|length == 1 %}
+                                    {% for subject in user.profile.subjects_can_help.all %}
+                                        {% if subject|stringformat:"s" == "None" %}
+                                            <h4 class="text-info" style="padding: 0.5rem;"> <b>Student</b></h4>
+                                        {% else %}
+                                            <h4 class="text-info" style="padding: 0.5rem;"> <b>Student | Tutor</b></h4>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% elif user.profile.subjects_can_help == None %}
                                     <h4 class="text-info" style="padding: 0.5rem;"> <b>Student</b></h4>
+                                {% else %}
+                                    <h4 class="text-info" style="padding: 0.5rem;"> <b>Student | Tutor</b></h4>
                                 {% endif %}
                                 <h5 class="text-secondary" style="padding: 0.5rem;"> <b>First Name:</b> {{ user.profile.first_name }}</h5>
                                 <h5 class="text-secondary" style="padding: 0.5rem;"> <b>Last Name:</b> {{ user.profile.last_name }}</h5>
@@ -72,11 +89,12 @@
                             {% endif %}
 
                              <!-- CAN PORT OVER TO A DIFFERENT TEMPLATE IF NECESSARY -CALEB -->
+                            
                             {% if user.profile.subjects_can_help %}
                             <h5 class="text-secondary" style="padding: 0.5rem;"> <b>Subjects you tutor in:</b> </h5>
                             <ul class="list-group">
                                 {% for subject in user.profile.subjects_can_help.all %}
-                                <li class="list-group-item">{{ subject }}</li>
+                                    <li class="list-group-item">{{ subject }}</li>
                                 {% endfor %}
                             </ul>
                             {% else %}

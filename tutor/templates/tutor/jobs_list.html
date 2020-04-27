@@ -7,9 +7,7 @@
 <div class="container-fluid"> 
 <form method="POST">
     {% csrf_token %}
-    <h1 class="page-header">
-        Available Jobs
-    </h1>
+    <h1 class="text-light" style="background-color:#D45800; padding: 1rem;">Available Jobs</h1>
     <p>
         No Jobs? Try updating your account profile with subjects you would be interested in tutoring.
     </p>
@@ -27,6 +25,7 @@
             <tr>
                 <th>Select</th>
                 <th>Client</th>
+                <th>Rating</th>
                 <th>Subject</th>
                 <th>Course</th>
                 <th>Meeting Location</th>
@@ -43,6 +42,13 @@
                       </div>
                 </td>
                 <td>{{ job.customer_profile.first_name }} {{ job.customer_profile.last_name }}</td>
+                <td>
+                    {% if job.customer_profile.jobinteractions == 1 %}
+                        -
+                    {% else %}
+                        {{ job.customer_profile.rating }}
+                    {% endif %}
+                </td>
                 <td>{{ job.subject }}</td>
                 <td>{{ job.course }}</td>
                 <td>{{ job.location }}</td>

@@ -6,14 +6,19 @@
 <div class="container-fluid">
 
     {% csrf_token %}
-    <h1 class="page-header">
-        Requested Jobs
-    </h1>
+    <h1 class="text-light" style="background-color:#122C34; padding: 1rem;">Requested Jobs</h1>
+    <p>
+        Pending? <b>We are working on matching you with a tutor.</b>
+    </p>
+    <p>
+        <i>Once you are matched, the tutor will initiate the session, and you will be able to begin being tutored.</i>
+    </p>
     <table class="table table-hover">
         <thead>
             <tr>
                 <th>Status</th>
                 <th>Tutor</th>
+                <th>Rating</th>
                 <th>Subject</th>
                 <th>Course</th>
                 <th>Email</th>
@@ -39,6 +44,15 @@
                     {{ job.tutor_profile.first_name }} {{ job.tutor_profile.last_name }}
                     {% else %}
                     Not Assigned
+                    {% endif %}
+                </td>
+                <td>
+                    {% if job.tutor_profile.jobinteractions == 1 %}
+                        -
+                    {% elif job.tutor_profile == None %}
+                        -
+                    {% else %}
+                        {{ job.tutor_profile.rating }}
                     {% endif %}
                 </td>
                 <td>{{ job.subject }}</td>

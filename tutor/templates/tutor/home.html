@@ -22,11 +22,11 @@
     <!--      <a class="btn btn-primary" href="tutor/logout/">Logout</a>-->
       {% if user.profile.first_name %}
       <span class="border-bottom-0">
-      <div class="card text-white" style="width: 36%; background-color:#122C34">
+      <div class="card text-white" style="width: 700px; background-color:#122C34">
         <div class="card-body">
           <h5 class="display-4"><b>Welcome back {{ user.profile.first_name }}!</b></h4>
         {% else %}
-        <div class="card text-white" style="width: 36%; background-color:#122C34">
+        <div class="card text-white" style="width: 700px; background-color:#122C34">
         <div class="card-body">
           <h4 class="display-4"><b>Welcome! Please set up your account.</b></h4>
         {% endif %}
