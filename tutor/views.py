@@ -313,7 +313,6 @@ def cancelRequest(request, job_id=None):
 @login_required(redirect_field_name='')
 def endSession(request, job_id=None):
     job = Job.objects.get(id=job_id)
-    job.isComplete = True
     current = float(job.tutor_profile.rating)*job.tutor_profile.jobinteractions
     job.tutor_profile.jobinteractions += 1
     job.tutor_profile.save()
