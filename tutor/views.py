@@ -313,33 +313,34 @@ def cancelRequest(request, job_id=None):
 @login_required(redirect_field_name='')
 def endSession(request, job_id=None):
     job = Job.objects.get(id=job_id)
-    current = float(job.tutor_profile.rating)*job.tutor_profile.jobinteractions
-    job.tutor_profile.jobinteractions += 1
-    job.tutor_profile.save()
+    tutor = Profile.objects.get(user=job.last_tutored_by)
+    current = float(tutor.rating)*tutor.jobinteractions
+    tutor.jobinteractions += 1
+    tutor.save()
     
     if request.method == 'POST':
         r = request.POST.get('button2')
         if(r == "1"):
             current += 1.0
-            current = current/job.tutor_profile.jobinteractions
-            job.tutor_profile.rating = decimal.Decimal(current)
+            current = current/tutor.jobinteractions
+            tutor.rating = decimal.Decimal(current)
         elif(r == "2"):
             current += 2.0
-            current = current/job.tutor_profile.jobinteractions
-            job.tutor_profile.rating = decimal.Decimal(current)
+            current = current/tutor.jobinteractions
+            tutor.rating = decimal.Decimal(current)
         elif(r == "3"):
             current += 3.0
-            current = current/job.tutor_profile.jobinteractions
-            job.tutor_profile.rating = decimal.Decimal(current)
+            current = current/tutor.jobinteractions
+            tutor.rating = decimal.Decimal(current)
         elif(r == "4"):
             current += 4.0
-            current = current/job.tutor_profile.jobinteractions
-            job.tutor_profile.rating = decimal.Decimal(current)    
+            current = current/tutor.jobinteractions
+            tutor.rating = decimal.Decimal(current)    
         elif(r == "5"):
             current += 5.0
-            current = current/job.tutor_profile.jobinteractions
-            job.tutor_profile.rating = decimal.Decimal(current)
-        job.tutor_profile.save()
+            current = current/tutor.jobinteractions
+            tutor.rating = decimal.Decimal(current)
+        tutor.save()
 
     job.save()
     messages.success(request, 'Your session has ended. Please provide your payment information below')
