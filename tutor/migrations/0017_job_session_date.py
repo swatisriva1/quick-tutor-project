@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='job',
             name='session_date',
-            field=models.DateTimeField(auto_now=True),
+            field=models.DateTimeField(auto_now_add=True),
         ),
     ]
