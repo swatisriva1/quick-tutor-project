@@ -373,6 +373,10 @@ def paymentConfirmation(request):
     currentUser= Profile.objects.get(user=request.user)
     currentUser.started=False
     currentUser.save()
+    for jobs in Job.objects.get(customer_user = request.user):
+        if jobs.started==True:
+            jobs.isComplete=True
+            jobs.save()
     # specify that the model is Job
     # access the current job instance (the one that you've paid for)
     # change that job's isComplete from false to true   
