@@ -243,7 +243,7 @@ class Job(models.Model):
                              help_text="Any additional notes you might have about your request?", blank=True)
     location = models.CharField(max_length=200, choices=LOCATIONS, help_text="Select a meeting spot for your session.",
                                 default='None')
-    session_date = models.DateTimeField(auto_now=True)
+    session_date = models.DateTimeField(auto_now_add=True)
     isConfirmed = models.BooleanField(default=False)
     started = models.BooleanField(default=False)
     isComplete = models.BooleanField(default=False)
