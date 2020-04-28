@@ -373,7 +373,7 @@ def paymentConfirmation(request):
     currentUser= Profile.objects.get(user=request.user)
     currentUser.started=False
     currentUser.save()
-    for jobs in Job.objects.get(customer_user = request.user):
+    for jobs in Job.objects.filter(customer_user = request.user):
         if jobs.started==True:
             jobs.isComplete=True
             jobs.save()
