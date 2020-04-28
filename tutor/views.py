@@ -229,10 +229,10 @@ class TutorProfileView(generic.ListView):
 @login_required(redirect_field_name='')
 def cancelSession(request, job_id=None):
     job = Job.objects.get(id=job_id)
-    last_tutor = Profile.objects.get(user=job.last_tutored_by)
 
     if request.method == 'POST':
         r = request.POST.get('button')
+        last_tutor = Profile.objects.get(user=job.last_tutored_by)
         if(request.user == job.customer_user):
             current = float(last_tutor.rating)*last_tutor.jobinteractions
             last_tutor.jobinteractions += 1
